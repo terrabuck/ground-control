@@ -55,10 +55,11 @@
                     <li class="mdl-menu__item" data-val="Shift">Shift</li>
                 </ul>
             </div>
-            <p>Available keys:</p>
+            <p style="margin-bottom: 0;">Available keys:</p>
+            <a><b>DEPENDING ON YOUR KEYBOARD-LAYOUT SOME COMBINATIONS MAY NOT WORK!</b></a>
             <ul>
                 <li>0 to 9, A to Z, F1 to F24, Punctuations like ~, !, @, #, $, etc.</li>
-                <li><a title="Only works on some devices!">Plus</a>, Space, Tab, Backspace, Delete, Insert, Return (or Enter as alias)</li>
+                <li>Plus, Space, Tab, Backspace, Delete, Insert, Return (or Enter as alias)</li>
                 <li>Up, Down, Left and Right, Home and End, PageUp and PageDown</li>
                 <li>Escape (or Esc for short), VolumeUp, VolumeDown and VolumeMute</li>
                 <li>MediaNextTrack, MediaPreviousTrack, MediaStop and MediaPlayPause</li>
@@ -117,19 +118,19 @@
                 if ($("#skip_M").val()) {
                     $("#skip_M").parent().addClass("is-dirty");
                 }
-                if(!$("div").hasClass("is-invalid")) {
-                    var tmp = {
-                        keys: {
-                            skip: {
-                                key: "",
-                                mod: ""
-                            }
+                var tmp = {
+                    keys: {
+                        skip: {
+                            key: "",
+                            mod: ""
                         }
-                    };
+                    }
+                };
+                if(!$("#skip_K").parent().hasClass("is-invalid")) {
                     tmp.keys.skip.key = $("#skip_K").val();
-                    tmp.keys.skip.mod = modMap[$("#skip_M").val()];
-                    node_fs.writeFileSync("./config.json", JSON.stringify(tmp));
                 }
+                tmp.keys.skip.mod = modMap[$("#skip_M").val()];
+                node_fs.writeFileSync("./config.json", JSON.stringify(tmp));
             });
         </script>
     </body>

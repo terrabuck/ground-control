@@ -10,9 +10,8 @@ let win;
 
 function reg_skip() {
   var a;
-  var ret;
   try {
-    a = JSON.parse(fs.readFileSync("./config.json"));
+    a = JSON.parse(fs.readFileSync("./config.json").toString());
   } catch (error) {
     throw new Error("Did you modify the config.json?");
   }
@@ -21,13 +20,14 @@ function reg_skip() {
     if (a.keys.skip.mod && a.keys.skip.mod !== "") {
       key = a.keys.skip.mod + "+" + key;
     }
-    ret = globalShortcut.register(key, () => {
-      // Add the api request! {TODO}
-      console.log(key + ' is pressed');
-    });
-  }
-  if (!ret) {
-    console.log('registration failed');
+    try {
+      globalShortcut.register(key, () => {
+        // Add the api request! {TODO}
+        console.log(key + ' is pressed');
+      });
+    } catch (error) {
+      console.log('registration failed');
+    }
   }
 }
 
@@ -45,7 +45,7 @@ function createWindow () {
 
 
   // Create the browser window.
-  win = new BrowserWindow({width: 550, height: 475, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
+  win = new BrowserWindow({width: 620, height: 475, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
 
   // Hide top bar
   win.setMenu(null);

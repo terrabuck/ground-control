@@ -4,9 +4,10 @@ Streamelements client app to manage everything that happens on your stream.
 ## Installation
 
 1. yarn install
-2. yarn start
-3. ???
-4. profit
+2. npm i electron -g
+3. yarn start
+4. ???
+5. profit
 
 ## Contributing
 
