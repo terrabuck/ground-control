@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>StreamElements - Activity Feed</title>
+        <script>
+            if (typeof module === 'object') {
+                window.module = module;
+                module = undefined;
+            }
+        </script>
+        <script src="jquery-3.1.1.min.js"></script>
+        <script>
+            if (window.module) module = window.module;
+        </script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="../node_modules/material-design-lite/material.min.css">
+        <script src="../node_modules/material-design-lite/material.min.js"></script>
+        <!-- getmdl-select -->   
+        <link rel="stylesheet" href="../node_modules/getmdl-select/getmdl-select.min.css">
+        <script defer src="../node_modules/getmdl-select/getmdl-select.min.js"></script>
+        <!---->
+        <link rel="stylesheet" href="settings.css">
+        <script>
+            const node_fs = require("fs");
+            Object.prototype.getKeyByValue = function( value ) {
+                for( var prop in this ) {
+                    if( this.hasOwnProperty( prop ) ) {
+                        if( this[ prop ] === value )
+                            return prop;
+                    }
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <button id="back" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"><i class="material-icons">arrow_back</i></button>
+        <h3 id="title">Settings</h3>
+        <div id="settings">
+            <h4>Keybindings</h4>
+
+            <!-- Skip alert -->
+            <h6>Skip alert:</h6>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 10em;margin-right: 1em;">
+                <input class="mdl-textfield__input" type="text" id="skip_K" pattern="(.{1}|F([1-9]|1[0-9]|2[0-4])|Space|Plus|Tab|Backspace|Delete|Insert|Return|Enter|Up|Down|Left|Right|Home|End|PageUp|PageDown|Escape|Esc|VolumeUp|VolumeDown|VolumeMute|MediaNextTrack|MediaPreviousTrack|MediaStop|MediaPlayPause|PrintScreen)">
+                <label class="mdl-textfield__label" for="skip_K">Key...</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select" style="width: 9em;">
+                <input class="mdl-textfield__input" id="skip_M" type="text" value="" readonly tabIndex="-1"/>
+                <label class="mdl-textfield__label" for="skip_M">Modifier</label>
+                <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu" for="skip_M">
+                    <li class="mdl-menu__item" data-val="#">None</li>
+                    <li class="mdl-menu__item" data-val="Alt">Alt</li>
+                    <li class="mdl-menu__item" data-val="CmdOrCtrl">Control/Command</li>
+                    <li class="mdl-menu__item" data-val="Shift">Shift</li>
+                </ul>
+            </div>
+            <p>Available keys:</p>
+            <ul>
+                <li>0 to 9, A to Z, F1 to F24, Punctuations like ~, !, @, #, $, etc.</li>
+                <li><a title="Only works on some devices!">Plus</a>, Space, Tab, Backspace, Delete, Insert, Return (or Enter as alias)</li>
+                <li>Up, Down, Left and Right, Home and End, PageUp and PageDown</li>
+                <li>Escape (or Esc for short), VolumeUp, VolumeDown and VolumeMute</li>
+                <li>MediaNextTrack, MediaPreviousTrack, MediaStop and MediaPlayPause</li>
+                <li>PrintScreen</li>
+            </ul>
+
+
+        </div>
+        <a id="version"></a>
+        <script>
+            // Show version
+            (function() {
+                var pack;
+                if (node_fs.existsSync('./package.json')) {
+                    pack = JSON.parse(node_fs.readFileSync('./package.json', 'utf8'));
+                } else if (node_fs.existsSync('./resources/app/package.json')) {
+                    pack = JSON.parse(node_fs.readFileSync('./resources/app/package.json', 'utf8'));
+                } else if (node_fs.existsSync('./resources/app.asar')) {
+                    pack = JSON.parse(node_fs.readFileSync('./resources/app.asar/package.json', 'utf8'));
+                } else {
+                    return $("#version p").html("¯\\_(ツ)_/¯");
+                }
+                $("#version").html("v" + pack.version );
+            })();
+
+            // Back button
+            $("#back").on("click", function() {
+                location.reload();
+            });
+
+            const modMap = {
+                "None": "",
+                "": "",
+                "Alt": "Alt",
+                "Control/Command": "CmdOrCtrl",
+                "Shift": "Shift"
+            };
+            
+            // Load old settings
+            if (node_fs.existsSync("./config.json")) {
+                var a = JSON.parse(node_fs.readFileSync("./config.json"));
+                $("#skip_M").val(modMap.getKeyByValue(a.keys.skip.mod));
+                $("#skip_K").val(a.keys.skip.key);
+            }
+
+            $("input").bind("property change keyup", function(event) {
+                if ($("#skip_K").val() && $("#skip_K").val() !== "" && $("#skip_K").val().length === 1) {
+                    if ($("#skip_K").val() === " ") {
+                        $("#skip_K").val("Space");
+                    } else if ($("#skip_K").val() === "+") {
+                        $("#skip_K").val("Plus");
+                    } else {
+                        $("#skip_K").val($("#skip_K").val().toLocaleUpperCase());
+                    }
+                }
+                if ($("#skip_M").val()) {
+                    $("#skip_M").parent().addClass("is-dirty");
+                }
+                if(!$("div").hasClass("is-invalid")) {
+                    var tmp = {
+                        keys: {
+                            skip: {
+                                key: "",
+                                mod: ""
+                            }
+                        }
+                    };
+                    tmp.keys.skip.key = $("#skip_K").val();
+                    tmp.keys.skip.mod = modMap[$("#skip_M").val()];
+                    node_fs.writeFileSync("./config.json", JSON.stringify(tmp));
+                }
+            });
+        </script>
+    </body>
+</html>

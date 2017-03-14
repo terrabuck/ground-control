@@ -1,0 +1,35 @@
+body {
+    min-height: auto;
+    height: auto;
+}
+#title {
+    margin: auto;
+    margin-top: 0.5em;
+    width: 3.75em;
+}
+#back {
+    position: absolute;
+    top: 0.75em;
+    left: 0.75em;
+}
+#settings {
+    margin: 0 1em;
+}
+#version {
+    color: black;
+    position: absolute;
+    bottom: 1em;
+    left: 0;
+    right: 0;
+    cursor: auto;
+    margin: auto;
+    width: 3em;
+}
+hr {
+    margin: 0;
+    width: calc(100vw - 2em);
+}
+#settings h6 {
+    float: left;
+    margin-right: 1em;
+}
