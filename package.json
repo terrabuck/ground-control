@@ -9,7 +9,7 @@
     "build": "electron-packager . --icon=src/se.ico --out dist --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json)\"",
     "build-all": "electron-packager . --all --icon=src/se.ico --out dist --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json)\""
   },
-  "author": "",
+  "author": "StreamElements",
   "license": "MIT",
   "devDependencies": {
     "electron": "^1.6.2",
