@@ -40,7 +40,7 @@
             <h4>Authentication</h4>
 
             <!-- JWT -->
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: calc(90vw - 5em);">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: calc(100vw - 4.3em);">
                 <input class="mdl-textfield__input" type="text" id="jwt" pattern=".{36}\.[^\.]+\.[^\.]+">
                 <label class="mdl-textfield__label" for="jwt">Your JWT Token...</label>
             </div>
@@ -58,15 +58,16 @@
                 <input class="mdl-textfield__input" type="text" id="skip_K" pattern="(.{1}|F([1-9]|1[0-9]|2[0-4])|Space|Plus|Tab|Backspace|Delete|Insert|Return|Enter|Up|Down|Left|Right|Home|End|PageUp|PageDown|Escape|Esc|VolumeUp|VolumeDown|VolumeMute|MediaNextTrack|MediaPreviousTrack|MediaStop|MediaPlayPause|PrintScreen)">
                 <label class="mdl-textfield__label" for="skip_K">Key...</label>
             </div>
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select" style="width: 9em;">
-                <input class="mdl-textfield__input" id="skip_M" type="text" value="" readonly tabIndex="-1"/>
-                <label class="mdl-textfield__label" for="skip_M">Modifier</label>
-                <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu" for="skip_M">
-                    <li class="mdl-menu__item" data-val="#">None</li>
-                    <li class="mdl-menu__item" data-val="Alt">Alt</li>
-                    <li class="mdl-menu__item" data-val="CmdOrCtrl">Control/Command</li>
-                    <li class="mdl-menu__item" data-val="Shift">Shift</li>
-                </ul>
+
+            <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label" style="width: 10em;">
+                <select class="mdl-selectfield__select" id="skip_M">
+                    <option value="#">None</option>
+                    <option value="Alt+">Alt</option>
+                    <option value="CmdOrCtrl+">Control/Command</option>
+                    <option value="Shift+">Shift</option>
+                </select>
+                <div class="mdl-selectfield__icon"><i class="material-icons">arrow_drop_down</i></div>
+                <label class="mdl-selectfield__label" for="skip_M">Modifier</label>
             </div>
             <div id="key-info"><a style="cursor: pointer;">Show info about keybindings</a></div>
         </div>
@@ -97,14 +98,6 @@
                 location.reload();
             });
 
-            const modMap = {
-                "None": "",
-                "": "",
-                "Alt": "Alt",
-                "Control/Command": "CmdOrCtrl",
-                "Shift": "Shift"
-            };
-
             // Show token
             $("#show-jwt").prop('checked', true);
             $("#show-jwt").on("change", function() {
@@ -118,7 +111,7 @@
             // Load old settings
             if (node_fs.existsSync("./config.json")) {
                 var a = JSON.parse(node_fs.readFileSync("./config.json"));
-                $("#skip_M").val(modMap.getKeyByValue(a.keys.skip.mod));
+                $("#skip_M").val(a.keys.skip.mod);
                 $("#skip_K").val(a.keys.skip.key);
                 if (a.token && a.token !== "") {
                     setInterval(function() {
@@ -129,7 +122,8 @@
                 }
             }
 
-            $("input").bind("property change keyup", function(event) {
+            // Update settings
+            function update_S() {
                 if ($("#skip_K").val() && $("#skip_K").val() !== "" && $("#skip_K").val().length === 1) {
                     if ($("#skip_K").val() === " ") {
                         $("#skip_K").val("Space");
@@ -138,9 +132,6 @@
                     } else {
                         $("#skip_K").val($("#skip_K").val().toLocaleUpperCase());
                     }
-                }
-                if ($("#skip_M").val()) {
-                    $("#skip_M").parent().addClass("is-dirty");
                 }
                 var tmp = {
                     token: "",
@@ -157,9 +148,12 @@
                 if(!$("#jwt").parent().hasClass("is-invalid")) {
                     tmp.token = $("#jwt").val();
                 }
-                tmp.keys.skip.mod = modMap[$("#skip_M").val()];
+                tmp.keys.skip.mod = $("#skip_M").val();
                 node_fs.writeFileSync("./config.json", JSON.stringify(tmp));
-            });
+            }
+
+            $("input").bind("property change keyup", update_S);
+            $("select").bind("property change keyup", update_S);
         </script>
     </body>
 </html>

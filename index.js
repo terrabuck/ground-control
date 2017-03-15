@@ -23,23 +23,25 @@ function reg() {
     socket = connectSocket(a.token);
   }
 
-  /* Skip */
-  if (a.keys && a.keys.skip && a.keys.skip.key) {
-    var key = a.keys.skip.key;
-    if (a.keys.skip.mod && a.keys.skip.mod !== "") {
-      key = a.keys.skip.mod + "+" + key;
-    }
-    try {
-      globalShortcut.register(key, () => {
-        if (a.token && a.token !== "") {
-          if (socket) {
-              console.log("Send: 'Skip Alert'");
-              socket.emit('event:skip');
+  if (a.keys) {
+    /* Skip */
+    if (a.keys.skip && a.keys.skip.key) {
+      var key = a.keys.skip.key;
+      if (a.keys.skip.mod && a.keys.skip.mod !== "" && a.keys.skip.mod !== "#") {
+        key = a.keys.skip.mod + key;
+      }
+      try {
+        globalShortcut.register(key, () => {
+          if (a.token && a.token !== "") {
+            if (socket) {
+                console.log("Send: 'Skip Alert'");
+                socket.emit('event:skip');
+            }
           }
-        }
-      });
-    } catch (error) {
-      console.log('registration failed');
+        });
+      } catch (error) {
+        console.log(`Keybind for 'Skip Alert' failed, '${key}'`);
+      }
     }
   }
 }
@@ -59,7 +61,7 @@ function createWindow () {
 
 
   // Create the browser window.
-  win = new BrowserWindow({width: 620, height: 385, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
+  win = new BrowserWindow({width: 625, height: 400, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
 
   // Hide top bar
   win.setMenu(null);
