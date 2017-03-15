@@ -37,6 +37,19 @@
         <button id="back" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"><i class="material-icons">arrow_back</i></button>
         <h3 id="title">Settings</h3>
         <div id="settings">
+            <h4>Authentication</h4>
+
+            <!-- JWT -->
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: calc(90vw - 5em);">
+                <input class="mdl-textfield__input" type="text" id="jwt" pattern=".{36}\.[^\.]+\.[^\.]+">
+                <label class="mdl-textfield__label" for="jwt">Your JWT Token...</label>
+            </div>
+            <label class="mdl-icon-toggle mdl-js-icon-toggle mdl-js-ripple-effect" for="show-jwt" onclick="if((!$('#jwt').val()) || $('#jwt').val() === '') { return false; }">
+                <input type="checkbox" id="show-jwt" class="mdl-icon-toggle__input">
+                <i class="mdl-icon-toggle__label material-icons">visibility</i>
+            </label>
+
+
             <h4>Keybindings</h4>
 
             <!-- Skip alert -->
@@ -55,16 +68,19 @@
                     <li class="mdl-menu__item" data-val="Shift">Shift</li>
                 </ul>
             </div>
-            <p style="margin-bottom: 0;">Available keys:</p>
-            <a><b>DEPENDING ON YOUR KEYBOARD-LAYOUT SOME COMBINATIONS MAY NOT WORK!</b></a>
-            <ul>
-                <li>0 to 9, A to Z, F1 to F24, Punctuations like ~, !, @, #, $, etc.</li>
-                <li>Plus, Space, Tab, Backspace, Delete, Insert, Return (or Enter as alias)</li>
-                <li>Up, Down, Left and Right, Home and End, PageUp and PageDown</li>
-                <li>Escape (or Esc for short), VolumeUp, VolumeDown and VolumeMute</li>
-                <li>MediaNextTrack, MediaPreviousTrack, MediaStop and MediaPlayPause</li>
-                <li>PrintScreen</li>
-            </ul>
+            <div id="key-info">
+                <a><b>DEPENDING ON YOUR KEYBOARD-LAYOUT SOME COMBINATIONS MAY NOT WORK!</b></a>
+                <p style="margin-bottom: 0;">Available keys:</p>
+                <ul>
+                    <li>0 to 9, A to Z, F1 to F24, Punctuations like ~, !, @, #, $, etc.</li>
+                    <li>Plus, Space, Tab, Backspace, Delete, Insert, Return (or Enter as alias)</li>
+                    <li>Up, Down, Left and Right, Home and End, PageUp and PageDown</li>
+                    <li>Escape (or Esc for short), VolumeUp, VolumeDown and VolumeMute</li>
+                    <li>MediaNextTrack, MediaPreviousTrack, MediaStop and MediaPlayPause</li>
+                    <li>PrintScreen</li>
+                </ul>
+            </div>
+            <div><a onclick="$('#key-info').css('display', 'block'); $(this).css('display', 'none');" style="cursor: pointer;">Show info about keybindings</a></div>
 
 
         </div>
@@ -97,12 +113,29 @@
                 "Control/Command": "CmdOrCtrl",
                 "Shift": "Shift"
             };
+
+            // Show token
+            $("#show-jwt").prop('checked', true);
+            $("#show-jwt").on("change", function() {
+                if ($("#show-jwt").prop('checked')) {
+                    $("#jwt").prop("disabled", false).removeClass("secret");
+                } else {
+                    $("#jwt").prop("disabled", true).addClass("secret");
+                }
+            });
             
             // Load old settings
             if (node_fs.existsSync("./config.json")) {
                 var a = JSON.parse(node_fs.readFileSync("./config.json"));
                 $("#skip_M").val(modMap.getKeyByValue(a.keys.skip.mod));
                 $("#skip_K").val(a.keys.skip.key);
+                if (a.token && a.token !== "") {
+                    setInterval(function() {
+                        $("#jwt").parent().removeClass("is-disabled");
+                    }, 10);
+                    $("#jwt").prop("disabled", true).addClass("secret").val(a.token);
+                    $("#show-jwt").prop('checked', false);
+                }
             }
 
             $("input").bind("property change keyup", function(event) {
@@ -119,6 +152,7 @@
                     $("#skip_M").parent().addClass("is-dirty");
                 }
                 var tmp = {
+                    token: "",
                     keys: {
                         skip: {
                             key: "",
@@ -128,6 +162,9 @@
                 };
                 if(!$("#skip_K").parent().hasClass("is-invalid")) {
                     tmp.keys.skip.key = $("#skip_K").val();
+                }
+                if(!$("#jwt").parent().hasClass("is-invalid")) {
+                    tmp.token = $("#jwt").val();
                 }
                 tmp.keys.skip.mod = modMap[$("#skip_M").val()];
                 node_fs.writeFileSync("./config.json", JSON.stringify(tmp));

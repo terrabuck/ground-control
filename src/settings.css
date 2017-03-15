@@ -2,10 +2,27 @@ body {
     min-height: auto;
     height: auto;
 }
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+    transition: all .1s linear;
+    border-radius: 50%
+}
+
+::-webkit-scrollbar-track {
+    background: transparent
+}
+
+::-webkit-scrollbar-track:hover {
+    background: rgba(0,0,0,.2)
+}
+::-webkit-scrollbar-thumb {
+    background: #a5abb1
+}
 #title {
     margin: auto;
     margin-top: 0.5em;
-    width: 3.75em;
+    text-align: center;
 }
 #back {
     position: absolute;
@@ -17,13 +34,9 @@ body {
 }
 #version {
     color: black;
-    position: absolute;
-    bottom: 1em;
-    left: 0;
-    right: 0;
-    cursor: auto;
+    text-align: center;
     margin: auto;
-    width: 3em;
+    display: block;
 }
 hr {
     margin: 0;
@@ -32,4 +45,22 @@ hr {
 #settings h6 {
     float: left;
     margin-right: 1em;
+}
+#settings h4:not(:first-child) {
+    margin-top: 0;
+}
+#key-info {
+    display: none;
+}
+ul {
+    margin-top: 0;
+}
+.secret {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    letter-spacing: -3px;
+    color: transparent;
+    text-shadow: 0 0 5px rgba(0,0,0,.1);
 }
