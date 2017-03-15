@@ -45,6 +45,7 @@ hr {
 #settings h6 {
     float: left;
     margin-right: 1em;
+    margin-top: 1.1em;
 }
 #settings h4:not(:first-child) {
     margin-top: 0;
@@ -60,4 +61,11 @@ ul {
     letter-spacing: -3px;
     color: transparent;
     text-shadow: 0 0 5px rgba(0,0,0,.1);
+}
+.inputF {
+    float: right;
+    margin-right: 2em;
+}
+.clear {
+    clear: both;
 }

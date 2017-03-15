@@ -3,7 +3,7 @@ const path = require('path');
 const url = require('url');
 const fs = require('fs');
 const got = require('got');
-const connectSocket = require('./socket');
+const connectSocket = require('./src/modules/socket');
 
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -24,7 +24,7 @@ function reg() {
     socket = connectSocket(a.token);
   }
 
-  if (a.keys) {
+  if (a.keys && a.token && a.token !== "") {
     /* Skip alert */
     if (a.keys.skip_alert && a.keys.skip_alert.key) {
       var key = a.keys.skip_alert.key;
@@ -33,18 +33,16 @@ function reg() {
       }
       try {
         globalShortcut.register(key, () => {
-          if (a.token && a.token !== "") {
-            if (socket) {
-                console.log("Send: 'Skip Alert'");
-                socket.emit('event:skip');
-            }
+          if (socket) {
+              console.log("Send: 'Skip Alert'");
+              socket.emit('event:skip');
           }
         });
       } catch (error) {
         console.log(`Keybind for 'Skip Alert' failed, '${key}'`);
       }
     }
-    /* Skip song */
+    /* Skip Song */
     if (a.keys.skip_song && a.keys.skip_song.key) {
       var key = a.keys.skip_song.key;
       if (a.keys.skip_song.mod && a.keys.skip_song.mod !== "" && a.keys.skip_song.mod !== "#") {
@@ -52,24 +50,34 @@ function reg() {
       }
       try {
         globalShortcut.register(key, () => {
-          if (a.token && a.token !== "") {
-            if (socket) {
-                got.delete("https://caipirinha.streamelements.com/kappa/v1/songrequest/queue/skip", {
-                  headers: {
-                    Authorization: "Bearer " + a.token
-                  }
-                }).then(() => {
-                  console.log("Send: 'Skip Song'");
-                }).catch(err => {
-                  console.error("Could not skip the current song:", err.message);
-                });
-            }
-          }
+            got.delete("https://caipirinha.streamelements.com/kappa/v1/songrequest/queue/skip", {
+              headers: {
+                Authorization: "Bearer " + a.token
+              }
+            }).then(() => {
+              console.log("Send: 'Skip Song'");
+            }).catch(err => {
+              console.error("Could not skip the current song:", err.message);
+            });
         });
       } catch (error) {
-        console.log(`Keybind for 'Skip Alert' failed, '${key}'`);
+        console.log(`Keybind for 'Skip Song' failed, '${key}'`);
       }
     }
+    /* Stop/Resume Song */
+    // if (a.keys.SnR_song && a.keys.SnR_song) {
+    //   var key = a.keys.skip_song.key;
+    //   if (a.keys.skip_song.mod && a.keys.skip_song.mod !== "" && a.keys.skip_song.mod !== "#") {
+    //     key = a.keys.skip_song.mod + key;
+    //   }
+    //   try {
+    //     globalShortcut.register(key, () => {
+            
+    //     });
+    //   } catch (error) {
+    //     console.log(`Keybind for 'Stop/Resume Song' failed, '${key}'`);
+    //   }
+    // }
   }
 }
 
