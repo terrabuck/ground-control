@@ -2,8 +2,10 @@ const io = require('socket.io-client');
 
 function connectSocket(token) {
   if (!token) {
+    throw new Error("No JWT token specified");
   }
 
+  const socket = io('https://api.streamelements.com', {
     path: '/socket'
   });
 
