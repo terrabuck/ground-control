@@ -24,3 +24,5 @@ function connectSocket(token) {
 
   return socket;
 }
+
+module.exports = connectSocket;

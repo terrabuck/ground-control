@@ -2,38 +2,13 @@ const {app, BrowserWindow, globalShortcut} = require('electron');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
-const io = require('socket.io-client');
+const connectSocket = require('./socket');
 
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 var socket;
-
-function connect_socket(token) {
-  socket = io("https://api.streamelements.com", {
-    path: '/socket'
-  });
-  socket.on("connect", function() {
-    socket.emit('authenticate:jwt', token);
-  });
-  socket.on("authentication:error", reason => {
-    console.log(reason);
-  });
-
-  socket.on('reconnecting', attempts => {
-    console.log(`Reconnecting Attempt #${attempts}`);
-  });
-
-  socket.on('authenticated', () => {
-    console.log('Were connected');
-
-    setInterval(() => {
-      socket.emit('event:skip');
-    }, 2000)
-    
-  })
-}
 
 function reg() {
   var a;
@@ -45,7 +20,7 @@ function reg() {
   /* Socket */
   socket = null;
   if (a.token) {
-    connect_socket(a.token);
+    socket = connectSocket(a.token);
   }
 
   /* Skip */
@@ -56,17 +31,10 @@ function reg() {
     }
     try {
       globalShortcut.register(key, () => {
-        // Add the api request! {TODO}
-        console.log(key + ' is pressed');
         if (a.token && a.token !== "") {
-          console.log("and there is a token");
           if (socket) {
-            try {
+              console.log("Send: 'Skip Alert'");
               socket.emit('event:skip');
-              console.log("and a connection");        
-            } catch (err) {
-              // No socket?
-            }
           }
         }
       });
@@ -91,7 +59,7 @@ function createWindow () {
 
 
   // Create the browser window.
-  win = new BrowserWindow({width: 620, height: 405, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
+  win = new BrowserWindow({width: 620, height: 385, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
 
   // Hide top bar
   win.setMenu(null);
