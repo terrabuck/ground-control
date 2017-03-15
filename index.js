@@ -2,19 +2,53 @@ const {app, BrowserWindow, globalShortcut} = require('electron');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
+const io = require('socket.io-client');
 
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
+var socket;
 
-function reg_skip() {
+function connect_socket(token) {
+  socket = io("https://api.streamelements.com", {
+    path: '/socket'
+  });
+  socket.on("connect", function() {
+    socket.emit('authenticate:jwt', token);
+  });
+  socket.on("authentication:error", reason => {
+    console.log(reason);
+  });
+
+  socket.on('reconnecting', attempts => {
+    console.log(`Reconnecting Attempt #${attempts}`);
+  });
+
+  socket.on('authenticated', () => {
+    console.log('Were connected');
+
+    setInterval(() => {
+      socket.emit('event:skip');
+    }, 2000)
+    
+  })
+}
+
+function reg() {
   var a;
   try {
     a = JSON.parse(fs.readFileSync("./config.json").toString());
   } catch (error) {
     throw new Error("Did you modify the config.json?");
   }
+  /* Socket */
+  socket = null;
+  if (a.token) {
+    connect_socket(a.token);
+  }
+
+  /* Skip */
   if (a.keys && a.keys.skip && a.keys.skip.key) {
     var key = a.keys.skip.key;
     if (a.keys.skip.mod && a.keys.skip.mod !== "") {
@@ -24,6 +58,17 @@ function reg_skip() {
       globalShortcut.register(key, () => {
         // Add the api request! {TODO}
         console.log(key + ' is pressed');
+        if (a.token && a.token !== "") {
+          console.log("and there is a token");
+          if (socket) {
+            try {
+              socket.emit('event:skip');
+              console.log("and a connection");        
+            } catch (err) {
+              // No socket?
+            }
+          }
+        }
       });
     } catch (error) {
       console.log('registration failed');
@@ -34,12 +79,13 @@ function reg_skip() {
 function createWindow () {
   // globalShortcut
   if (fs.existsSync("./config.json")) {
-      reg_skip();
+      reg();
   }
   fs.watch(".", (type, filename) => {
     if (fs.existsSync("./config.json") && filename === "config.json") {
+      socket = null;
       globalShortcut.unregisterAll();
-      reg_skip();
+      reg();
     }
   });
 
