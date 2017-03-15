@@ -2,31 +2,46 @@ const {app, BrowserWindow, globalShortcut} = require('electron');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
+const connectSocket = require('./socket');
 
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
+var socket;
 
-function reg_skip() {
+function reg() {
   var a;
   try {
     a = JSON.parse(fs.readFileSync("./config.json").toString());
   } catch (error) {
     throw new Error("Did you modify the config.json?");
   }
-  if (a.keys && a.keys.skip && a.keys.skip.key) {
-    var key = a.keys.skip.key;
-    if (a.keys.skip.mod && a.keys.skip.mod !== "") {
-      key = a.keys.skip.mod + "+" + key;
-    }
-    try {
-      globalShortcut.register(key, () => {
-        // Add the api request! {TODO}
-        console.log(key + ' is pressed');
-      });
-    } catch (error) {
-      console.log('registration failed');
+  /* Socket */
+  socket = null;
+  if (a.token) {
+    socket = connectSocket(a.token);
+  }
+
+  if (a.keys) {
+    /* Skip */
+    if (a.keys.skip && a.keys.skip.key) {
+      var key = a.keys.skip.key;
+      if (a.keys.skip.mod && a.keys.skip.mod !== "" && a.keys.skip.mod !== "#") {
+        key = a.keys.skip.mod + key;
+      }
+      try {
+        globalShortcut.register(key, () => {
+          if (a.token && a.token !== "") {
+            if (socket) {
+                console.log("Send: 'Skip Alert'");
+                socket.emit('event:skip');
+            }
+          }
+        });
+      } catch (error) {
+        console.log(`Keybind for 'Skip Alert' failed, '${key}'`);
+      }
     }
   }
 }
@@ -34,18 +49,19 @@ function reg_skip() {
 function createWindow () {
   // globalShortcut
   if (fs.existsSync("./config.json")) {
-      reg_skip();
+      reg();
   }
   fs.watch(".", (type, filename) => {
     if (fs.existsSync("./config.json") && filename === "config.json") {
+      socket = null;
       globalShortcut.unregisterAll();
-      reg_skip();
+      reg();
     }
   });
 
 
   // Create the browser window.
-  win = new BrowserWindow({width: 620, height: 405, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
+  win = new BrowserWindow({width: 625, height: 400, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
 
   // Hide top bar
   win.setMenu(null);

@@ -49,9 +49,6 @@ hr {
 #settings h4:not(:first-child) {
     margin-top: 0;
 }
-#key-info {
-    display: none;
-}
 ul {
     margin-top: 0;
 }
