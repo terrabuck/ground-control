@@ -16,6 +16,7 @@
     "electron-packager": "^8.5.2"
   },
   "dependencies": {
+    "got": "^6.7.1",
     "material-design-lite": "^1.3.0",
     "mdl-selectfield": "^1.0.4",
     "socket.io-client": "^1.7.3"

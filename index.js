@@ -2,6 +2,7 @@ const {app, BrowserWindow, globalShortcut} = require('electron');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
+const got = require('got');
 const connectSocket = require('./socket');
 
 
@@ -24,11 +25,11 @@ function reg() {
   }
 
   if (a.keys) {
-    /* Skip */
-    if (a.keys.skip && a.keys.skip.key) {
-      var key = a.keys.skip.key;
-      if (a.keys.skip.mod && a.keys.skip.mod !== "" && a.keys.skip.mod !== "#") {
-        key = a.keys.skip.mod + key;
+    /* Skip alert */
+    if (a.keys.skip_alert && a.keys.skip_alert.key) {
+      var key = a.keys.skip_alert.key;
+      if (a.keys.skip_alert.mod && a.keys.skip_alert.mod !== "" && a.keys.skip_alert.mod !== "#") {
+        key = a.keys.skip_alert.mod + key;
       }
       try {
         globalShortcut.register(key, () => {
@@ -36,6 +37,31 @@ function reg() {
             if (socket) {
                 console.log("Send: 'Skip Alert'");
                 socket.emit('event:skip');
+            }
+          }
+        });
+      } catch (error) {
+        console.log(`Keybind for 'Skip Alert' failed, '${key}'`);
+      }
+    }
+    /* Skip song */
+    if (a.keys.skip_song && a.keys.skip_song.key) {
+      var key = a.keys.skip_song.key;
+      if (a.keys.skip_song.mod && a.keys.skip_song.mod !== "" && a.keys.skip_song.mod !== "#") {
+        key = a.keys.skip_song.mod + key;
+      }
+      try {
+        globalShortcut.register(key, () => {
+          if (a.token && a.token !== "") {
+            if (socket) {
+                console.log("Send: 'Skip Song'");
+                got.delete("https://caipirinha.streamelements.com/kappa/v1/songrequest/queue/skip", {
+                  headers: {
+                    Authorization: "Bearer " + a.token
+                  }
+                }).catch(err => {
+                  console.error("Could not skip the current song:", err.message);
+                });
             }
           }
         });
@@ -61,7 +87,7 @@ function createWindow () {
 
 
   // Create the browser window.
-  win = new BrowserWindow({width: 625, height: 400, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
+  win = new BrowserWindow({width: 625, height: 500, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
 
   // Hide top bar
   win.setMenu(null);

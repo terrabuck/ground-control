@@ -55,20 +55,40 @@
             <!-- Skip alert -->
             <h6>Skip alert:</h6>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 10em;margin-right: 1em;">
-                <input class="mdl-textfield__input" type="text" id="skip_K" pattern="(.{1}|F([1-9]|1[0-9]|2[0-4])|Space|Plus|Tab|Backspace|Delete|Insert|Return|Enter|Up|Down|Left|Right|Home|End|PageUp|PageDown|Escape|Esc|VolumeUp|VolumeDown|VolumeMute|MediaNextTrack|MediaPreviousTrack|MediaStop|MediaPlayPause|PrintScreen)">
-                <label class="mdl-textfield__label" for="skip_K">Key...</label>
+                <input class="mdl-textfield__input autoC" type="text" id="skip_alert_K" pattern="(.{1}|F([1-9]|1[0-9]|2[0-4])|Space|Plus|Tab|Backspace|Delete|Insert|Return|Enter|Up|Down|Left|Right|Home|End|PageUp|PageDown|Escape|Esc|VolumeUp|VolumeDown|VolumeMute|MediaNextTrack|MediaPreviousTrack|MediaStop|MediaPlayPause|PrintScreen)">
+                <label class="mdl-textfield__label" for="skip_alert_K">Key...</label>
             </div>
 
             <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label" style="width: 10em;">
-                <select class="mdl-selectfield__select" id="skip_M">
+                <select class="mdl-selectfield__select" id="skip_alert_M">
                     <option value="#">None</option>
                     <option value="Alt+">Alt</option>
                     <option value="CmdOrCtrl+">Control/Command</option>
                     <option value="Shift+">Shift</option>
                 </select>
                 <div class="mdl-selectfield__icon"><i class="material-icons">arrow_drop_down</i></div>
-                <label class="mdl-selectfield__label" for="skip_M">Modifier</label>
+                <label class="mdl-selectfield__label" for="skip_alert_M">Modifier</label>
+            </div><br>
+
+            <!-- Skip song -->
+            <h6>Skip song:</h6>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 10em;margin-right: 1em;">
+                <input class="mdl-textfield__input autoC" type="text" id="skip_song_K" pattern="(.{1}|F([1-9]|1[0-9]|2[0-4])|Space|Plus|Tab|Backspace|Delete|Insert|Return|Enter|Up|Down|Left|Right|Home|End|PageUp|PageDown|Escape|Esc|VolumeUp|VolumeDown|VolumeMute|MediaNextTrack|MediaPreviousTrack|MediaStop|MediaPlayPause|PrintScreen)">
+                <label class="mdl-textfield__label" for="skip_song_K">Key...</label>
             </div>
+
+            <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label" style="width: 10em;">
+                <select class="mdl-selectfield__select" id="skip_song_M">
+                    <option value="#">None</option>
+                    <option value="Alt+">Alt</option>
+                    <option value="CmdOrCtrl+">Control/Command</option>
+                    <option value="Shift+">Shift</option>
+                </select>
+                <div class="mdl-selectfield__icon"><i class="material-icons">arrow_drop_down</i></div>
+                <label class="mdl-selectfield__label" for="skip_song_M">Modifier</label>
+            </div>
+
+            
             <div id="key-info"><a style="cursor: pointer;">Show info about keybindings</a></div>
         </div>
         <a id="version"></a>
@@ -111,8 +131,10 @@
             // Load old settings
             if (node_fs.existsSync("./config.json")) {
                 var a = JSON.parse(node_fs.readFileSync("./config.json"));
-                $("#skip_M").val(a.keys.skip.mod);
-                $("#skip_K").val(a.keys.skip.key);
+                $("#skip_alert_M").val(a.keys.skip_alert.mod);
+                $("#skip_alert_K").val(a.keys.skip_alert.key);
+                $("#skip_song_M").val(a.keys.skip_song.mod);
+                $("#skip_song_K").val(a.keys.skip_song.key);
                 if (a.token && a.token !== "") {
                     setInterval(function() {
                         $("#jwt").parent().removeClass("is-disabled");
@@ -124,31 +146,39 @@
 
             // Update settings
             function update_S() {
-                if ($("#skip_K").val() && $("#skip_K").val() !== "" && $("#skip_K").val().length === 1) {
-                    if ($("#skip_K").val() === " ") {
-                        $("#skip_K").val("Space");
-                    } else if ($("#skip_K").val() === "+") {
-                        $("#skip_K").val("Plus");
-                    } else {
-                        $("#skip_K").val($("#skip_K").val().toLocaleUpperCase());
+                $(".autoC").each(function(index) {
+                    if ($(this).val() && $(this).val() !== "" && $(this).val().length === 1) {
+                        if ($(this).val() === " ") {
+                            $(this).val("Space");
+                        } else if ($(this).val() === "+") {
+                            $(this).val("Plus");
+                        } else {
+                            $(this).val($(this).val().toLocaleUpperCase());
+                        }
                     }
-                }
+                });
                 var tmp = {
                     token: "",
                     keys: {
-                        skip: {
+                        skip_alert: {
                             key: "",
-                            mod: ""
+                            mod: $("#skip_alert_M").val() || ""
+                        },
+                        skip_song : {
+                            key: "",
+                            mod: $("#skip_song_M").val() || ""
                         }
                     }
                 };
-                if(!$("#skip_K").parent().hasClass("is-invalid")) {
-                    tmp.keys.skip.key = $("#skip_K").val();
+                if(!$("#skip_alert_K").parent().hasClass("is-invalid")) {
+                    tmp.keys.skip_alert.key = $("#skip_alert_K").val();
+                }
+                if(!$("#skip_song_K").parent().hasClass("is-invalid")) {
+                    tmp.keys.skip_song.key = $("#skip_song_K").val();
                 }
                 if(!$("#jwt").parent().hasClass("is-invalid")) {
                     tmp.token = $("#jwt").val();
                 }
-                tmp.keys.skip.mod = $("#skip_M").val();
                 node_fs.writeFileSync("./config.json", JSON.stringify(tmp));
             }
 
