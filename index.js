@@ -54,11 +54,12 @@ function reg() {
         globalShortcut.register(key, () => {
           if (a.token && a.token !== "") {
             if (socket) {
-                console.log("Send: 'Skip Song'");
                 got.delete("https://caipirinha.streamelements.com/kappa/v1/songrequest/queue/skip", {
                   headers: {
                     Authorization: "Bearer " + a.token
                   }
+                }).then(() => {
+                  console.log("Send: 'Skip Song'");
                 }).catch(err => {
                   console.error("Could not skip the current song:", err.message);
                 });
