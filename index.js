@@ -9,10 +9,10 @@ const connectSocket = require('./src/modules/socket');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
-var socket;
+let socket;
 
 function reg() {
-  var a;
+  let a;
   try {
     a = JSON.parse(fs.readFileSync("./config.json").toString());
   } catch (error) {
@@ -25,9 +25,9 @@ function reg() {
   }
 
   if (a.keys && a.token && a.token !== "") {
-    /* Skip alert */
+    /* Skip Alert */
     if (a.keys.skip_alert) {
-      var key = a.keys.skip_alert;
+      let key = a.keys.skip_alert;
       try {
         globalShortcut.register(key, () => {
           if (socket) {
@@ -41,7 +41,7 @@ function reg() {
     }
     /* Skip Song */
     if (a.keys.skip_song) {
-      var key = a.keys.skip_song;
+      let key = a.keys.skip_song;
       try {
         globalShortcut.register(key, () => {
             got.delete("https://caipirinha.streamelements.com/kappa/v1/songrequest/queue/skip", {
@@ -58,9 +58,23 @@ function reg() {
         console.log(`Keybind for 'Skip Song' failed, '${key}'`);
       }
     }
+    /* Stop/Resume Alerts */
+    if (a.keys.SnR_alert) {
+      let key = a.keys.SnR_alert;
+      try {
+        globalShortcut.register(key, () => {
+          if (socket) {
+            console.log("Send: 'Stop/Resume Alerts'");
+            socket.emit('overlay:togglequeue');
+          }
+        });
+      } catch (error) {
+        console.log(`Keybind for 'Stop/Resume Alerts' failed, '${key}'`);
+      }
+    }
     /* Stop/Resume Song */
     // if (a.keys.SnR_song) {
-    //   var key = a.keys.skip_song.key;
+    //   let key = a.keys.skip_song.key;
     //   try {
     //     globalShortcut.register(key, () => {
             
@@ -87,7 +101,7 @@ function createWindow () {
 
 
   // Create the browser window.
-  win = new BrowserWindow({width: 625, height: 505, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
+  win = new BrowserWindow({width: 625, height: 580, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
 
   // Hide top bar
   win.setMenu(null);
@@ -100,8 +114,7 @@ function createWindow () {
   }));
 
   // Open the DevTools.
-  var regMe = /.*[\\/]npm[\\/]node_modules[\\/]electron[\\/]dist[\\/]electron[\.a-z]*/i;
-  if ((fs.existsSync('./package.json') && regMe.test(path.normalize(process.argv[0]))) || (process.argv[2] && process.argv[2] === "secret dev")) {
+  if ((fs.existsSync('./package.json') && /.*[\\/]npm[\\/]node_modules[\\/]electron[\\/]dist[\\/]electron[\.a-z]*/i.test(path.normalize(process.argv[0]))) || (process.argv[2] && process.argv[2] === "secret dev")) {
     win.webContents.openDevTools();
   }
 

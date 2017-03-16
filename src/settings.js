@@ -43,14 +43,10 @@ $("#show-jwt").on("change", function() {
         } catch (err) {
             return console.error("Could not parse JSON");
         }
-        if (a.keys.skip_alert) {
-            $("#skip_alert_K").val(a.keys.skip_alert);
-        }
-        if (a.keys.skip_song) {
-            $("#skip_song_K").val(a.keys.skip_song);
-        }
-        if (a.keys.SnR_song) {
-            $("#SnR_song_K").val(a.keys.SnR_song);
+        if (a.keys) {
+            for (let key in a.keys) {
+                $("#" + key).val(a.keys[key]);
+            }
         }
         if (a.token && a.token !== "") {
             setInterval(function() {
@@ -66,12 +62,11 @@ $("#show-jwt").on("change", function() {
 function update_S() {
     var tmp = {
         token: "",
-        keys: {
-            skip_alert: $("#skip_alert_K").val() || "",
-            skip_song: $("#skip_song_K").val() || "",
-            SnR_song: $("#SnR_song_K").val() || ""
-        }
+        keys: {}
     };
+    $(".autoC").each(function() {
+        tmp.keys[$(this).attr("id")] = $(this).val() || "";
+    });
     // Token
     if(!$("#jwt").parent().hasClass("is-invalid")) {
         tmp.token = $("#jwt").val();
