@@ -26,11 +26,8 @@ function reg() {
 
   if (a.keys && a.token && a.token !== "") {
     /* Skip alert */
-    if (a.keys.skip_alert && a.keys.skip_alert.key) {
-      var key = a.keys.skip_alert.key;
-      if (a.keys.skip_alert.mod && a.keys.skip_alert.mod !== "" && a.keys.skip_alert.mod !== "#") {
-        key = a.keys.skip_alert.mod + key;
-      }
+    if (a.keys.skip_alert) {
+      var key = a.keys.skip_alert;
       try {
         globalShortcut.register(key, () => {
           if (socket) {
@@ -43,11 +40,8 @@ function reg() {
       }
     }
     /* Skip Song */
-    if (a.keys.skip_song && a.keys.skip_song.key) {
-      var key = a.keys.skip_song.key;
-      if (a.keys.skip_song.mod && a.keys.skip_song.mod !== "" && a.keys.skip_song.mod !== "#") {
-        key = a.keys.skip_song.mod + key;
-      }
+    if (a.keys.skip_song) {
+      var key = a.keys.skip_song;
       try {
         globalShortcut.register(key, () => {
             got.delete("https://caipirinha.streamelements.com/kappa/v1/songrequest/queue/skip", {
@@ -65,11 +59,8 @@ function reg() {
       }
     }
     /* Stop/Resume Song */
-    // if (a.keys.SnR_song && a.keys.SnR_song) {
+    // if (a.keys.SnR_song) {
     //   var key = a.keys.skip_song.key;
-    //   if (a.keys.skip_song.mod && a.keys.skip_song.mod !== "" && a.keys.skip_song.mod !== "#") {
-    //     key = a.keys.skip_song.mod + key;
-    //   }
     //   try {
     //     globalShortcut.register(key, () => {
             

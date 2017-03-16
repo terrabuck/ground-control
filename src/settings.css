@@ -70,3 +70,13 @@ ul {
 .clear {
     clear: both;
 }
+.clearThis {
+    min-width: 0;
+    height: 1em;
+    width: 1em;
+    padding: 0.60em;
+    z-index: 2;
+    position: relative;
+    right: -13.5em;
+    top: -0.2em;
+}

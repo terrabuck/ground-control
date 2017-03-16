@@ -44,16 +44,13 @@ $("#show-jwt").on("change", function() {
             return console.error("Could not parse JSON");
         }
         if (a.keys.skip_alert) {
-            $("#skip_alert_M").val(a.keys.skip_alert.mod);
-            $("#skip_alert_K").val(a.keys.skip_alert.key);
+            $("#skip_alert_K").val(a.keys.skip_alert);
         }
         if (a.keys.skip_song) {
-            $("#skip_song_M").val(a.keys.skip_song.mod);
-            $("#skip_song_K").val(a.keys.skip_song.key);
+            $("#skip_song_K").val(a.keys.skip_song);
         }
         if (a.keys.SnR_song) {
-            $("#SnR_song_M").val(a.keys.SnR_song.mod);
-            $("#SnR_song_K").val(a.keys.SnR_song.key);
+            $("#SnR_song_K").val(a.keys.SnR_song);
         }
         if (a.token && a.token !== "") {
             setInterval(function() {
@@ -67,47 +64,17 @@ $("#show-jwt").on("change", function() {
 
 // Update settings
 function update_S() {
-    $(".autoC").each(function() {
-        if ($(this).val() && $(this).val() !== "" && $(this).val().length === 1) {
-            if ($(this).val() === " ") {
-                $(this).val("Space");
-            } else if ($(this).val() === "+") {
-                $(this).val("Plus");
-            } else {
-                $(this).val($(this).val().toLocaleUpperCase());
-            }
-        }
-    });
     var tmp = {
         token: "",
         keys: {
-            skip_alert: {
-                key: "",
-                mod: $("#skip_alert_M").val() || ""
-            },
-            skip_song: {
-                key: "",
-                mod: $("#skip_song_M").val() || ""
-            },
-            SnR_song: {
-                key: "",
-                mod: $("#SnR_song_M").val() || ""
-            }
+            skip_alert: $("#skip_alert_K").val() || "",
+            skip_song: $("#skip_song_K").val() || "",
+            SnR_song: $("#SnR_song_K").val() || ""
         }
     };
     // Token
     if(!$("#jwt").parent().hasClass("is-invalid")) {
         tmp.token = $("#jwt").val();
-    }
-    // Keys
-    if(!$("#skip_alert_K").parent().hasClass("is-invalid")) {
-        tmp.keys.skip_alert.key = $("#skip_alert_K").val();
-    }
-    if(!$("#skip_song_K").parent().hasClass("is-invalid")) {
-        tmp.keys.skip_song.key = $("#skip_song_K").val();
-    }
-    if(!$("#SnR_song_K").parent().hasClass("is-invalid")) {
-        tmp.keys.SnR_song.key = $("#SnR_song_K").val();
     }
     node_fs.writeFileSync("./config.json", JSON.stringify(tmp));
 }

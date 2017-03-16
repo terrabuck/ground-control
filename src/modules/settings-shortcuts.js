@@ -1,6 +1,15 @@
-// 
-registerShortcutInput($("#skip_alert_K"))
-registerShortcutInput($("#skip_song_K"))
+/*globals $, update_S */
+$(".autoC").each(function() {
+    registerShortcutInput($(this));
+});
+
+$(".clearThis").each(function() {
+    $(this).on("click", function() {
+        update_S();
+        $(this).next().find("input").val("").trigger("change");
+        $(this).next().removeClass("is-dirty");
+    });
+});
 
 var keyReplacements = {
     "+": "Plus",
@@ -10,24 +19,24 @@ var keyReplacements = {
     "ArrowLeft": "Left",
     "ArrowDown": "Down",
     "ArrowRight": "Right",
-    "ArrowUp": "Up",
-}
+    "ArrowUp": "Up"
+};
 
 // binds the keydown event of the jqueryNode to updateing it's value with the shortcut
 function registerShortcutInput(jqueryNode) {
     jqueryNode.keydown(function(event) {
-        console.log(event.key);
+        // console.log(event.key);
 
         // prevent normal typing
         event.preventDefault();
 
         // return if a the key is a modifier
-        if (event.key == "Control" || event.key == "Alt" || event.key == "Shift" || event.key == "Meta" ) {
+        if (event.key === "Control" || event.key === "Alt" || event.key === "Shift" || event.key === "Meta" ) {
             return;
         }
 
-        // return if no modifier key is pressed
-        if (!event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey) {
+        // return if key contains DEAD
+        if (event.key.toUpperCase().includes("DEAD")) {
             return;
         }
 
@@ -61,5 +70,8 @@ function registerShortcutInput(jqueryNode) {
 
         // update value
         jqueryNode.prop("value", keyCode);
+        if (jqueryNode.val() && jqueryNode.val() !== "") {
+            jqueryNode.parent().addClass("is-dirty");
+        }
     });
 }
