@@ -103,7 +103,7 @@ function createWindow () {
 
   // and load the index.html of the app.
   win.loadURL(url.format({
-    pathname: path.join(__dirname, 'src/index.html'),
+    pathname: path.join(__dirname, 'src/settings.html'),
     protocol: 'file:',
     slashes: true
   }));
