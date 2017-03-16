@@ -96,14 +96,14 @@ function createWindow () {
 
 
   // Create the browser window.
-  win = new BrowserWindow({width: 625, height: 500, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
+  win = new BrowserWindow({width: 625, height: 505, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
 
   // Hide top bar
   win.setMenu(null);
 
   // and load the index.html of the app.
   win.loadURL(url.format({
-    pathname: path.join(__dirname, 'src/index.html'),
+    pathname: path.join(__dirname, 'src/settings.html'),
     protocol: 'file:',
     slashes: true
   }));
