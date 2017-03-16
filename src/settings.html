@@ -23,6 +23,7 @@
         <link rel="stylesheet" href="settings.css">
         <script>
             const node_fs = require("fs");
+            const { shell } = require("electron");
             Object.prototype.getKeyByValue = function( value ) {
                 for( var prop in this ) {
                     if( this.hasOwnProperty( prop ) ) {
@@ -48,6 +49,7 @@
                 <input type="checkbox" id="show-jwt" class="mdl-icon-toggle__input">
                 <i class="mdl-icon-toggle__label material-icons">visibility</i>
             </label>
+            <p>You can find it under <a onclick="shell.openExternal('https://streamelements.com/dashboard/account/information');" style="cursor: pointer;">My Account</a></p>
 
 
             <h4>Keybindings</h4>
@@ -134,14 +136,14 @@
                 } else if (node_fs.existsSync('./resources/app.asar')) {
                     pack = JSON.parse(node_fs.readFileSync('./resources/app.asar/package.json', 'utf8'));
                 } else {
-                    return $("#version p").html("¯\\_(ツ)_/¯");
+                    return;
                 }
                 $("#version").html("v" + pack.version );
             })();
 
             // Back button
             $("#back").on("click", function() {
-                location.reload();
+                window.location = "index.html";
             });
 
             // Show token
@@ -155,28 +157,35 @@
             });
             
             // Load old settings
-            if (node_fs.existsSync("./config.json")) {
-                var a = JSON.parse(node_fs.readFileSync("./config.json"));
-                if (a.keys.skip_alert) {
-                    $("#skip_alert_M").val(a.keys.skip_alert.mod);
-                    $("#skip_alert_K").val(a.keys.skip_alert.key);
+            (function() {
+                if (node_fs.existsSync("./config.json")) {
+                    var a;
+                    try {
+                        a = JSON.parse(node_fs.readFileSync("./config.json"));
+                    } catch (err) {
+                        return console.error("Could not parse JSON");
+                    }
+                    if (a.keys.skip_alert) {
+                        $("#skip_alert_M").val(a.keys.skip_alert.mod);
+                        $("#skip_alert_K").val(a.keys.skip_alert.key);
+                    }
+                    if (a.keys.skip_song) {
+                        $("#skip_song_M").val(a.keys.skip_song.mod);
+                        $("#skip_song_K").val(a.keys.skip_song.key);
+                    }
+                    if (a.keys.SnR_song) {
+                        $("#SnR_song_M").val(a.keys.SnR_song.mod);
+                        $("#SnR_song_K").val(a.keys.SnR_song.key);
+                    }
+                    if (a.token && a.token !== "") {
+                        setInterval(function() {
+                            $("#jwt").parent().removeClass("is-disabled");
+                        }, 10);
+                        $("#jwt").prop("disabled", true).addClass("secret").val(a.token);
+                        $("#show-jwt").prop('checked', false);
+                    }
                 }
-                if (a.keys.skip_song) {
-                    $("#skip_song_M").val(a.keys.skip_song.mod);
-                    $("#skip_song_K").val(a.keys.skip_song.key);
-                }
-                if (a.keys.SnR_song) {
-                    $("#SnR_song_M").val(a.keys.SnR_song.mod);
-                    $("#SnR_song_K").val(a.keys.SnR_song.key);
-                }
-                if (a.token && a.token !== "") {
-                    setInterval(function() {
-                        $("#jwt").parent().removeClass("is-disabled");
-                    }, 10);
-                    $("#jwt").prop("disabled", true).addClass("secret").val(a.token);
-                    $("#show-jwt").prop('checked', false);
-                }
-            }
+            })();
 
             // Update settings
             function update_S() {
