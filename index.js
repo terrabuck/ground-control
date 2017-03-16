@@ -16,7 +16,7 @@ function reg() {
   try {
     a = JSON.parse(fs.readFileSync("./config.json").toString());
   } catch (error) {
-    throw new Error("Did you modify the config.json?");
+    return console.error("Could not parse JSON");
   }
   /* Socket */
   socket = null;
@@ -103,14 +103,14 @@ function createWindow () {
 
   // and load the index.html of the app.
   win.loadURL(url.format({
-    pathname: path.join(__dirname, 'src/settings.html'), // Only page for atm.
+    pathname: path.join(__dirname, 'src/index.html'),
     protocol: 'file:',
     slashes: true
   }));
 
   // Open the DevTools.
   var regMe = /.*[\\/]npm[\\/]node_modules[\\/]electron[\\/]dist[\\/]electron[\.a-z]*/i;
-  if (fs.existsSync('./package.json') && regMe.test(path.normalize(process.argv[0]))) {
+  if ((fs.existsSync('./package.json') && regMe.test(path.normalize(process.argv[0]))) || (process.argv[2] && process.argv[2] === "secret dev")) {
     win.webContents.openDevTools();
   }
 

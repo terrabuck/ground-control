@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>StreamElements - Ground Control</title>
+        <script>
+            if (typeof module === 'object') {
+                window.module = module;
+                module = undefined;
+            }
+        </script>
+        <script src="jquery-3.1.1.min.js"></script>
+        <script>
+            if (window.module) module = window.module;
+        </script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="../node_modules/material-design-lite/material.min.css">
+        <script src="../node_modules/material-design-lite/material.min.js"></script>
+        <!-- mdl-selectfield -->   
+        <link rel="stylesheet" href="../node_modules/mdl-selectfield/dist/mdl-selectfield.min.css">
+        <script defer src="../node_modules/mdl-selectfield/dist/mdl-selectfield.min.js"></script>
+        <!---->
+        <link rel="stylesheet" href="index.css">
+        <script>
+            const node_fs = require("fs");
+        </script>
+    </head>
+    <body>
+        <iframe id="frame" src="https://streamelements.com/dashboard/%F0%9F%A4%94/activity/popout"></iframe>
+        <p id="noToken">To use the activity feed, please enter the <a>JWT Token</a> in the settings menu</p>
+        <button id="settings" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect"><i class="material-icons">settings</i></button>
+        <div class="mdl-tooltip" data-mdl-for="settings">
+            Settings
+        </div>
+        <script>
+            // Load iframe
+            (function() {
+                if (node_fs.existsSync("./config.json")) {
+                    var a;
+                    try {
+                        a = JSON.parse(node_fs.readFileSync("./config.json"));
+                        if (a.token && a.token !== "") {
+                            
+                        } else {
+                            $("#frame").css("display", "none");
+                            $("#noToken").css("display", "block");
+                        }
+                    } catch (err) {
+                        $("#frame").css("display", "none");
+                        $("#noToken").html(err.message).css("display", "block");
+                        return console.error(err);
+                    }
+                }
+
+            })();
+
+            // Open settings
+            $("#settings").on("click", () => {
+                window.location = "settings.html";
+            });
+        </script>
+    </body>
+</html>
