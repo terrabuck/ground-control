@@ -57,20 +57,9 @@
             <!-- Skip alert -->
             <h6>Skip alert:</h6>
             <div class="inputF">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 10em;margin-right: 1em;">
-                    <input class="mdl-textfield__input autoC" type="text" id="skip_alert_K" pattern="(.{1}|F([1-9]|1[0-9]|2[0-4])|Space|Plus|Tab|Backspace|Delete|Insert|Return|Enter|Up|Down|Left|Right|Home|End|PageUp|PageDown|Escape|Esc|VolumeUp|VolumeDown|VolumeMute|MediaNextTrack|MediaPreviousTrack|MediaStop|MediaPlayPause|PrintScreen)">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 20em;margin-right: 1em;">
+                    <input class="mdl-textfield__input autoC" type="text" id="skip_alert_K">
                     <label class="mdl-textfield__label" for="skip_alert_K">Key...</label>
-                </div>
-
-                <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label" style="width: 10em;">
-                    <select class="mdl-selectfield__select" id="skip_alert_M">
-                        <option value="#">None</option>
-                        <option value="Alt+">Alt</option>
-                        <option value="CmdOrCtrl+">Control/Command</option>
-                        <option value="Shift+">Shift</option>
-                    </select>
-                    <div class="mdl-selectfield__icon"><i class="material-icons">arrow_drop_down</i></div>
-                    <label class="mdl-selectfield__label" for="skip_alert_M">Modifier</label>
                 </div>
             </div>
             <div class="clear"></div>
@@ -78,20 +67,9 @@
             <!-- Skip song -->
             <h6>Skip song:</h6>
             <div class="inputF">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 10em;margin-right: 1em;">
-                    <input class="mdl-textfield__input autoC" type="text" id="skip_song_K" pattern="(.{1}|F([1-9]|1[0-9]|2[0-4])|Space|Plus|Tab|Backspace|Delete|Insert|Return|Enter|Up|Down|Left|Right|Home|End|PageUp|PageDown|Escape|Esc|VolumeUp|VolumeDown|VolumeMute|MediaNextTrack|MediaPreviousTrack|MediaStop|MediaPlayPause|PrintScreen)">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 20em;margin-right: 1em;">
+                    <input class="mdl-textfield__input autoC" type="text" id="skip_song_K">
                     <label class="mdl-textfield__label" for="skip_song_K">Key...</label>
-                </div>
-
-                <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label" style="width: 10em;">
-                    <select class="mdl-selectfield__select" id="skip_song_M">
-                        <option value="#">None</option>
-                        <option value="Alt+">Alt</option>
-                        <option value="CmdOrCtrl+">Control/Command</option>
-                        <option value="Shift+">Shift</option>
-                    </select>
-                    <div class="mdl-selectfield__icon"><i class="material-icons">arrow_drop_down</i></div>
-                    <label class="mdl-selectfield__label" for="skip_song_M">Modifier</label>
                 </div>
             </div>
             <div class="clear"></div>
@@ -121,5 +99,6 @@
         </div>
         <a id="version"></a>
         <script src="settings.js"></script>
+        <script src="settings-shortcuts.js"></script>
     </body>
 </html>
