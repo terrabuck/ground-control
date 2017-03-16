@@ -1,13 +1,13 @@
 {
   "name": "ground-control",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "build": "electron-packager . --icon=src/se.* --out dist --version-string.CompanyName=\"StreamElements\" --version-string.ProductName=\"SE Ground Control\" --version-string.FileDescription=\"SE Ground Control\" --overwrite=true --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json|yarn\\.lock)\"",
-    "build-all": "electron-packager . --all --icon=src/se.* --out dist --version-string.CompanyName=\"StreamElements\" --version-string.ProductName=\"SE Ground Control\" --version-string.FileDescription=\"SE Ground Control\" --overwrite=true --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json|yarn\\.lock)\""
+    "build": "electron-packager . --icon=src/se.* --out dist --version-string.CompanyName=\"StreamElements\" --version-string.ProductName=\"SE Ground Control\" --version-string.OriginalFilename=\"ground-control.exe\" --version-string.FileDescription=\"SE Ground Control: Hotkeys for your stream\" --overwrite=true --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json|yarn\\.lock)\"",
+    "build-all": "electron-packager . --all --icon=src/se.* --out dist --version-string.CompanyName=\"StreamElements\" --version-string.ProductName=\"SE Ground Control\" --version-string.OriginalFilename=\"ground-control.exe\" --version-string.FileDescription=\"SE Ground Control: Hotkeys for your stream\" --overwrite=true --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json|yarn\\.lock)\""
   },
   "author": "StreamElements",
   "license": "MIT",
