@@ -1,4 +1,4 @@
-/*globals $, node_fs */
+/*globals $, node_fs, loadIframe */
 // Show keybindings
 $("#key-info").on("click", function() {
     $("#key-info").html(`<a><b>DEPENDING ON YOUR KEYBOARD-LAYOUT SOME COMBINATIONS MAY NOT WORK!</b></a><p style="margin-bottom: 0;">Available keys:</p><ul><li>0 to 9, A to Z, F1 to F24, Punctuations like ~, !, @, #, $, etc.</li><li>Plus, Space, Tab, Backspace, Delete, Insert, Return (or Enter as alias)</li><li>Up, Down, Left and Right, Home and End, PageUp and PageDown</li><li>Escape (or Esc for short), VolumeUp, VolumeDown and VolumeMute</li><li>MediaNextTrack, MediaPreviousTrack, MediaStop and MediaPlayPause</li><li>PrintScreen</li></ul>`);
@@ -18,11 +18,6 @@ $("#key-info").on("click", function() {
     }
     $("#version").html("v" + pack.version );
 })();
-
-// Back button
-$("#back").on("click", function() {
-    window.location = "index.html";
-});
 
 // Show token
 $("#show-jwt").prop('checked', true);
@@ -72,6 +67,7 @@ function update_S() {
         tmp.token = $("#jwt").val();
     }
     node_fs.writeFileSync("./config.json", JSON.stringify(tmp));
+    loadIframe();
 }
 
 $("input").bind("property change keyup", update_S);

@@ -9,7 +9,7 @@
                 module = undefined;
             }
         </script>
-        <script src="jquery-3.1.1.min.js"></script>
+        <script src="js/jquery-3.1.1.min.js"></script>
         <script>
             if (window.module) module = window.module;
         </script>
@@ -20,44 +20,111 @@
         <link rel="stylesheet" href="../node_modules/mdl-selectfield/dist/mdl-selectfield.min.css">
         <script defer src="../node_modules/mdl-selectfield/dist/mdl-selectfield.min.js"></script>
         <!---->
-        <link rel="stylesheet" href="index.css">
+        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="css/settings.css">
         <script>
             const node_fs = require("fs");
+            const got = require("got");
+            const { shell } = require("electron");
+            Object.prototype.getKeyByValue = function( value ) {
+                for( var prop in this ) {
+                    if( this.hasOwnProperty( prop ) ) {
+                        if( this[ prop ] === value )
+                            return prop;
+                    }
+                }
+            }
         </script>
     </head>
     <body>
-        <iframe id="frame" src="https://streamelements.com/dashboard/%F0%9F%A4%94/activity/popout"></iframe>
-        <p id="noToken">To use the activity feed, please enter the <a>JWT Token</a> in the settings menu</p>
-        <button id="settings" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect"><i class="material-icons">settings</i></button>
-        <div class="mdl-tooltip" data-mdl-for="settings">
-            Settings
+        <div id="frame_main">
+            <iframe id="popFrame" src=""></iframe>
+            <p id="noToken">To use the activity feed, please enter the <a>JWT Token</a> in the settings menu.</p>
+            <p id="invToken">You entered a invalid <a>JWT Token</a>.</p>
+            <button id="goto_settings" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect"><i class="material-icons">settings</i></button>
+            <div class="mdl-tooltip" data-mdl-for="settings">
+                Settings
+            </div>
         </div>
-        <script>
-            // Load iframe
-            (function() {
-                if (node_fs.existsSync("./config.json")) {
-                    var a;
-                    try {
-                        a = JSON.parse(node_fs.readFileSync("./config.json"));
-                        if (a.token && a.token !== "") {
-                            
-                        } else {
-                            $("#frame").css("display", "none");
-                            $("#noToken").css("display", "block");
-                        }
-                    } catch (err) {
-                        $("#frame").css("display", "none");
-                        $("#noToken").html(err.message).css("display", "block");
-                        return console.error(err);
-                    }
-                }
+        <div id="frame_settings" style="display: none;">
+            <button id="goto_main" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"><i class="material-icons">arrow_back</i></button>
+            <h3 id="title">Settings</h3>
+            <div id="settings">
+                <h4>Authentication</h4>
 
-            })();
+                <!-- JWT -->
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: calc(100vw - 4.3em);">
+                    <input class="mdl-textfield__input" type="text" id="jwt" pattern=".{36}\.[^\.]+\.[^\.]+">
+                    <label class="mdl-textfield__label" for="jwt">Your JWT Token...</label>
+                </div>
+                <label class="mdl-icon-toggle mdl-js-icon-toggle mdl-js-ripple-effect" for="show-jwt" onclick="if((!$('#jwt').val()) || $('#jwt').val() === '') { return false; }">
+                    <input type="checkbox" id="show-jwt" class="mdl-icon-toggle__input">
+                    <i class="mdl-icon-toggle__label material-icons">visibility</i>
+                </label>
+                <p>You can find it under <a onclick="shell.openExternal('https://streamelements.com/dashboard/account/information');" style="cursor: pointer;">My Account</a></p>
 
-            // Open settings
-            $("#settings").on("click", () => {
-                window.location = "settings.html";
-            });
-        </script>
+
+                <h4>Keybindings</h4>
+
+                <!-- Skip alert -->
+                <h6>Skip alert:</h6>
+                <div class="inputF">
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect clearThis">
+                        <i class="material-icons">clear</i>
+                    </button>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 20em;margin-right: 1em;">
+                        <input class="mdl-textfield__input autoC" type="text" id="skip_alert">
+                        <label class="mdl-textfield__label" for="skip_alert">Key...</label>
+                    </div>
+                </div>
+                <div class="clear"></div>
+
+                <!-- Skip song -->
+                <h6>Skip song:</h6>
+                <div class="inputF">
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect clearThis">
+                        <i class="material-icons">clear</i>
+                    </button>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 20em;margin-right: 1em;">
+                        <input class="mdl-textfield__input autoC" type="text" id="skip_song">
+                        <label class="mdl-textfield__label" for="skip_song">Key...</label>
+                    </div>
+                </div>
+                <div class="clear"></div>
+
+                <!-- Stop/Start song -->
+                <h6>Stop/Resume alerts:</h6>
+                <div class="inputF">
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect clearThis">
+                        <i class="material-icons">clear</i>
+                    </button>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 20em;margin-right: 1em;">
+                        <input class="mdl-textfield__input autoC" type="text" id="SnR_alert">
+                        <label class="mdl-textfield__label" for="SnR_alert">Key...</label>
+                    </div>
+                </div>
+                <div class="clear"></div>
+
+                <!-- Stop/Start song -->
+                <!--<h6>Stop/Resume song:</h6>
+                <div class="inputF">
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect clearThis">
+                        <i class="material-icons">clear</i>
+                    </button>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 20em;margin-right: 1em;">
+                        <input class="mdl-textfield__input autoC" type="text" id="SnR_song">
+                        <label class="mdl-textfield__label" for="SnR_song">Key...</label>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                -->
+                
+                <div id="key-info"><a style="cursor: pointer;">Show info about keybindings</a></div>
+            </div>
+            <a id="version"></a>
+        </div>
+        <script src="js/index.js"></script>
+        <script src="js/settings.js"></script>
+        <script src="modules/settings-shortcuts.js"></script>
     </body>
 </html>

@@ -24,14 +24,14 @@ body {
     margin-top: 0.5em;
     text-align: center;
 }
-#back {
-    display: none;
+#goto_main {
     position: absolute;
     top: 0.75em;
     left: 0.75em;
 }
 #settings {
     margin: 0 1em;
+    outline: none !important;
 }
 #version {
     color: black;

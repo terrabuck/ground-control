@@ -1,4 +1,4 @@
-const {app, BrowserWindow, globalShortcut} = require('electron');
+const {app, BrowserWindow, globalShortcut, session} = require('electron');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
@@ -23,6 +23,11 @@ function reg() {
   if (a.token) {
     socket = connectSocket(a.token);
   }
+  session.defaultSession.cookies.set({url: "https://streamelements.com", name: "token", value: a.token || "#"}, (err) => {
+    if (err) {
+      console.error(err);
+    }
+  });
 
   if (a.keys && a.token && a.token !== "") {
     /* Skip Alert */
@@ -108,7 +113,7 @@ function createWindow () {
 
   // and load the index.html of the app.
   win.loadURL(url.format({
-    pathname: path.join(__dirname, 'src/settings.html'),
+    pathname: path.join(__dirname, 'src/index.html'),
     protocol: 'file:',
     slashes: true
   }));
