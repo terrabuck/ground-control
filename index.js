@@ -12,6 +12,10 @@ const configFile = __filename.replace(/[\\|\/]?resources.*/, "").replace(/app.*/
 let win;
 let socket;
 
+
+if(require('electron-squirrel-startup')) {
+  app.quit();
+}
 function reg() {
   let a;
   try {
@@ -122,15 +126,6 @@ function createWindow () {
   // Open the DevTools.
   if ((fs.existsSync('./package.json') && /.*[\\/]npm[\\/]node_modules[\\/]electron[\\/]dist[\\/]electron[\.a-z]*/i.test(path.normalize(process.argv[0]))) || (process.argv[2] && process.argv[2] === "secret dev")) {
     win.webContents.openDevTools();
-  }
-
-  // Update shortcut
-  if (!fs.existsSync('./package.json')) {
-    try {
-        require("windows-shortcuts").create("%APPDATA%/Microsoft/Windows/Start Menu/Programs/StreamElements Ground Controll.lnk", __filename.replace(/[\\|\/]?resources.*/, "") + "/ground_control.exe");
-    } catch(err) {
-        console.log(err);
-    }
   }
 
   // Emitted when the window is closed.

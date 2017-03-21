@@ -28,7 +28,6 @@ body {
 }
 #update_spinner {
     position: relative;
-    right: -2em;
     height: 5em;
     width: 5em;
 }

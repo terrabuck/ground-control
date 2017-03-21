@@ -63,44 +63,35 @@ function checkValidToken(token) {
 }
 
 // Update the app
-if (!(process.argv[1] && process.argv[1] === "--squirrel-firstrun")) {
-    if (__filename.includes("app.asar")) {
-        try {
-            const autoUpdater = remote.autoUpdater;
-            autoUpdater.on('update-availabe', () => {
-                console.log('update available');
-                $("#update_status").html("Downloading update");
-            });
-            autoUpdater.on('checking-for-update', () => {
-                console.log('checking-for-update');
-            });
-            autoUpdater.on('update-not-available', () => {
-                console.log('update-not-available');
-                $("body").css("overflow", "auto");
-                $("#frame_updates").css("display", "none");
-                $("#frame_main").css("display", "block");
-            });
-            autoUpdater.on('update-downloaded', () => {
-                autoUpdater.quitAndInstall();
-                setTimeout(function() {
-                    process.exit();
-                }, 100);
-            });
-            autoUpdater.setFeedURL(pack.build.squirrelWindows.remoteReleases);
-            autoUpdater.checkForUpdates();
-            window.autoUpdater = autoUpdater;
-        } catch(err) {
-            console.log(err);
+if (__filename.includes("app.asar") && (!process.argv[1] && process.argv[1].includes("squirrel"))) {
+    try {
+        const autoUpdater = remote.autoUpdater;
+        autoUpdater.on('update-availabe', () => {
+            console.log('update available');
+        });
+        autoUpdater.on('checking-for-update', () => {
+            console.log('checking-for-update');
+        });
+        autoUpdater.on('update-not-available', () => {
+            console.log('update-not-available');
             $("body").css("overflow", "auto");
             $("#frame_updates").css("display", "none");
             $("#frame_main").css("display", "block");
-        }
-    } else {
+        });
+        autoUpdater.on('update-downloaded', () => {
+            autoUpdater.quitAndInstall();
+        });
+        autoUpdater.setFeedURL(pack.build.squirrelWindows.remoteReleases);
+        autoUpdater.checkForUpdates();
+        window.autoUpdater = autoUpdater;
+    } catch(err) {
+        console.log(err);
         $("body").css("overflow", "auto");
         $("#frame_updates").css("display", "none");
         $("#frame_main").css("display", "block");
     }
 } else {
-    $("#update_status").html("Installing");
-    $("#update_spinner").css("right", "0");
+    $("body").css("overflow", "auto");
+    $("#frame_updates").css("display", "none");
+    $("#frame_main").css("display", "block");
 }
