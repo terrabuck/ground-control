@@ -63,7 +63,7 @@ function checkValidToken(token) {
 }
 
 // Update the app
-if (__filename.includes("app.asar") && (!process.argv[1] && process.argv[1].includes("squirrel"))) {
+if (__filename.includes("app.asar") && !(process.argv[1] && process.argv[1].includes("squirrel"))) {
     try {
         const autoUpdater = remote.autoUpdater;
         autoUpdater.on('update-availabe', () => {
