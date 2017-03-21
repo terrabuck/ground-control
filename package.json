@@ -1,6 +1,6 @@
 {
   "name": "ground_control",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "SE Ground Control: Hotkeys for your stream",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "start": "electron .",
     "build": "electron-packager . --icon=src/se.* --out dist --version-string.CompanyName=\"StreamElements\" --version-string.ProductName=\"SE Ground Control\" --version-string.OriginalFilename=\"ground_control.exe\" --version-string.FileDescription=\"SE Ground Control: Hotkeys for your stream\" --overwrite=true --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json|yarn\\.lock)\"",
     "build-all": "electron-packager . --all --icon=src/se.* --out dist --version-string.CompanyName=\"StreamElements\" --version-string.ProductName=\"SE Ground Control\" --version-string.OriginalFilename=\"ground_control.exe\" --version-string.FileDescription=\"SE Ground Control: Hotkeys for your stream\" --overwrite=true --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json|yarn\\.lock)\"",
-    "win-installer": "electron-installer-windows --src dist/ground_control-win32-x64 --dest dist/installers --options.icon=\"src/se.ico\" --options.productName=\"SE Ground Control\" --options.iconUrl=\"https://i.nuuls.com/hrJ6d.png\"",
+    "win-installer": "electron-installer-windows --src dist/ground_control-win32-x64 --dest dist/installers --options.icon=\"src/se.ico\" --options.productName=\"SE Ground Control\" --options.iconUrl=\"https://cdn.streamelements.com/ground-control/updates/se64.png\"",
     "win-all": "yarn build && yarn win-installer"
   },
   "author": "StreamElements",
@@ -30,7 +30,7 @@
     "appId": "com.squirrel.ground_control.Ground_Control",
     "category": "Multimedia design",
     "squirrelWindows": {
-      "remoteReleases": "http://raspberrypi:8888/se/"
+      "remoteReleases": "https://cdn.streamelements.com/ground-control/updates/"
     }
   }
 }
