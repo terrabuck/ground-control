@@ -26,6 +26,7 @@
             const node_fs = require("fs");
             const got = require("got");
             const { shell, remote } = require("electron");
+            const configFile = __filename.replace(/[\\|\/]?resources.*/, "").replace(/app.*/, "") + "config.json";
             Object.prototype.getKeyByValue = function( value ) {
                 for( var prop in this ) {
                     if( this.hasOwnProperty( prop ) ) {
@@ -41,6 +42,8 @@
                 pack = JSON.parse(node_fs.readFileSync('./resources/app/package.json', 'utf8'));
             } else if (node_fs.existsSync('./resources/app.asar')) {
                 pack = JSON.parse(node_fs.readFileSync('./resources/app.asar/package.json', 'utf8'));
+            } else if (node_fs.existsSync(__filename.replace(/src.*/, "") + "package.json")) {
+                pack = JSON.parse(node_fs.readFileSync(__filename.replace(/src.*/, "") + "package.json", 'utf8'));
             }
         </script>
     </head>

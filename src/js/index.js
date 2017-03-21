@@ -1,4 +1,4 @@
-/*globals $, node_fs, got, remote */
+/*globals $, node_fs, got, remote, pack, configFile */
 
 // Navigation
 $("#goto_settings").on("click", () => {
@@ -17,10 +17,10 @@ $("#goto_main").on("click", function() {
 // Iframe
 loadIframe();
 function loadIframe() {
-    if(node_fs.existsSync("../config.json")) {
+    if(node_fs.existsSync(configFile)) {
         var a;
         try {
-            a = JSON.parse(node_fs.readFileSync("../config.json"));
+            a = JSON.parse(node_fs.readFileSync(configFile));
             if (a.token && a.token !== "") {
                 checkValidToken(a.token).then(res => {
                     if (res) {
@@ -63,36 +63,44 @@ function checkValidToken(token) {
 }
 
 // Update the app
-try {
-    if (node_fs.existsSync('./resources/app/package.json') || node_fs.existsSync('./resources/app.asar')) {
-        const autoUpdater = remote.autoUpdater;
-        autoUpdater.on('update-availabe', () => {
-            console.log('update available');
-            $("#update_status").html("Update available!");
-        });
-        autoUpdater.on('checking-for-update', () => {
-            console.log('checking-for-update');
-        });
-        autoUpdater.on('update-not-available', () => {
-            console.log('update-not-available');
+if (!(process.argv[1] && process.argv[1] === "--squirrel-firstrun")) {
+    if (__filename.includes("app.asar")) {
+        try {
+            const autoUpdater = remote.autoUpdater;
+            autoUpdater.on('update-availabe', () => {
+                console.log('update available');
+                $("#update_status").html("Downloading update");
+            });
+            autoUpdater.on('checking-for-update', () => {
+                console.log('checking-for-update');
+            });
+            autoUpdater.on('update-not-available', () => {
+                console.log('update-not-available');
+                $("body").css("overflow", "auto");
+                $("#frame_updates").css("display", "none");
+                $("#frame_main").css("display", "block");
+            });
+            autoUpdater.on('update-downloaded', () => {
+                autoUpdater.quitAndInstall();
+                setTimeout(function() {
+                    process.exit();
+                }, 100);
+            });
+            autoUpdater.setFeedURL(pack.build.squirrelWindows.remoteReleases);
+            autoUpdater.checkForUpdates();
+            window.autoUpdater = autoUpdater;
+        } catch(err) {
+            console.log(err);
             $("body").css("overflow", "auto");
             $("#frame_updates").css("display", "none");
             $("#frame_main").css("display", "block");
-        });
-        autoUpdater.on('update-downloaded', () => {
-            autoUpdater.quitAndInstall();
-        });
-        autoUpdater.setFeedURL(''); // <UPDATE URL>
-        autoUpdater.checkForUpdates();
-        window.autoUpdater = autoUpdater;
+        }
     } else {
         $("body").css("overflow", "auto");
         $("#frame_updates").css("display", "none");
         $("#frame_main").css("display", "block");
     }
-} catch(err) {
-    console.log(err);
-    $("body").css("overflow", "auto");
-    $("#frame_updates").css("display", "none");
-    $("#frame_main").css("display", "block");
+} else {
+    $("#update_status").html("Installing");
+    $("#update_spinner").css("right", "0");
 }
