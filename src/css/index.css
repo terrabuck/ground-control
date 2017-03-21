@@ -1,6 +1,7 @@
 body {
     min-height: auto;
     height: auto;
+    overflow: hidden;
 }
 #goto_settings {
     position: absolute;
@@ -24,4 +25,15 @@ body {
     text-align: center;
     margin-top: 2em;
     font-size: 1em;
+}
+#update_spinner {
+    position: relative;
+    height: 5em;
+    width: 5em;
+}
+.centered-axis-xy {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
 }

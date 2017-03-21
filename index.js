@@ -5,16 +5,21 @@ const fs = require('fs');
 const got = require('got');
 const connectSocket = require('./src/modules/socket');
 
+const configFile = __filename.replace(/[\\|\/]?resources.*/, "").replace(/app.*/, "") + "config.json";
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 let socket;
 
+
+if(require('electron-squirrel-startup')) {
+  app.quit();
+}
 function reg() {
   let a;
   try {
-    a = JSON.parse(fs.readFileSync("./config.json").toString());
+    a = JSON.parse(fs.readFileSync(configFile).toString());
   } catch (error) {
     return console.error("Could not parse JSON");
   }
@@ -93,11 +98,11 @@ function reg() {
 
 function createWindow () {
   // globalShortcut
-  if (fs.existsSync("./config.json")) {
+  if (fs.existsSync(configFile)) {
       reg();
   }
   fs.watch(".", (type, filename) => {
-    if (fs.existsSync("./config.json") && filename === "config.json") {
+    if (fs.existsSync(configFile) && filename === "config.json") {
       socket = null;
       globalShortcut.unregisterAll();
       reg();

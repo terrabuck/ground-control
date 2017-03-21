@@ -1,4 +1,4 @@
-/*globals $, node_fs, got */
+/*globals $, node_fs, got, remote, pack, configFile */
 
 // Navigation
 $("#goto_settings").on("click", () => {
@@ -17,10 +17,10 @@ $("#goto_main").on("click", function() {
 // Iframe
 loadIframe();
 function loadIframe() {
-    if(node_fs.existsSync("./config.json")) {
+    if(node_fs.existsSync(configFile)) {
         var a;
         try {
-            a = JSON.parse(node_fs.readFileSync("./config.json"));
+            a = JSON.parse(node_fs.readFileSync(configFile));
             if (a.token && a.token !== "") {
                 checkValidToken(a.token).then(res => {
                     if (res) {
@@ -60,4 +60,38 @@ function checkValidToken(token) {
     }).catch(() => {
         return false;
     });
+}
+
+// Update the app
+if (__filename.includes("app.asar") && !(process.argv[1] && process.argv[1].includes("squirrel"))) {
+    try {
+        const autoUpdater = remote.autoUpdater;
+        autoUpdater.on('update-availabe', () => {
+            console.log('update available');
+        });
+        autoUpdater.on('checking-for-update', () => {
+            console.log('checking-for-update');
+        });
+        autoUpdater.on('update-not-available', () => {
+            console.log('update-not-available');
+            $("body").css("overflow", "auto");
+            $("#frame_updates").css("display", "none");
+            $("#frame_main").css("display", "block");
+        });
+        autoUpdater.on('update-downloaded', () => {
+            autoUpdater.quitAndInstall();
+        });
+        autoUpdater.setFeedURL(pack.build.squirrelWindows.remoteReleases);
+        autoUpdater.checkForUpdates();
+        window.autoUpdater = autoUpdater;
+    } catch(err) {
+        console.log(err);
+        $("body").css("overflow", "auto");
+        $("#frame_updates").css("display", "none");
+        $("#frame_main").css("display", "block");
+    }
+} else {
+    $("body").css("overflow", "auto");
+    $("#frame_updates").css("display", "none");
+    $("#frame_main").css("display", "block");
 }
