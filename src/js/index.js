@@ -1,4 +1,4 @@
-/*globals $, node_fs, got */
+/*globals $, node_fs, got, remote */
 
 // Navigation
 $("#goto_settings").on("click", () => {
@@ -17,10 +17,10 @@ $("#goto_main").on("click", function() {
 // Iframe
 loadIframe();
 function loadIframe() {
-    if(node_fs.existsSync("./config.json")) {
+    if(node_fs.existsSync("../config.json")) {
         var a;
         try {
-            a = JSON.parse(node_fs.readFileSync("./config.json"));
+            a = JSON.parse(node_fs.readFileSync("../config.json"));
             if (a.token && a.token !== "") {
                 checkValidToken(a.token).then(res => {
                     if (res) {
@@ -60,4 +60,39 @@ function checkValidToken(token) {
     }).catch(() => {
         return false;
     });
+}
+
+// Update the app
+try {
+    if (node_fs.existsSync('./resources/app/package.json') || node_fs.existsSync('./resources/app.asar')) {
+        const autoUpdater = remote.autoUpdater;
+        autoUpdater.on('update-availabe', () => {
+            console.log('update available');
+            $("#update_status").html("Update available!");
+        });
+        autoUpdater.on('checking-for-update', () => {
+            console.log('checking-for-update');
+        });
+        autoUpdater.on('update-not-available', () => {
+            console.log('update-not-available');
+            $("body").css("overflow", "auto");
+            $("#frame_updates").css("display", "none");
+            $("#frame_main").css("display", "block");
+        });
+        autoUpdater.on('update-downloaded', () => {
+            autoUpdater.quitAndInstall();
+        });
+        autoUpdater.setFeedURL(''); // <UPDATE URL>
+        autoUpdater.checkForUpdates();
+        window.autoUpdater = autoUpdater;
+    } else {
+        $("body").css("overflow", "auto");
+        $("#frame_updates").css("display", "none");
+        $("#frame_main").css("display", "block");
+    }
+} catch(err) {
+    console.log(err);
+    $("body").css("overflow", "auto");
+    $("#frame_updates").css("display", "none");
+    $("#frame_main").css("display", "block");
 }

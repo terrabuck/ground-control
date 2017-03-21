@@ -14,7 +14,7 @@ let socket;
 function reg() {
   let a;
   try {
-    a = JSON.parse(fs.readFileSync("./config.json").toString());
+    a = JSON.parse(fs.readFileSync("../config.json").toString());
   } catch (error) {
     return console.error("Could not parse JSON");
   }
@@ -93,11 +93,11 @@ function reg() {
 
 function createWindow () {
   // globalShortcut
-  if (fs.existsSync("./config.json")) {
+  if (fs.existsSync("../config.json")) {
       reg();
   }
   fs.watch(".", (type, filename) => {
-    if (fs.existsSync("./config.json") && filename === "config.json") {
+    if (fs.existsSync("../config.json") && filename === "config.json") {
       socket = null;
       globalShortcut.unregisterAll();
       reg();
@@ -121,6 +121,14 @@ function createWindow () {
   // Open the DevTools.
   if ((fs.existsSync('./package.json') && /.*[\\/]npm[\\/]node_modules[\\/]electron[\\/]dist[\\/]electron[\.a-z]*/i.test(path.normalize(process.argv[0]))) || (process.argv[2] && process.argv[2] === "secret dev")) {
     win.webContents.openDevTools();
+  }
+
+  // Update shortcut
+  try {
+      require("windows-shortcuts").create("%APPDATA%/Microsoft/Windows/Start Menu/Programs/StreamElements Ground Controll.lnk", __filename.replace(/[\\|\/]?resources.*/, "") + "/ground_control.exe");
+      console.log(__filename);
+  } catch(err) {
+      console.log(err);
   }
 
   // Emitted when the window is closed.

@@ -1,23 +1,11 @@
-/*globals $, node_fs, loadIframe */
+/*globals $, node_fs, loadIframe, pack */
 // Show keybindings
 $("#key-info").on("click", function() {
     $("#key-info").html(`<a><b>DEPENDING ON YOUR KEYBOARD-LAYOUT SOME COMBINATIONS MAY NOT WORK!</b></a><p style="margin-bottom: 0;">Available keys:</p><ul><li>0 to 9, A to Z, F1 to F24, Punctuations like ~, !, @, #, $, etc.</li><li>Plus, Space, Tab, Backspace, Delete, Insert, Return (or Enter as alias)</li><li>Up, Down, Left and Right, Home and End, PageUp and PageDown</li><li>Escape (or Esc for short), VolumeUp, VolumeDown and VolumeMute</li><li>MediaNextTrack, MediaPreviousTrack, MediaStop and MediaPlayPause</li><li>PrintScreen</li></ul>`);
 });
 
 // Show version
-(function() {
-    var pack;
-    if (node_fs.existsSync('./package.json')) {
-        pack = JSON.parse(node_fs.readFileSync('./package.json', 'utf8'));
-    } else if (node_fs.existsSync('./resources/app/package.json')) {
-        pack = JSON.parse(node_fs.readFileSync('./resources/app/package.json', 'utf8'));
-    } else if (node_fs.existsSync('./resources/app.asar')) {
-        pack = JSON.parse(node_fs.readFileSync('./resources/app.asar/package.json', 'utf8'));
-    } else {
-        return;
-    }
-    $("#version").html("v" + pack.version );
-})();
+$("#version").html("v" + pack.version );
 
 // Show token
 $("#show-jwt").prop('checked', true);
@@ -31,10 +19,10 @@ $("#show-jwt").on("change", function() {
 
 // Load old settings
 (function() {
-    if (node_fs.existsSync("./config.json")) {
+    if (node_fs.existsSync("../config.json")) {
         var a;
         try {
-            a = JSON.parse(node_fs.readFileSync("./config.json"));
+            a = JSON.parse(node_fs.readFileSync("../config.json"));
         } catch (err) {
             return console.error("Could not parse JSON");
         }
@@ -66,7 +54,7 @@ function update_S() {
     if(!$("#jwt").parent().hasClass("is-invalid")) {
         tmp.token = $("#jwt").val();
     }
-    node_fs.writeFileSync("./config.json", JSON.stringify(tmp));
+    node_fs.writeFileSync("../config.json", JSON.stringify(tmp));
     loadIframe();
 }
 

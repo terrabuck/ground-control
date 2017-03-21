@@ -25,7 +25,7 @@
         <script>
             const node_fs = require("fs");
             const got = require("got");
-            const { shell } = require("electron");
+            const { shell, remote } = require("electron");
             Object.prototype.getKeyByValue = function( value ) {
                 for( var prop in this ) {
                     if( this.hasOwnProperty( prop ) ) {
@@ -34,10 +34,24 @@
                     }
                 }
             }
+            var pack;
+            if (node_fs.existsSync('./package.json')) {
+                pack = JSON.parse(node_fs.readFileSync('./package.json', 'utf8'));
+            } else if (node_fs.existsSync('./resources/app/package.json')) {
+                pack = JSON.parse(node_fs.readFileSync('./resources/app/package.json', 'utf8'));
+            } else if (node_fs.existsSync('./resources/app.asar')) {
+                pack = JSON.parse(node_fs.readFileSync('./resources/app.asar/package.json', 'utf8'));
+            }
         </script>
     </head>
     <body>
-        <div id="frame_main">
+        <div id="frame_updates">
+            <div class="centered-axis-xy">
+                <div id="update_spinner" class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div><br>
+                <p id="update_status">Checking for updates</p>
+            </div>
+        </div>
+        <div id="frame_main" style="display: none;">
             <iframe id="popFrame" src=""></iframe>
             <p id="noToken">To use the activity feed, please enter the <a>JWT Token</a> in the settings menu.</p>
             <p id="invToken">You entered a invalid <a>JWT Token</a>.</p>
