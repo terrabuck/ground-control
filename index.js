@@ -5,7 +5,7 @@ const fs = require('fs');
 const got = require('got');
 const connectSocket = require('./src/modules/socket');
 
-const configFile = __filename.replace(/[\\|\/]?resources.*/, "").replace(/app.*/, "") + "config.json";
+const configFile = path.normalize(__dirname.replace(/[\\|\/]?resources.*/, "").replace(/app.*/, "") + "/config.json");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -101,7 +101,7 @@ function createWindow () {
   if (fs.existsSync(configFile)) {
       reg();
   }
-  fs.watch(".", (type, filename) => {
+  fs.watch(configFile.replace(/config\.json$/, ""), (type, filename) => {
     if (fs.existsSync(configFile) && filename === "config.json") {
       socket = null;
       globalShortcut.unregisterAll();
