@@ -1,42 +1,106 @@
-/*globals $, node_fs, got, remote, pack, configFile */
+/*globals $, node_fs, got, remote, pack, configFile, lastFrame */
 
 // Navigation
 $("#goto_settings").on("click", () => {
-    $("#frame_main").css("display", "none");
+    $(".frames").css("display", "none");
+    $("#buttons").css("display", "none");
     $("#frame_settings").css("display", "block");
 });
-$("#goto_main").on("click", function() {
+$("#goto_back").on("click", () => {
     $("#frame_settings").css("display", "none");
-    $("#frame_main").css("display", "block");
     if ($("#jwt").val()) {
         $("#jwt").prop("disabled", true).addClass("secret");
         $("#show-jwt").prop('checked', false);
     }
+    // Navigate to the correct frame
+    $(".frames").css("display", "none");
+    $("#"+lastFrame).css("display", "block");
+    $("#buttons").css("display", "block");
 });
+$(".gotoButton").on("click", () => {
+    if (lastFrame === "frame_sr") {
+        lastFrame = "frame_main";
+        $(".frames").css("display", "none");
+        $("#frame_main").css("display", "block");
+        $(".gotoMA").find(".material-icons").html("music_note");
+        $(".gotoMA").addClass("gotoSR");
+        $(".gotoMA").removeClass("gotoMA");
+    } else {
+        lastFrame = "frame_sr";
+        $(".frames").css("display", "none");
+        $("#frame_sr").css("display", "block");
+        $(".gotoSR").find(".material-icons").html("view_list");
+        $(".gotoSR").addClass("gotoMA");
+        $(".gotoSR").removeClass("gotoSR");
+    }
+});
+
+function checkWV() {
+    if ($("#pop_frame").css("display") === "none") {
+        lastFrame = "frame_main";
+        $(".gotoButton").css("display", "none");
+    } else {
+        $(".gotoButton").css("display", "inline-block");
+    }
+    setTimeout(function() {
+        checkWV();
+    }, 10);
+}
+checkWV();
 
 // Iframe
 loadIframe();
 function loadIframe() {
     if(node_fs.existsSync(configFile)) {
         var a;
+        const pop = document.querySelector('#pop_frame');
+        const sr = document.querySelector('#sr_frame');
         try {
             a = JSON.parse(node_fs.readFileSync(configFile));
             if (a.token && a.token !== "") {
                 checkValidToken(a.token).then(res => {
-                    if (res) {
-                        if ($("#pop_frame").attr('src') !== "https://streamelements.com/dashboard/%F0%9F%A4%94/activity/popout") {
-                            $("#pop_frame").attr('src', 'https://streamelements.com/dashboard/%F0%9F%A4%94/activity/popout').css("display", "block");
-                            $("#noToken").css("display", "none");
-                            $("#invToken").css("display", "none");
+                    if (res.valid) {
+                        if ($("#pop_frame").attr('src') !== `https://streamelements.com/dashboard/${res.username}/activity/popout`) {
+                            $("#pop_frame").attr('src', `https://streamelements.com/dashboard/${res.username}/activity/popout`).css("display", "flex");
                         }
+                        if ($("#sr_frame").attr('src') !== "https://streamelements.com/dashboard/songrequest/general") {
+                            $("#sr_frame").attr('src', "https://streamelements.com/dashboard/songrequest/general").css("display", "flex");
+                        }
+                        // Change stuff inside the pop_frame
+                        pop.addEventListener("dom-ready", () => {
+                            pop.insertCSS("a.md-primary.md-button.md-ink-ripple { display: none !important; }");
+                            pop.insertCSS("md-card._md:nth-of-type(2) { margin-bottom: 0 !important; }");
+                            pop.insertCSS(".flex.md-button.md-ink-ripple:nth-of-type(3) { max-width: 20em !important; }");
+                        });
+
+                        // Change stuff inside the sr_frame
+                        sr.addEventListener("dom-ready", () => {
+                            sr.insertCSS("md-toolbar { display: none !important; }");
+                            sr.insertCSS(".container-fluid.wrapper.flex { padding-top: 0em !important; }");
+                            sr.insertCSS(".flex.notes-div.layout-row.layout-align-start-center { flex: 0 1 auto !important; }");
+                            sr.insertCSS(".layout-row.layout-align-space-between-start.flex-100 { justify-content: flex-start !important; }");
+                            sr.insertCSS(".social-media { display: none !important; }");
+                            sr.insertCSS(".copyright { display: none !important; }");
+                        });
+
+                        // Load the webviews
+                        $("#frame_main").addClass("load");
+                        $("#frame_sr").addClass("load");
+                        setTimeout(function() {
+                            $("#frame_main").removeClass("load");
+                            $("#frame_sr").removeClass("load");
+                        }, 10);
+                        $("webview").css("display", "flex");
+                        $("#noToken").css("display", "none");
+                        $("#invToken").css("display", "none");
                     } else {
-                        $("#pop_frame").attr('src', '').css("display", "none");
+                        $("webview").attr('src', '').css("display", "none");
                         $("#noToken").css("display", "none");
                         $("#invToken").css("display", "block");
                     }
                 });
             } else {
-                $("#pop_frame").attr('src', '').css("display", "none");
+                $("webview").attr('src', '').css("display", "none");
                 $("#noToken").css("display", "block");
                 $("#invToken").css("display", "none");
             }
@@ -44,7 +108,7 @@ function loadIframe() {
             console.log(err);
         }
     } else {
-        $("#pop_frame").attr('src', '').css("display", "none");
+        $("webview").attr('src', '').css("display", "none");
         $("#noToken").css("display", "block");
         $("#invToken").css("display", "none");
     }
@@ -55,11 +119,22 @@ function checkValidToken(token) {
         headers: {
             authorization: "Bearer " + token
         }
-    }).then(() => {
-        return true;
+    }).then((res) => {
+        try {
+            return { valid: true, username: JSON.parse(res.body).username }
+        } catch(err) {
+            return { valid: true, username: "#" };
+        }
     }).catch(() => {
-        return false;
+        return { valid: false, username: "#" };
     });
+}
+
+function showMain() {
+    $("body").css("overflow", "auto");
+    $("#frame_updates").css("display", "none");
+    $("#frame_main").css("display", "block");
+    $("#buttons").css("display", "block");
 }
 
 // Update the app
@@ -76,9 +151,7 @@ if (__filename.includes("app.asar") && !(process.argv[1] && process.argv[1].incl
                 });
                 autoUpdater.on('update-not-available', () => {
                     console.log('update-not-available');
-                    $("body").css("overflow", "auto");
-                    $("#frame_updates").css("display", "none");
-                    $("#frame_main").css("display", "block");
+                    showMain();
                 });
                 autoUpdater.on('update-downloaded', () => {
                     autoUpdater.quitAndInstall();
@@ -87,21 +160,15 @@ if (__filename.includes("app.asar") && !(process.argv[1] && process.argv[1].incl
                 autoUpdater.checkForUpdates();
                 window.autoUpdater = autoUpdater;
             } else {
-                $("body").css("overflow", "auto");
-                $("#frame_updates").css("display", "none");
-                $("#frame_main").css("display", "block");
+                showMain();
             }
         });
     } catch(err) {
         console.log(err);
-        $("body").css("overflow", "auto");
-        $("#frame_updates").css("display", "none");
-        $("#frame_main").css("display", "block");
+        showMain();
     }
 } else {
-    $("body").css("overflow", "auto");
-    $("#frame_updates").css("display", "none");
-    $("#frame_main").css("display", "block");
+    showMain();
 }
 
 /**

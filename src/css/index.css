@@ -3,20 +3,25 @@ body {
     height: auto;
     overflow: hidden;
 }
-#goto_settings {
+#buttons {
     position: absolute;
-    top: 0.5em;
+    top: 0.75em;
     right: 1em;
+    z-index: 2;
+}
+#buttons button {
     min-width: 0;
     height: 1em;
     width: 1em;
     padding: 0.75em;
-    z-index: 2;
+    margin-left: 0.25em;
 }
-#pop_frame {
+#pop_frame,
+#sr_frame {
     height: 100vh;
     width: 100vw;
     border: none;
+    z-index: 1;
 }
 #noToken,
 #invToken {
@@ -26,7 +31,7 @@ body {
     margin-top: 2em;
     font-size: 1em;
 }
-#update_spinner {
+.center_loader {
     position: relative;
     height: 5em;
     width: 5em;
@@ -36,4 +41,11 @@ body {
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
+}
+.load {
+    visibility: visible !important;
+    display: flex !important;
+    position: absolute !important;
+    bottom: 1px !important;
+    right: 1px !important;
 }

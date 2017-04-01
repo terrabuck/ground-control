@@ -111,7 +111,7 @@ function createWindow () {
 
 
   // Create the browser window.
-  win = new BrowserWindow({width: 625, height: 580, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
+  win = new BrowserWindow({width: 650, height: 580, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
 
   // Hide top bar
   win.setMenu(null);
@@ -122,6 +122,21 @@ function createWindow () {
     protocol: 'file:',
     slashes: true
   }));
+
+  // When target="_blank"
+  win.webContents.on('new-window', (event, url) => {
+    event.preventDefault();
+    if (url) {
+      // const winNew = new BrowserWindow({
+      //   webPreferences: {
+      //     nodeIntegration: false
+      //   },
+      //   parent: win
+      // });
+      // winNew.setMenu(null);
+      // winNew.loadURL(url);
+    }
+  });
 
   // Open the DevTools.
   if ((fs.existsSync('./package.json') && /.*[\\/]npm[\\/]node_modules[\\/]electron[\\/]dist[\\/]electron[\.a-z]*/i.test(path.normalize(process.argv[0]))) || (process.argv[2] && process.argv[2] === "secret dev")) {
