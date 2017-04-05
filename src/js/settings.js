@@ -1,8 +1,17 @@
 /*globals $, node_fs, loadIframe, pack, configFile */
 // Show keybindings
-$("#key-info").on("click", function() {
-    $("#key-info").html(`<a><b>DEPENDING ON YOUR KEYBOARD-LAYOUT SOME COMBINATIONS MAY NOT WORK!</b></a><p style="margin-bottom: 0;">Available keys:</p><ul><li>0 to 9, A to Z, F1 to F24, Punctuations like ~, !, @, #, $, etc.</li><li>Plus, Space, Tab, Backspace, Delete, Insert, Return (or Enter as alias)</li><li>Up, Down, Left and Right, Home and End, PageUp and PageDown</li><li>Escape (or Esc for short), VolumeUp, VolumeDown and VolumeMute</li><li>MediaNextTrack, MediaPreviousTrack, MediaStop and MediaPlayPause</li><li>PrintScreen</li></ul>`);
-});
+function keyInfo() {
+    $("#key-info").on("click", function() {
+        $("#key-info").prop('onclick', null).off('click');
+        $("#key-info").html(`<a><b>DEPENDING ON YOUR KEYBOARD-LAYOUT SOME COMBINATIONS MAY NOT WORK!</b></a><p style="margin-bottom: 0;">Available keys:</p><ul><li>0 to 9, A to Z, F1 to F24, Punctuations like ~, !, @, #, $, etc.</li><li>Plus, Space, Tab, Backspace, Delete, Insert, Return (or Enter as alias)</li><li>Up, Down, Left and Right, Home and End, PageUp and PageDown</li><li>Escape (or Esc for short), VolumeUp, VolumeDown and VolumeMute</li><li>MediaNextTrack, MediaPreviousTrack, MediaStop and MediaPlayPause</li><li>PrintScreen</li></ul>`);
+        $("#key-info").on("click", function() {
+            $("#key-info").prop('onclick', null).off('click');
+            $("#key-info").html(`<a style="cursor: pointer;">Show info about keybindings</a>`);
+            keyInfo();
+        });
+    });
+}
+keyInfo();
 
 // Show version
 $("#version").html("v" + pack.version );

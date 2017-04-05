@@ -69,19 +69,19 @@ function reg() {
       }
     }
     /* Stop/Resume Alerts */
-    if (a.keys.SnR_alert) {
-      let key = a.keys.SnR_alert;
-      try {
-        globalShortcut.register(key, () => {
-          if (socket) {
-            console.log("Send: 'Stop/Resume Alerts'");
-            socket.emit('overlay:togglequeue');
-          }
-        });
-      } catch (error) {
-        console.log(`Keybind for 'Stop/Resume Alerts' failed, '${key}'`);
-      }
-    }
+    // if (a.keys.SnR_alert) {
+    //   let key = a.keys.SnR_alert;
+    //   try {
+    //     globalShortcut.register(key, () => {
+    //       if (socket) {
+    //         console.log("Send: 'Stop/Resume Alerts'");
+    //         socket.emit('overlay:togglequeue');
+    //       }
+    //     });
+    //   } catch (error) {
+    //     console.log(`Keybind for 'Stop/Resume Alerts' failed, '${key}'`);
+    //   }
+    // }
     /* Stop/Resume Song */
     // if (a.keys.SnR_song) {
     //   let key = a.keys.skip_song.key;

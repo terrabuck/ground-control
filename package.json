@@ -1,6 +1,6 @@
 {
   "name": "ground_control",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "SE Ground Control: Hotkeys for your stream",
   "main": "index.js",
   "scripts": {
