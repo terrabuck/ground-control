@@ -6,6 +6,12 @@ $("#goto_settings").on("click", () => {
     $("#buttons").css("display", "none");
     $("#frame_settings").css("display", "block");
 });
+$("button").on("click", () => {
+    $("webview").css("height", 0);
+    setTimeout(() => {
+        $("webview").css("height", "100vh");
+    }, 5);
+});
 $("#goto_back").on("click", () => {
     $("#frame_settings").css("display", "none");
     if ($("#jwt").val()) {
@@ -14,7 +20,7 @@ $("#goto_back").on("click", () => {
     }
     // Navigate to the correct frame
     $(".frames").css("display", "none");
-    $("#"+lastFrame).css("display", "block");
+    $("#" + lastFrame).css("display", "block");
     $("#buttons").css("display", "block");
 });
 $(".gotoButton").on("click", () => {
@@ -50,8 +56,9 @@ checkWV();
 
 // Iframe
 loadIframe();
+
 function loadIframe() {
-    if(node_fs.existsSync(configFile)) {
+    if (node_fs.existsSync(configFile)) {
         var a;
         const pop = document.querySelector('#pop_frame');
         const sr = document.querySelector('#sr_frame');
@@ -81,6 +88,8 @@ function loadIframe() {
                             sr.insertCSS(".layout-row.layout-align-space-between-start.flex-100 { justify-content: flex-start !important; }");
                             sr.insertCSS(".social-media { display: none !important; }");
                             sr.insertCSS(".copyright { display: none !important; }");
+                            sr.insertCSS("md-sidenav { display: none !important; }");
+                            sr.insertCSS("md-content.flex.layout-fill.layout-row.content-dash-wrapper._md { padding-left: 0 !important; }");
                         });
 
                         // Load the webviews
@@ -122,7 +131,7 @@ function checkValidToken(token) {
     }).then((res) => {
         try {
             return { valid: true, username: JSON.parse(res.body).username }
-        } catch(err) {
+        } catch (err) {
             return { valid: true, username: "#" };
         }
     }).catch(() => {
@@ -163,7 +172,7 @@ if (__filename.includes("app.asar") && !(process.argv[1] && process.argv[1].incl
                 showMain();
             }
         });
-    } catch(err) {
+    } catch (err) {
         console.log(err);
         showMain();
     }
@@ -183,12 +192,12 @@ function upToDate(local, remote) {
         return true;
     if (/^\d+(\.\d+){0,2}$/.test(local) && /^\d+(\.\d+){0,2}$/.test(remote)) {
         var lparts = local.split('.');
-        while(lparts.length < 3)
+        while (lparts.length < 3)
             lparts.push("0");
         var rparts = remote.split('.');
         while (rparts.length < 3)
             rparts.push("0");
-        for (var i=0; i<3; i++) {
+        for (var i = 0; i < 3; i++) {
             var l = parseInt(lparts[i], 10);
             var r = parseInt(rparts[i], 10);
             if (l === r)
