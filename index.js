@@ -11,7 +11,7 @@ const configFile = path.normalize(__dirname.replace(/[\\|\/]?resources.*/, "").r
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 let socket;
-
+let contents;
 
 if(require('electron-squirrel-startup')) {
   app.quit();
@@ -83,16 +83,18 @@ function reg() {
     //   }
     // }
     /* Stop/Resume Song */
-    // if (a.keys.SnR_song) {
-    //   let key = a.keys.skip_song.key;
-    //   try {
-    //     globalShortcut.register(key, () => {
-            
-    //     });
-    //   } catch (error) {
-    //     console.log(`Keybind for 'Stop/Resume Song' failed, '${key}'`);
-    //   }
-    // }
+    if (a.keys.SnR_song) {
+      let key = a.keys.SnR_song;
+      try {
+        globalShortcut.register(key, () => {
+            contents.executeJavaScript(`document.querySelector("#sr_frame").executeJavaScript(\`$("button[ng-click='vm.togglePlayer()']").click()\`);`, true).then(() => {
+              console.log("Send: 'Stop/Resume Song'");
+            });
+        });
+      } catch (error) {
+        console.log(`Keybind for 'Stop/Resume Song' failed, '${key}'`);
+      }
+    }
   }
 }
 
@@ -122,6 +124,9 @@ function createWindow () {
     protocol: 'file:',
     slashes: true
   }));
+
+  // set contents
+  contents = win.webContents;
 
   // When target="_blank"
   win.webContents.on('new-window', (event, url) => {
