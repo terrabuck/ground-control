@@ -98,18 +98,20 @@ function loadIframe() {
                         setTimeout(function() {
                             $("#frame_main").removeClass("load");
                             $("#frame_sr").removeClass("load");
-                        }, 10);
+                        }, 12);
                         $("webview").css("display", "flex");
                         $("#noToken").css("display", "none");
                         $("#invToken").css("display", "none");
                     } else {
                         $("webview").attr('src', '').css("display", "none");
+                        $("#sr_frame").attr('src', "http://%20");
                         $("#noToken").css("display", "none");
                         $("#invToken").css("display", "block");
                     }
                 });
             } else {
                 $("webview").attr('src', '').css("display", "none");
+                $("#sr_frame").attr('src', "http://%20");
                 $("#noToken").css("display", "block");
                 $("#invToken").css("display", "none");
             }
@@ -118,6 +120,7 @@ function loadIframe() {
         }
     } else {
         $("webview").attr('src', '').css("display", "none");
+        $("#sr_frame").attr('src', "http://%20");
         $("#noToken").css("display", "block");
         $("#invToken").css("display", "none");
     }
