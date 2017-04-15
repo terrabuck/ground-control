@@ -17,6 +17,11 @@ let contents;
 if(require('electron-squirrel-startup')) {
   app.quit();
 }
+
+if (!fs.existsSync(configFile)) {
+  fs.writeFileSync(configFile, `{"token":""}`);
+}
+
 function reg() {
   let a;
   try {
