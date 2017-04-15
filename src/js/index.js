@@ -89,7 +89,9 @@ function loadIframe() {
                                                         }, 10);
                                                     }
                                                 }
-                                                oh_yea();`);
+                                                setTimeout(function() {
+                                                    oh_yea();
+                                                }, 1000 * 2);`);
                         });
 
                         // Change stuff inside the sr_frame
