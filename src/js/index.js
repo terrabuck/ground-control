@@ -77,10 +77,10 @@ function loadIframe() {
                         pop.addEventListener("dom-ready", () => {
                             pop.insertCSS("a.md-primary.md-button.md-ink-ripple { display: none !important; }");
                             pop.insertCSS("md-card._md:nth-of-type(2) { margin-bottom: 0 !important; }");
-                            pop.insertCSS(".flex.md-button.md-ink-ripple:nth-of-type(3) { max-width: 20em !important; }");
                             pop.executeJavaScript(`function oh_yea() { 
                                                     if($("md-switch[ng-model='vm.adsEnabled']").length) {
                                                         $("md-switch[ng-model='vm.adsEnabled']").removeClass("flex-60");
+                                                        $("md-switch[ng-model='vm.adsEnabled']").next().css("max-width", "calc(100% - 18.7em)");
                                                     } else if ($(".flex.md-button.md-ink-ripple[ng-click='vm.skipAlert()']").length) {
                                                         $(".flex.md-button.md-ink-ripple[ng-click='vm.skipAlert()']").removeClass("flex");
                                                     } else {
