@@ -78,7 +78,18 @@ function loadIframe() {
                             pop.insertCSS("a.md-primary.md-button.md-ink-ripple { display: none !important; }");
                             pop.insertCSS("md-card._md:nth-of-type(2) { margin-bottom: 0 !important; }");
                             pop.insertCSS(".flex.md-button.md-ink-ripple:nth-of-type(3) { max-width: 20em !important; }");
-                            pop.executeJavaScript(`function oh_yea() { $("md-switch[ng-model='vm.adsEnabled']").removeClass("flex-60"); setTimeout(function() { oh_yea(); }, 20); }; oh_yea();`);
+                            pop.executeJavaScript(`function oh_yea() { 
+                                                    if($("md-switch[ng-model='vm.adsEnabled']").length) {
+                                                        $("md-switch[ng-model='vm.adsEnabled']").removeClass("flex-60");
+                                                    } else if ($(".flex.md-button.md-ink-ripple[ng-click='vm.skipAlert()']").length) {
+                                                        $(".flex.md-button.md-ink-ripple[ng-click='vm.skipAlert()']").removeClass("flex");
+                                                    } else {
+                                                        setTimeout(function() {
+                                                            oh_yea();
+                                                        }, 10);
+                                                    }
+                                                }
+                                                oh_yea();`);
                         });
 
                         // Change stuff inside the sr_frame
