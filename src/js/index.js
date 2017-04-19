@@ -67,12 +67,14 @@ function loadIframe() {
             if (a.token && a.token !== "") {
                 checkValidToken(a.token).then(res => {
                     if (res.valid) {
-                        if ($("#pop_frame").attr('src') !== `https://streamelements.com/dashboard/${res.username}/activity/popout`) {
-                            $("#pop_frame").attr('src', `https://streamelements.com/dashboard/${res.username}/activity/popout`).css("display", "flex");
-                        }
-                        if ($("#sr_frame").attr('src') !== "https://streamelements.com/dashboard/songrequest/general") {
-                            $("#sr_frame").attr('src', "https://streamelements.com/dashboard/songrequest/general").css("display", "flex");
-                        }
+                        setTimeout(function() {
+                            if ($("#pop_frame").attr('src') !== `https://streamelements.com/dashboard/${res.username || "%20"}/activity/popout`) {
+                                $("#pop_frame").attr('src', `https://streamelements.com/dashboard/${res.username || "%20"}/activity/popout`);
+                            }
+                            if ($("#sr_frame").attr('src') !== "https://streamelements.com/dashboard/songrequest/general") {
+                                $("#sr_frame").attr('src', "https://streamelements.com/dashboard/songrequest/general");
+                            }
+                        }, 100);
                         // Change stuff inside the pop_frame
                         pop.addEventListener("dom-ready", () => {
                             pop.insertCSS("a.md-primary.md-button.md-ink-ripple { display: none !important; }");
@@ -110,8 +112,12 @@ function loadIframe() {
                         $("#frame_main").addClass("load");
                         $("#frame_sr").addClass("load");
                         setTimeout(function() {
-                            $("#frame_main").removeClass("load");
-                            $("#frame_sr").removeClass("load");
+                            pop.addEventListener("dom-ready", () => {
+                                $("#frame_main").removeClass("load");
+                            });
+                            sr.addEventListener("dom-ready", () => {
+                                $("#frame_sr").removeClass("load");
+                            });
                         }, 12);
                         $("webview").css("display", "flex");
                         $("#noToken").css("display", "none");

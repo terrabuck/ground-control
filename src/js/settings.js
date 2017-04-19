@@ -67,5 +67,5 @@ function update_S() {
     loadIframe();
 }
 
-$("input").bind("property change keyup", update_S);
-$("select").bind("property change keyup", update_S);
+$("input").on("property change keyup", update_S);
+$("select").on("property change keyup", update_S);
