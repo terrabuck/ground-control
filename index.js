@@ -3,6 +3,7 @@ const path = require('path');
 const url = require('url');
 const fs = require('fs');
 const got = require('got');
+const chokidar = require('chokidar');
 const connectSocket = require('./src/modules/socket');
 
 const configFile = path.normalize(__dirname.replace(/[\\|\/]?resources.*/, "").replace(/app.*/, "") + "/config.json");
@@ -16,6 +17,11 @@ let contents;
 if(require('electron-squirrel-startup')) {
   app.quit();
 }
+
+if (!fs.existsSync(configFile)) {
+  fs.writeFileSync(configFile, `{"token":""}`);
+}
+
 function reg() {
   let a;
   try {
@@ -103,17 +109,22 @@ function createWindow () {
   if (fs.existsSync(configFile)) {
       reg();
   }
-  fs.watch(configFile.replace(/config\.json$/, ""), (type, filename) => {
+
+  var watcher = chokidar.watch(configFile.replace(/config\.json$/, ""), {
+    persistent: true
+  });
+  watcher.on("change", file => {
+    var filename = path.basename(file);
     if (fs.existsSync(configFile) && filename === "config.json") {
-      socket = null;
-      globalShortcut.unregisterAll();
-      reg();
-    }
+        socket = null;
+        globalShortcut.unregisterAll();
+        reg();
+      }
   });
 
 
   // Create the browser window.
-  win = new BrowserWindow({width: 650, height: 580, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
+  win = new BrowserWindow({width: 650, height: 790, resizable: true, icon: path.join(__dirname, 'src/se.ico')});
 
   // Hide top bar
   win.setMenu(null);

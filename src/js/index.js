@@ -67,17 +67,33 @@ function loadIframe() {
             if (a.token && a.token !== "") {
                 checkValidToken(a.token).then(res => {
                     if (res.valid) {
-                        if ($("#pop_frame").attr('src') !== `https://streamelements.com/dashboard/${res.username}/activity/popout`) {
-                            $("#pop_frame").attr('src', `https://streamelements.com/dashboard/${res.username}/activity/popout`).css("display", "flex");
-                        }
-                        if ($("#sr_frame").attr('src') !== "https://streamelements.com/dashboard/songrequest/general") {
-                            $("#sr_frame").attr('src', "https://streamelements.com/dashboard/songrequest/general").css("display", "flex");
-                        }
+                        setTimeout(function() {
+                            if ($("#pop_frame").attr('src') !== `https://streamelements.com/dashboard/${res.username || "%20"}/activity/popout`) {
+                                $("#pop_frame").attr('src', `https://streamelements.com/dashboard/${res.username || "%20"}/activity/popout`);
+                            }
+                            if ($("#sr_frame").attr('src') !== "https://streamelements.com/dashboard/songrequest/general") {
+                                $("#sr_frame").attr('src', "https://streamelements.com/dashboard/songrequest/general");
+                            }
+                        }, 100);
                         // Change stuff inside the pop_frame
                         pop.addEventListener("dom-ready", () => {
                             pop.insertCSS("a.md-primary.md-button.md-ink-ripple { display: none !important; }");
                             pop.insertCSS("md-card._md:nth-of-type(2) { margin-bottom: 0 !important; }");
-                            pop.insertCSS(".flex.md-button.md-ink-ripple:nth-of-type(3) { max-width: 20em !important; }");
+                            pop.executeJavaScript(`function oh_yea() { 
+                                                    if($("md-switch[ng-model='vm.adsEnabled']").length) {
+                                                        $("md-switch[ng-model='vm.adsEnabled']").removeClass("flex-60");
+                                                        $("md-switch[ng-model='vm.adsEnabled']").next().css("max-width", "calc(100% - 18.7em)");
+                                                    } else if ($(".flex.md-button.md-ink-ripple[ng-click='vm.skipAlert()']").length) {
+                                                        $(".flex.md-button.md-ink-ripple[ng-click='vm.skipAlert()']").removeClass("flex");
+                                                    } else {
+                                                        setTimeout(function() {
+                                                            oh_yea();
+                                                        }, 10);
+                                                    }
+                                                }
+                                                setTimeout(function() {
+                                                    oh_yea();
+                                                }, 1000 * 2);`);
                         });
 
                         // Change stuff inside the sr_frame
@@ -96,20 +112,26 @@ function loadIframe() {
                         $("#frame_main").addClass("load");
                         $("#frame_sr").addClass("load");
                         setTimeout(function() {
-                            $("#frame_main").removeClass("load");
-                            $("#frame_sr").removeClass("load");
-                        }, 10);
+                            pop.addEventListener("dom-ready", () => {
+                                $("#frame_main").removeClass("load");
+                            });
+                            sr.addEventListener("dom-ready", () => {
+                                $("#frame_sr").removeClass("load");
+                            });
+                        }, 12);
                         $("webview").css("display", "flex");
                         $("#noToken").css("display", "none");
                         $("#invToken").css("display", "none");
                     } else {
                         $("webview").attr('src', '').css("display", "none");
+                        $("#sr_frame").attr('src', "http://%20");
                         $("#noToken").css("display", "none");
                         $("#invToken").css("display", "block");
                     }
                 });
             } else {
                 $("webview").attr('src', '').css("display", "none");
+                $("#sr_frame").attr('src', "http://%20");
                 $("#noToken").css("display", "block");
                 $("#invToken").css("display", "none");
             }
@@ -118,6 +140,7 @@ function loadIframe() {
         }
     } else {
         $("webview").attr('src', '').css("display", "none");
+        $("#sr_frame").attr('src', "http://%20");
         $("#noToken").css("display", "block");
         $("#invToken").css("display", "none");
     }
