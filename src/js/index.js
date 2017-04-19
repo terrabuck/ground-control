@@ -109,16 +109,26 @@ function loadIframe() {
                         });
 
                         // Load the webviews
-                        $("#frame_main").addClass("load");
-                        $("#frame_sr").addClass("load");
-                        setTimeout(function() {
-                            pop.addEventListener("dom-ready", () => {
-                                $("#frame_main").removeClass("load");
+                        try {
+                            sr.getTitle().includes("StreamElements");
+                        } catch (err) {
+                            $("#frame_sr").addClass("load");
+                            setTimeout(function() {
+                                sr.addEventListener("dom-ready", () => {
+                                    $("#frame_sr").removeClass("load");
+                                });
                             });
-                            sr.addEventListener("dom-ready", () => {
-                                $("#frame_sr").removeClass("load");
-                            });
-                        }, 12);
+                        }
+                        try {
+                            pop.getTitle().includes("StreamElements");
+                        } catch (err) {
+                            $("#frame_main").addClass("load");
+                            setTimeout(function() {
+                                pop.addEventListener("dom-ready", () => {
+                                    $("#frame_main").removeClass("load");
+                                });
+                            }, 12);
+                        }
                         $("webview").css("display", "flex");
                         $("#noToken").css("display", "none");
                         $("#invToken").css("display", "none");
