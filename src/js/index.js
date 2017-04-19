@@ -54,9 +54,6 @@ function checkWV() {
 }
 checkWV();
 
-// Iframe
-loadIframe();
-
 function loadIframe() {
     if (node_fs.existsSync(configFile)) {
         var a;
@@ -177,6 +174,7 @@ function showMain() {
     $("#frame_updates").css("display", "none");
     $("#frame_main").css("display", "block");
     $("#buttons").css("display", "block");
+    loadIframe();
 }
 
 // Update the app
