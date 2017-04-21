@@ -1,4 +1,22 @@
-/*globals $, node_fs, loadIframe, pack, configFile */
+/*global $, fs, configFile, pack*/
+function genKeybinding(title, id) {
+    $("#keybindings").append(`<!-- ${title} -->
+            <h6>${title}:</h6>
+            <div class="inputF">
+                <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect clearThis">
+                    <i class="material-icons">clear</i>
+                </button>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 20em;margin-right: 1em;">
+                    <input class="mdl-textfield__input autoC" type="text" id="${id}">
+                    <label class="mdl-textfield__label" for="$${id}">Key...</label>
+                </div>
+            </div>
+            <div class="clear"></div>`)
+}
+genKeybinding("Skip alert", "skip_alert");
+genKeybinding("Skip song", "skip_song");
+genKeybinding("Stop/Resume song", "SnR_song");
+
 // Show keybindings
 function keyInfo() {
     $("#key-info").on("click", function() {
@@ -25,13 +43,17 @@ $("#show-jwt").on("change", function() {
         $("#jwt").prop("disabled", true).addClass("secret");
     }
 });
+if ($("#jwt").val()) {
+    $("#jwt").prop("disabled", true).addClass("secret");
+    $("#show-jwt").prop('checked', false);
+}
 
 // Load old settings
 (function() {
-    if (node_fs.existsSync(configFile)) {
+    if (fs.existsSync(configFile)) {
         var a;
         try {
-            a = JSON.parse(node_fs.readFileSync(configFile));
+            a = JSON.parse(fs.readFileSync(configFile));
         } catch (err) {
             return console.error("Could not parse JSON");
         }
@@ -63,8 +85,7 @@ function update_S() {
     if(!$("#jwt").parent().hasClass("is-invalid")) {
         tmp.token = $("#jwt").val();
     }
-    node_fs.writeFileSync(configFile, JSON.stringify(tmp));
-    loadIframe();
+    fs.writeFileSync(configFile, JSON.stringify(tmp));
 }
 
 $("input").on("property change keyup", update_S);

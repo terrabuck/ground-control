@@ -3,33 +3,16 @@ body {
     height: auto;
     overflow: hidden;
 }
-#buttons {
-    position: absolute;
-    top: 0.75em;
-    right: 1em;
-    z-index: 2;
-}
-#buttons button {
-    min-width: 0;
-    height: 1em;
-    width: 1em;
-    padding: 0.75em;
-    margin-left: 0.25em;
-}
-#pop_frame,
-#sr_frame {
+webview {
     height: 100vh;
     width: 100vw;
-    border: none;
-    z-index: 1;
 }
-#noToken,
-#invToken {
-    display: none;
+#error {
     margin: auto;
     text-align: center;
-    margin-top: 2em;
+    padding-top: 3em;
     font-size: 1em;
+    height: 100vh;
 }
 .center_loader {
     position: relative;
@@ -42,10 +25,7 @@ body {
     top: 50%;
     transform: translate(-50%,-50%);
 }
-.load {
-    visibility: visible !important;
-    display: flex !important;
-    position: absolute !important;
-    bottom: 1px !important;
-    right: 1px !important;
+.frame {
+    height: 100vh;
+    width: 100vw;
 }
