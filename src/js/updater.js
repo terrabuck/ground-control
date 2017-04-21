@@ -4,6 +4,7 @@ const { loadIframe } = require("./js/loadMain");
 
 function showMain() {
     $("#updater").css("display", "none");
+    $(".goto_settings").css("display", "inline-block");
     $("#nav").css("display", "block");
     currentPage = "#main";
     loadIframe();
@@ -26,6 +27,7 @@ if (__filename.includes("app.asar") && !(process.argv[1] && process.argv[1].incl
                 const autoUpdater = remote.autoUpdater;
                 autoUpdater.on('update-availabe', () => {
                     console.log('update available');
+                    $("#updater p").html("Updating");
                 });
                 autoUpdater.on('checking-for-update', () => {
                     console.log('checking-for-update');

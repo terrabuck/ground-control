@@ -5,15 +5,12 @@
     right: 1em;
     z-index: 2;
 }
+
 #nav button {
     min-width: 0;
     height: 1em;
     width: 1em;
     padding: 0.75em;
     margin-left: 0.25em;
-}
-#nav .goBack,
-#nav .goto_pop,
-#nav .goto_sr {
     display: none;
 }
