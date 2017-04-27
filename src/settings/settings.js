@@ -48,6 +48,15 @@ if ($("#jwt").val()) {
     $("#show-jwt").prop('checked', false);
 }
 
+// Change mode
+$("#darkMode_sub").on("property change mouseup", function() {
+    if ($("#darkMode_sub").is(":checked")) {
+        $("html").addClass("darkMode");
+    } else {
+        $("html").removeClass("darkMode");
+    }
+});
+
 // Load old settings
 (function() {
     if (fs.existsSync(configFile)) {
@@ -69,6 +78,9 @@ if ($("#jwt").val()) {
             $("#jwt").prop("disabled", true).addClass("secret").val(a.token);
             $("#show-jwt").prop('checked', false);
         }
+        if (a.darkMode) {
+            $("#darkMode_sub").click();
+        }
     }
 })();
 
@@ -76,7 +88,8 @@ if ($("#jwt").val()) {
 function update_S() {
     var tmp = {
         token: "",
-        keys: {}
+        keys: {},
+        darkMode: $("#darkMode_sub").is(":checked")
     };
     $(".autoC").each(function() {
         tmp.keys[$(this).attr("id")] = $(this).val() || "";
@@ -90,3 +103,4 @@ function update_S() {
 
 $("input").on("property change keyup", update_S);
 $("select").on("property change keyup", update_S);
+$("darkMode_sub").on("property change mouseup", update_S);

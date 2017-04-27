@@ -58,6 +58,50 @@ function loadIframe() {
                                                         setTimeout(function() {
                                                             oh_yea();
                                                         }, 1000 * 2);`);
+                                    /* Start Dark mode */
+                                    setTimeout(function() {
+                                        if ($("html").hasClass("darkMode")) {
+                                            pop.executeJavaScript(`$("html").addClass("darkMode")`);
+                                        } else {
+                                            pop.executeJavaScript(`$("html").removeClass("darkMode")`);
+                                        }
+                                    }, 1000);
+                                    $("html").on("changeDM", function() {
+                                        if ($("html").hasClass("darkMode")) {
+                                            pop.executeJavaScript(`$("html").addClass("darkMode")`);
+                                        } else {
+                                            pop.executeJavaScript(`$("html").removeClass("darkMode")`);
+                                        }
+                                    });
+                                    pop.insertCSS(` html.darkMode body,
+                                                    html.darkMode md-content {
+                                                        background-color: rgb(48, 48, 48);
+                                                    }
+                                                    html.darkMode md-card,
+                                                    html.darkMode md-list-item,
+                                                    html.darkMode div.md-primary.md-subheader._md {
+                                                        background-color: rgb(66,66,66) !important;
+                                                    }
+                                                    html.darkMode .filter._md *,
+                                                    html.darkMode div.md-list-item-text.event-section.layout-column a *,
+                                                    html.darkMode div.md-list-item-text.event-section.layout-column h4 *,
+                                                    html.darkMode div.md-list-item-text.event-section.layout-column .next-to-replay,
+                                                    html.darkMode div.md-list-item-text.event-section.layout-column .event-message {
+                                                        color: white;
+                                                    }
+                                                    html.darkMode a.md-primary *,
+                                                    html.darkMode .md-subheader-inner *,
+                                                    html.darkMode button.md-primary,
+                                                    html.darkMode button.md-primary * {
+                                                        color: orange !important;
+                                                    }
+                                                    html.darkMode .md-checked .md-icon {
+                                                        background-color: #3EE09C !important;
+                                                    }
+                                                    html.darkMode .md-checked .md-icon::after {
+                                                        border-color: black !important;
+                                                    }`);
+                                    /* End Dark mode */
                                 });
                                 sr.addEventListener("dom-ready", () => {
                                     if (b4settings) {
@@ -72,6 +116,105 @@ function loadIframe() {
                                     sr.insertCSS("md-sidenav { display: none !important; }");
                                     sr.insertCSS("md-content.flex.layout-fill.layout-row.content-dash-wrapper._md { padding-left: 0 !important; }");
                                     sr.insertCSS("a.md-primary.md-button.md-ink-ripple { display: none !important; }");
+                                    sr.insertCSS("#livechat-compact-container { display: none !important; }")
+                                    /* Start Dark mode */
+                                    setTimeout(function() {
+                                        if ($("html").hasClass("darkMode")) {
+                                            sr.executeJavaScript(`$("html").addClass("darkMode")`);
+                                        } else {
+                                            sr.executeJavaScript(`$("html").removeClass("darkMode")`);
+                                        }
+                                    }, 1000);
+                                    $("html").on("changeDM", function() {
+                                        if ($("html").hasClass("darkMode")) {
+                                            sr.executeJavaScript(`$("html").addClass("darkMode")`);
+                                        } else {
+                                            sr.executeJavaScript(`$("html").removeClass("darkMode")`);
+                                        }
+                                    });
+                                    sr.insertCSS(`  html.darkMode .layout-fill,
+                                                    html.darkMode .container-fluid,
+                                                    html.darkMode md-dialog .layout-row.layout-align-space-between-center {
+                                                        background-color: rgb(48, 48, 48) !important;
+                                                    }
+                                                    html.darkMode a,
+                                                    html.darkMode a * {
+                                                        color: orange !important;
+                                                    }
+                                                    html.darkMode .md-label {
+                                                        color: white;
+                                                    }
+                                                    html.darkMode .md-checked .md-container .md-bar {
+                                                        background-color: rgba(62, 224,156, 0.5) !important;
+                                                    }
+                                                    html.darkMode .md-checked .md-thumb-container .md-thumb {
+                                                        background-color: rgb(62, 224,156) !important;
+                                                    }
+                                                    html.darkMode .md-subheader-content {
+                                                        color: orange;
+                                                    }
+                                                    html.darkMode md-card .layout-row,
+                                                    html.darkMode md-card .layout-row .md-no-sticky,
+                                                    html.darkMode md-divider,
+                                                    html.darkMode md-list,
+                                                    html.darkMode md-content,
+                                                    html.darkMode .no-songs {
+                                                        background-color: rgb(66,66,66) !important;
+                                                    }
+                                                    html.darkMode md-divider {
+                                                        margin-bottom: 0 !important;
+                                                        padding-bottom: 8px;
+                                                        border-color: #7b7b7b;
+                                                    }
+                                                    html.darkMode .md-button.md-icon-button .material-icons, .md-button.md-icon-button md-icon {
+                                                        color: lightgray !important;
+                                                    }
+                                                    html.darkMode p {
+                                                        color: white;
+                                                    }
+                                                    html.darkMode md-list md-icon {
+                                                        color: lightgray;
+                                                    }
+                                                    html.darkMode md-list .md-list-item-text * {
+                                                        color: #fbfbfb !important
+                                                    }
+                                                    html.darkMode md-content div * {
+                                                        color: white !important;
+                                                    }
+                                                    html.darkMode .md-track-fill,
+                                                    html.darkMode .song-votes span {
+                                                        background-color: rgb(62, 224,156) !important;
+                                                    }
+                                                    html.darkMode .md-thumb::after {
+                                                        border-color: rgb(62, 224,156) !important;
+                                                        background-color: rgb(62, 224,156) !important;
+                                                    }
+                                                    html.darkMode button.md-raised.md-primary.md-button.md-ink-ripple {
+                                                        background-color: orange !important;
+                                                    }
+                                                    html.darkMode button.md-raised.md-primary.md-button.md-ink-ripple span {
+                                                        color: black !important;
+                                                    }
+                                                    html.darkMode md-dialog-actions .md-button.md-primary span {
+                                                        color: white !important;
+                                                    }
+                                                    html.darkMode md-dialog {
+                                                        background-color: rgb(48, 48, 48) !important;
+                                                    }
+                                                    html.darkMode md-dialog h1,
+                                                    html.darkMode md-dialog label {
+                                                        color: white;
+                                                    }
+                                                    html.darkMode md-input-container * {
+                                                        color: white !important;
+                                                    }
+                                                    html.darkMode md-input-container input {
+                                                        border-color: white !important;
+                                                    }
+                                                    html.darkMode md-autocomplete * {
+                                                        color: white;
+                                                    }`);
+                                    /* End Dark mode */
                                 });
                             }
                         } else {

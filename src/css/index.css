@@ -29,3 +29,11 @@ webview {
     height: 100vh;
     width: 100vw;
 }
+
+html.darkMode #error {
+    background-color: rgb(66, 66, 66);
+    color: white;
+}
+html.darkMode a {
+    color: #3EE09C;
+}

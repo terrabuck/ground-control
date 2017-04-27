@@ -85,5 +85,40 @@ ul {
     z-index: 2;
     position: relative;
     right: -13.25em;
-    top: 0.3em;
+    top: 0.5em;
+}
+#darkMode {
+    position: absolute;
+}
+
+html.darkMode body {
+    color: white;
+    background-color: rgb(66, 66, 66);
+}
+html.darkMode #version {
+    color: white;
+}
+html.darkMode label.mdl-textfield__label {
+    color: orange !important;
+}
+html.darkMode a {
+    color: #3EE09C;
+}
+html.darkMode input {
+    border-bottom: 1px solid rgba(255,255,255,0.2) !important;
+}
+html.darkMode .secret {
+    text-shadow: 0 0 7.5px rgba(255,255,255,0.3) !important;
+}
+html.darkMode .mdl-icon-toggle.is-checked .mdl-icon-toggle__label {
+    color: orange !important;
+}
+html.darkMode button.clearThis {
+    background-color: lightgrey !important;
+}
+html.darkMode label.mdl-textfield__label.is-invalid::after {
+    background-color: red !important;
+}
+html.darkMode label.mdl-textfield__label::after {
+    background-color: orange;
 }

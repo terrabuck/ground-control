@@ -27,8 +27,27 @@ function reg() {
     try {
         a = JSON.parse(fs.readFileSync(configFile).toString());
     } catch (error) {
-        return console.error("Could not parse JSON");
+        setTimeout(function() {
+            reg();
+        }, 100);
+        return;
     }
+    /* Dark mode */
+    function doDarkMode() {
+        if (contents) {
+            if (a.darkMode) {
+                contents.executeJavaScript(`$("html").addClass("darkMode").trigger("changeDM");`, true);
+            } else {
+                contents.executeJavaScript(`$("html").removeClass("darkMode").trigger("changeDM");`, true);
+            }
+        } else {
+            setTimeout(function() {
+                doDarkMode();
+            }, 1000);
+        }
+    }
+    doDarkMode();
+
     /* Socket */
     socket = null;
     if (a.token) {
@@ -93,9 +112,11 @@ function reg() {
             let key = a.keys.SnR_song;
             try {
                 globalShortcut.register(key, () => {
-                    contents.executeJavaScript(`document.querySelector("#frame_sr").executeJavaScript(\`$("button[ng-click='vm.togglePlayer()']").click()\`);`, true).then(() => {
-                        console.log("Send: 'Stop/Resume Song'");
-                    });
+                    if (contents) {
+                        contents.executeJavaScript(`document.querySelector("#frame_sr").executeJavaScript(\`$("button[ng-click='vm.togglePlayer()']").click()\`);`, true).then(() => {
+                            console.log("Send: 'Stop/Resume Song'");
+                        });
+                    }
                 });
             } catch (error) {
                 console.log(`Keybind for 'Stop/Resume Song' failed, '${key}'`);
