@@ -50,11 +50,7 @@ if ($("#jwt").val()) {
 
 // Change mode
 $("#darkMode_sub").on("property change mouseup", function() {
-    if ($("#darkMode_sub").is(":checked")) {
-        $("html").addClass("darkMode");
-    } else {
-        $("html").removeClass("darkMode");
-    }
+    alert("Restart the app to change the mode.");
 });
 
 // Load old settings
@@ -79,7 +75,8 @@ $("#darkMode_sub").on("property change mouseup", function() {
             $("#show-jwt").prop('checked', false);
         }
         if (a.darkMode) {
-            $("#darkMode_sub").click();
+            $("html").addClass("darkMode");
+            $('#darkMode_sub').prop('checked', true);
         }
     }
 })();

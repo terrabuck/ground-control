@@ -1,4 +1,4 @@
-/*global got, $, fs, configFile, goTo, b4settings, currentPage*/
+/*global got, $, fs, configFile, goTo, currentPage*/
 function checkValidToken(token) {
     return got.get("https://caipirinha.streamelements.com/kappa/v1/users/me", {
         headers: {
@@ -32,7 +32,7 @@ function loadIframe() {
                                 const pop = document.querySelector('#frame_pop');
                                 const sr = document.querySelector('#frame_sr');
                                 pop.addEventListener("dom-ready", () => {
-                                    if (b4settings) {
+                                    if (currentPage === "#settings") {
                                         goTo("#settings");
                                     }
                                     pop.insertCSS("a.md-primary.md-button.md-ink-ripple { display: none !important; }");
@@ -61,18 +61,11 @@ function loadIframe() {
                                     /* Start Dark mode */
                                     setTimeout(function() {
                                         if ($("html").hasClass("darkMode")) {
-                                            pop.executeJavaScript(`$("html").addClass("darkMode")`);
+                                            pop.executeJavaScript(`$("html").addClass("darkMode");`);
                                         } else {
-                                            pop.executeJavaScript(`$("html").removeClass("darkMode")`);
+                                            pop.executeJavaScript(`$("html").removeClass("darkMode");`);
                                         }
                                     }, 1000);
-                                    $("html").on("changeDM", function() {
-                                        if ($("html").hasClass("darkMode")) {
-                                            pop.executeJavaScript(`$("html").addClass("darkMode")`);
-                                        } else {
-                                            pop.executeJavaScript(`$("html").removeClass("darkMode")`);
-                                        }
-                                    });
                                     pop.insertCSS(` html.darkMode body,
                                                     html.darkMode md-content {
                                                         background-color: rgb(48, 48, 48);
@@ -104,7 +97,7 @@ function loadIframe() {
                                     /* End Dark mode */
                                 });
                                 sr.addEventListener("dom-ready", () => {
-                                    if (b4settings) {
+                                    if (currentPage === "#settings") {
                                         goTo("#settings");
                                     }
                                     sr.insertCSS("md-toolbar { display: none !important; }");
@@ -120,18 +113,11 @@ function loadIframe() {
                                     /* Start Dark mode */
                                     setTimeout(function() {
                                         if ($("html").hasClass("darkMode")) {
-                                            sr.executeJavaScript(`$("html").addClass("darkMode")`);
+                                            sr.executeJavaScript(`$("html").addClass("darkMode");`);
                                         } else {
-                                            sr.executeJavaScript(`$("html").removeClass("darkMode")`);
+                                            sr.executeJavaScript(`$("html").removeClass("darkMode");`);
                                         }
                                     }, 1000);
-                                    $("html").on("changeDM", function() {
-                                        if ($("html").hasClass("darkMode")) {
-                                            sr.executeJavaScript(`$("html").addClass("darkMode")`);
-                                        } else {
-                                            sr.executeJavaScript(`$("html").removeClass("darkMode")`);
-                                        }
-                                    });
                                     sr.insertCSS(`  html.darkMode .layout-fill,
                                                     html.darkMode .container-fluid,
                                                     html.darkMode md-dialog .layout-row.layout-align-space-between-center {

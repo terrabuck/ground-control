@@ -23,46 +23,31 @@ if (!fs.existsSync(configFile)) {
 }
 
 function reg() {
-    let a;
+    let settings;
     try {
-        a = JSON.parse(fs.readFileSync(configFile).toString());
+        settings = JSON.parse(fs.readFileSync(configFile).toString());
     } catch (error) {
         setTimeout(function() {
             reg();
         }, 100);
         return;
     }
-    /* Dark mode */
-    function doDarkMode() {
-        if (contents) {
-            if (a.darkMode) {
-                contents.executeJavaScript(`$("html").addClass("darkMode").trigger("changeDM");`, true);
-            } else {
-                contents.executeJavaScript(`$("html").removeClass("darkMode").trigger("changeDM");`, true);
-            }
-        } else {
-            setTimeout(function() {
-                doDarkMode();
-            }, 1000);
-        }
-    }
-    doDarkMode();
 
     /* Socket */
     socket = null;
-    if (a.token) {
-        socket = connectSocket(a.token);
+    if (settings.token) {
+        socket = connectSocket(settings.token);
     }
-    session.defaultSession.cookies.set({ url: "https://streamelements.com", name: "token", value: a.token || "#" }, (err) => {
+    session.defaultSession.cookies.set({ url: "https://streamelements.com", name: "token", value: settings.token || "#" }, (err) => {
         if (err) {
             console.error(err);
         }
     });
 
-    if (a.keys && a.token && a.token !== "") {
+    if (settings.keys && settings.token && settings.token !== "") {
         /* Skip Alert */
-        if (a.keys.skip_alert) {
-            let key = a.keys.skip_alert;
+        if (settings.keys.skip_alert) {
+            let key = settings.keys.skip_alert;
             try {
                 globalShortcut.register(key, () => {
                     if (socket) {
@@ -75,13 +60,13 @@ function reg() {
             }
         }
         /* Skip Song */
-        if (a.keys.skip_song) {
-            let key = a.keys.skip_song;
+        if (settings.keys.skip_song) {
+            let key = settings.keys.skip_song;
             try {
                 globalShortcut.register(key, () => {
                     got.delete("https://caipirinha.streamelements.com/kappa/v1/songrequest/queue/skip", {
                         headers: {
-                            Authorization: "Bearer " + a.token
+                            Authorization: "Bearer " + settings.token
                         }
                     }).then(() => {
                         console.log("Send: 'Skip Song'");
@@ -94,8 +79,8 @@ function reg() {
             }
         }
         /* Stop/Resume Alerts */
-        // if (a.keys.SnR_alert) {
-        //   let key = a.keys.SnR_alert;
+        // if (settings.keys.SnR_alert) {
+        //   let key = settings.keys.SnR_alert;
         //   try {
         //     globalShortcut.register(key, () => {
         //       if (socket) {
@@ -108,8 +93,8 @@ function reg() {
         //   }
         // }
         /* Stop/Resume Song */
-        if (a.keys.SnR_song) {
-            let key = a.keys.SnR_song;
+        if (settings.keys.SnR_song) {
+            let key = settings.keys.SnR_song;
             try {
                 globalShortcut.register(key, () => {
                     if (contents) {
@@ -123,12 +108,14 @@ function reg() {
             }
         }
     }
+    return settings;
 }
 
 function createWindow() {
     // globalShortcut
+    var settings = {};
     if (fs.existsSync(configFile)) {
-        reg();
+        settings = reg();
     }
 
     var watcher = chokidar.watch(configFile.replace(/config\.json$/, ""), {
@@ -159,6 +146,11 @@ function createWindow() {
 
     // set contents
     contents = win.webContents;
+
+    /* Dark mode */
+    if (settings.darkMode) {
+        contents.executeJavaScript(`$("html").addClass("darkMode")`);
+    }
 
     // When target="_blank"
     win.webContents.on('new-window', (event, url) => {
