@@ -1,12 +1,18 @@
-const { app, BrowserWindow, globalShortcut, session } = require('electron');
+const { app, BrowserWindow, globalShortcut, session, Menu } = require('electron');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
+const os = require('os');
 const got = require('got');
 const chokidar = require('chokidar');
 const connectSocket = require('./src/modules/socket');
 
-const configFile = path.normalize(__dirname.replace(/[\\|\/]?resources.*/, "").replace(/app.*/, "") + "/config.json");
+let configFile = path.normalize(__dirname.replace(/[\\|\/]?resources.*/, "").replace(/app.*/, "").replace(/\.$/, ""));
+if (os.platform() === "darwin") {
+    configFile = configFile.replace(/\/ground_control$/, "") + "/config.json";
+} else {
+    configFile = configFile + "/config.json";
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -136,6 +142,30 @@ function createWindow() {
 
     // Hide top bar
     win.setMenu(null);
+    if (os.platform() === "darwin") {
+        var template = [{
+            label: "Application",
+            submenu: [
+                { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
+                { type: "separator" },
+                { label: "Quit", accelerator: "Command+Q", click: function () { app.quit(); } }
+            ]
+        }, {
+            label: "Edit",
+            submenu: [
+                { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
+                { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+                { type: "separator" },
+                { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+                { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+                { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+                { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+            ]
+        }
+        ];
+
+        Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+    }
 
     // and load the index.html of the app.
     win.loadURL(url.format({

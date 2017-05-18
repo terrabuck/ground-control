@@ -2,8 +2,14 @@
 const fs = require("fs");
 const got = require("got");
 const path = require("path");
+const os = require("os");
 const chokidar = require("chokidar");
-const configFile = path.normalize(__dirname.replace(/[\\|\/]?resources.*/, "").replace(/app.*/, "").replace(/[\/|\\]src.*$/, "") + "/config.json"); 
+let configFile = path.normalize(__dirname.replace(/[\\|\/]?resources.*/, "").replace(/app.*/, "").replace(/\.$/, ""));
+if (os.platform() === "darwin") {
+    configFile = configFile.replace(/\/ground_control$/, "") + "/config.json";
+} else {
+    configFile = configFile + "/config.json";
+}
 const { shell, remote } = require("electron");
 var pack;
 if (fs.existsSync('./package.json')) {
