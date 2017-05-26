@@ -9,7 +9,9 @@
         "build": "electron-packager . --icon=src/se.* --out dist --version-string.CompanyName=\"StreamElements\" --version-string.ProductName=\"SE Ground Control\" --version-string.OriginalFilename=\"ground_control.exe\" --version-string.FileDescription=\"SE Ground Control: Hotkeys for your stream\" --overwrite=true --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json|yarn\\.lock)\"",
         "build-all": "electron-packager . --all --icon=src/se.* --out dist --version-string.CompanyName=\"StreamElements\" --version-string.ProductName=\"SE Ground Control\" --version-string.OriginalFilename=\"ground_control.exe\" --version-string.FileDescription=\"SE Ground Control: Hotkeys for your stream\" --overwrite=true --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json|yarn\\.lock)\"",
         "win-installer": "electron-installer-windows --src dist/ground_control-win32-x64 --dest dist/installers --options.icon=\"src/se.ico\" --options.productName=\"SE Ground Control\" --options.iconUrl=\"https://cdn.streamelements.com/ground-control/updates/se64.png\"",
-        "win-all": "yarn build && yarn win-installer"
+        "win-all": "yarn build && yarn win-installer",
+        "darwin-installer": "create-dmg --volname 'SE Ground Control' --volicon 'src/se.icns'  dist/ground_control-darwin-x64/ground_control.app",
+        "darwin-all": "yarn build && yarn darwin-installer"
     },
     "author": "StreamElements",
     "license": "MIT",

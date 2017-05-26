@@ -2,6 +2,7 @@
 config.json
 dist
 .vscode
+*.dmg
 
 # Logs
 logs
