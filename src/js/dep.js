@@ -2,8 +2,9 @@
 const fs = require("fs");
 const got = require("got");
 const path = require("path");
+const os = require("os");
 const chokidar = require("chokidar");
-const configFile = path.normalize(__dirname.replace(/[\\|\/]?resources.*/, "").replace(/app.*/, "").replace(/[\/|\\]src.*$/, "") + "/config.json"); 
+let configFile = path.normalize(os.homedir() + "/.se-gc/config.json");
 const { shell, remote } = require("electron");
 var pack;
 if (fs.existsSync('./package.json')) {
