@@ -140,7 +140,7 @@ function createWindow() {
         width: 650,
         height: 790,
         resizable: true,
-        icon: path.join(__dirname, 'src/se64.png')
+        icon: os.platform() === "win32" ? path.join(__dirname, 'src/se.ico') : path.join(__dirname, 'src/se64.png')
     });
 
     // Hide top bar
