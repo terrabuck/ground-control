@@ -1,16 +1,16 @@
 {
     "name": "ground_control",
+    "productName": "Ground Control",
     "version": "1.1.9",
     "description": "Ground Control: Hotkeys for your stream",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "electron .",
-        "build": "electron-packager . --icon=src/se.* --out dist --version-string.CompanyName=\"StreamElements\" --version-string.ProductName=\"Ground Control\" --version-string.OriginalFilename=\"ground_control.exe\" --version-string.FileDescription=\"Ground Control: Hotkeys for your stream\" --overwrite=true --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json|yarn\\.lock)\"",
-        "build-all": "electron-packager . --all --icon=src/se.* --out dist --version-string.CompanyName=\"StreamElements\" --version-string.ProductName=\"Ground Control\" --version-string.OriginalFilename=\"ground_control.exe\" --version-string.FileDescription=\"Ground Control: Hotkeys for your stream\" --overwrite=true --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json|yarn\\.lock)\"",
-        "win-installer": "electron-installer-windows --src dist/ground_control-win32-x64 --dest dist/installers --options.icon=\"src/se.ico\" --options.productName=\"Ground Control\" --options.iconUrl=\"https://cdn.streamelements.com/ground-control/updates/se64.png\"",
+        "build": "electron-packager . --icon=src/se.* --out dist --version-string.CompanyName=\"StreamElements\" --version-string.ProductName=\"Ground Control\" --version-string.OriginalFilename=\"Ground Control.exe\" --version-string.FileDescription=\"Ground Control: Hotkeys for your stream\" --overwrite=true --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json|yarn\\.lock)\"",
+        "win-installer": "electron-installer-windows --src dist/Ground Control-win32-x64 --dest dist/installers --options.icon=\"src/se.ico\" --options.productName=\"Ground Control\" --options.iconUrl=\"https://cdn.streamelements.com/ground-control/updates/se64.png\"",
         "win-all": "yarn build && yarn win-installer",
-        "darwin-installer": "./create-dmg --volname \"Ground Control\" --volicon \"src/se.icns\" dist/ground_control-darwin-x64/ground_control.app",
+        "darwin-installer": "create-dmg \"dist/Ground Control-darwin-x64/Ground Control.app\"",
         "darwin-all": "yarn build && yarn darwin-installer"
     },
     "author": "StreamElements",
