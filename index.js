@@ -7,11 +7,9 @@ const got = require('got');
 const chokidar = require('chokidar');
 const connectSocket = require('./src/modules/socket');
 
-let configFile = path.normalize(__dirname.replace(/[\\|\/]?resources.*/, "").replace(/app.*/, "").replace(/\.$/, ""));
-if (os.platform() === "darwin") {
-    configFile = configFile.replace(/\/ground_control$/, "") + "/config.json";
-} else {
-    configFile = configFile + "/config.json";
+let configFile = path.normalize(os.homedir() + "/.se-gc/config.json");
+if (!fs.existsSync(path.normalize(os.homedir() + "/.se-gc"))) {
+    fs.mkdirSync(path.normalize(os.homedir() + "/.se-gc"));
 }
 
 // Keep a global reference of the window object, if you don't, the window will
