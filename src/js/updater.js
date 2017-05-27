@@ -1,4 +1,4 @@
-/*global got, pack, remote, $, fs, path, configFile, chokidar, currentPage */
+/*global got, pack, remote, $, fs, path, configFile, chokidar, currentPage, os */
 
 const { loadIframe } = require("./js/loadMain");
 
@@ -20,7 +20,19 @@ function showMain() {
 }
 
 // Update the app
-if (__filename.includes("app.asar") && !(process.argv[1] && process.argv[1].includes("squirrel")) && fs.existsSync(path.resolve(path.dirname(process.execPath), '..', 'update.exe'))) {
+var isDev = (function() {
+    if (os.platform() === "win32") {
+        if (__filename.includes("app.asar") || (process.argv[1] && process.argv[1].includes("squirrel")) && fs.existsSync(path.resolve(path.dirname(process.execPath), '..', 'update.exe'))) {
+            return false;
+        }
+        return true;
+    } else if (os.platform() === "darwin") {
+        return process.argv[0].startsWith("/Applications/");
+    }
+    return false;
+})();
+
+if (!isDev) {
     try {
         got.get(pack.build.squirrelWindows.remoteReleases + "RELEASES").then(res => {
             if (!upToDate(pack.version, res.body.match(/[0-9]*\.[0-9]*\.[0-9]*/g)[0])) {
@@ -43,6 +55,7 @@ if (__filename.includes("app.asar") && !(process.argv[1] && process.argv[1].incl
                 autoUpdater.checkForUpdates();
                 window.autoUpdater = autoUpdater;
             } else {
+                console.log("Up to date!");
                 showMain();
             }
         });
@@ -51,6 +64,7 @@ if (__filename.includes("app.asar") && !(process.argv[1] && process.argv[1].incl
         showMain();
     }
 } else {
+    console.log("This is dev!");
     showMain();
 }
 
