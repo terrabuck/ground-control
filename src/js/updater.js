@@ -27,7 +27,7 @@ var isDev = (function() {
         }
         return true;
     } else if (os.platform() === "darwin") {
-        return process.argv[0].startsWith("/Applications/");
+        return !process.argv[0].startsWith("/Applications/");
     }
     return false;
 })();
@@ -51,7 +51,12 @@ if (!isDev) {
                 autoUpdater.on('update-downloaded', () => {
                     autoUpdater.quitAndInstall();
                 });
-                autoUpdater.setFeedURL(pack.build.squirrelWindows.remoteReleases);
+                try {
+                    autoUpdater.setFeedURL(pack.build.squirrelWindows.remoteReleases);
+                } catch(err) {
+                    console.log("Not signed for updates.");
+                    showMain();
+                }
                 autoUpdater.checkForUpdates();
                 window.autoUpdater = autoUpdater;
             } else {
