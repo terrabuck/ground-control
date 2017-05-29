@@ -3,7 +3,6 @@ const path = require('path');
 const url = require('url');
 const fs = require('fs');
 const os = require('os');
-const got = require('got');
 const chokidar = require('chokidar');
 const connectSocket = require('./src/modules/socket');
 
@@ -68,15 +67,11 @@ function reg() {
             let key = settings.keys.skip_song;
             try {
                 globalShortcut.register(key, () => {
-                    got.delete("https://caipirinha.streamelements.com/kappa/v1/songrequest/queue/skip", {
-                        headers: {
-                            Authorization: "Bearer " + settings.token
-                        }
-                    }).then(() => {
-                        console.log("Send: 'Skip Song'");
-                    }).catch(err => {
-                        console.error("Could not skip the current song:", err.message);
-                    });
+                    if (contents) {
+                        contents.executeJavaScript(`document.querySelector("#frame_sr").executeJavaScript(\`$("button[ng-click='vm.skipSong($event)']").click()\`);`, true).then(() => {
+                            console.log("Send: 'Skip Song'");
+                        });
+                    }
                 });
             } catch (error) {
                 console.log(`Keybind for 'Skip Song' failed, '${key}'`);
