@@ -24,7 +24,7 @@ function loadIframe() {
                     checkValidToken(a.token).then(res => {
                         if (res.valid) {
                             if ($("#error").length) {
-                                $("#main").html(`<webview id="frame_pop" src="https://streamelements.com/dashboard/${res.username || "%20"}/activity/popout" class="frame"></webview>` + 
+                                $("#main").html(`<webview id="frame_pop" src="https://streamelements.com/dashboard/${res.username || "%20"}/activity/popout" class="frame"></webview>` +
                                                 `<webview id="frame_sr" src="https://streamelements.com/dashboard/songrequest/general" class="frame"></webview>`);
                                 if (currentPage !== "#settings") {
                                     $(".goto_sr").css("display", "inline-block");
@@ -54,7 +54,7 @@ function loadIframe() {
                                                         cursor: pointer !important;
                                                     }
                                                     `);
-                                    pop.executeJavaScript(`function oh_yea() { 
+                                    pop.executeJavaScript(`function oh_yea() {
                                                             if($("md-switch[ng-model='vm.adsEnabled']").length) {
                                                                 $("md-switch[ng-model='vm.adsEnabled']").removeClass("flex-60");
                                                                 $("md-switch[ng-model='vm.adsEnabled']").next().css("max-width", "calc(100% - 18.7em)");
@@ -70,13 +70,9 @@ function loadIframe() {
                                                             oh_yea();
                                                         }, 1000 * 2);`);
                                     /* Start Dark mode */
-                                    setTimeout(function() {
-                                        if ($("html").hasClass("darkMode")) {
-                                            pop.executeJavaScript(`$("html").addClass("darkMode");`);
-                                        } else {
-                                            pop.executeJavaScript(`$("html").removeClass("darkMode");`);
-                                        }
-                                    }, 1000);
+                                    if ($("html").hasClass("darkMode")) {
+                                        pop.executeJavaScript(`$("html").addClass("darkMode");`);
+                                    }
                                     pop.insertCSS(` html.darkMode body,
                                                     html.darkMode md-content {
                                                         background-color: rgb(48, 48, 48);
@@ -122,13 +118,9 @@ function loadIframe() {
                                     sr.insertCSS("a.md-primary.md-button.md-ink-ripple { display: none !important; }");
                                     sr.insertCSS("#livechat-compact-container { display: none !important; }")
                                     /* Start Dark mode */
-                                    setTimeout(function() {
-                                        if ($("html").hasClass("darkMode")) {
-                                            sr.executeJavaScript(`$("html").addClass("darkMode");`);
-                                        } else {
-                                            sr.executeJavaScript(`$("html").removeClass("darkMode");`);
-                                        }
-                                    }, 1000);
+                                    if ($("html").hasClass("darkMode")) {
+                                        sr.executeJavaScript(`$("html").addClass("darkMode");`);
+                                    }
                                     sr.insertCSS(`  html.darkMode .layout-fill,
                                                     html.darkMode .container-fluid,
                                                     html.darkMode md-dialog .layout-row.layout-align-space-between-center {
