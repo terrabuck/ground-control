@@ -38,6 +38,22 @@ function loadIframe() {
                                     pop.insertCSS("a.md-primary.md-button.md-ink-ripple { display: none !important; }");
                                     pop.insertCSS("md-card._md:nth-of-type(2) { margin-bottom: 0 !important; }");
                                     pop.insertCSS("img, a { pointer-events: none !important; }");
+                                    pop.insertCSS(` .mod-approval .md-primary.md-subheader._md .md-subheader-content {
+                                                        cursor: pointer !important;
+                                                    }
+                                                    html.darkMode .md-checked .md-thumb-container .md-thumb {
+                                                        background-color: rgb(62, 224, 156);
+                                                    }
+                                                    html.darkMode .md-checked .md-container .md-bar {
+                                                        background-color: rgba(62, 224, 156, 0.498039);
+                                                    }
+                                                    html.darkMode .ads-control {
+                                                        color: white !important;
+                                                    }
+                                                    .flex.md-button.md-ink-ripple md-icon {
+                                                        cursor: pointer !important;
+                                                    }
+                                                    `);
                                     pop.executeJavaScript(`function oh_yea() { 
                                                             if($("md-switch[ng-model='vm.adsEnabled']").length) {
                                                                 $("md-switch[ng-model='vm.adsEnabled']").removeClass("flex-60");
@@ -50,11 +66,6 @@ function loadIframe() {
                                                                 }, 10);
                                                             }
                                                         }
-                                                        setInterval(function() {
-                                                            $("a").attr("href", "");
-                                                            $("a").attr("ng-href", "");
-                                                            $("a").css("cursor", "default");
-                                                        }, 10);
                                                         setTimeout(function() {
                                                             oh_yea();
                                                         }, 1000 * 2);`);
