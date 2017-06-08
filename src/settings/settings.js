@@ -1,4 +1,4 @@
-/*global $, fs, configFile, pack*/
+/*global $, fs, configFile, pack, ipcRenderer*/
 function genKeybinding(title, id) {
     $("#keybindings").append(`<!-- ${title} -->
             <h6>${title}:</h6>
@@ -20,10 +20,10 @@ genKeybinding("Stop/Resume song", "SnR_song");
 // Show keybindings
 function keyInfo() {
     $("#key-info").on("click", function() {
-        $("#key-info").prop('onclick', null).off('click');
+        $("#key-info").prop("onclick", null).off("click");
         $("#key-info").html(`<a><b>DEPENDING ON YOUR KEYBOARD-LAYOUT SOME COMBINATIONS MAY NOT WORK!</b></a><p style="margin-bottom: 0;">Available keys:</p><ul><li>0 to 9, A to Z, F1 to F24, Punctuations like ~, !, @, #, $, etc.</li><li>Plus, Space, Tab, Backspace, Delete, Insert, Return (or Enter as alias)</li><li>Up, Down, Left and Right, Home and End, PageUp and PageDown</li><li>Escape (or Esc for short), VolumeUp, VolumeDown and VolumeMute</li><li>MediaNextTrack, MediaPreviousTrack, MediaStop and MediaPlayPause</li><li>PrintScreen</li></ul>`);
         $("#key-info").on("click", function() {
-            $("#key-info").prop('onclick', null).off('click');
+            $("#key-info").prop("onclick", null).off("click");
             $("#key-info").html(`<a style="cursor: pointer;">Show info about keybindings</a>`);
             keyInfo();
         });
@@ -35,9 +35,9 @@ keyInfo();
 $("#version").html("v" + pack.version );
 
 // Show token
-$("#show-jwt").prop('checked', true);
+$("#show-jwt").prop("checked", true);
 $("#show-jwt").on("change", function() {
-    if ($("#show-jwt").prop('checked')) {
+    if ($("#show-jwt").prop("checked")) {
         $("#jwt").prop("disabled", false).removeClass("secret");
     } else {
         $("#jwt").prop("disabled", true).addClass("secret");
@@ -45,13 +45,8 @@ $("#show-jwt").on("change", function() {
 });
 if ($("#jwt").val()) {
     $("#jwt").prop("disabled", true).addClass("secret");
-    $("#show-jwt").prop('checked', false);
+    $("#show-jwt").prop("checked", false);
 }
-
-// Change mode
-$("#darkMode_sub").on("property change mouseup", function() {
-    alert("Restart the app to change the mode.");
-});
 
 // Load old settings
 (function() {
@@ -72,21 +67,45 @@ $("#darkMode_sub").on("property change mouseup", function() {
                 $("#jwt").parent().removeClass("is-disabled");
             }, 10);
             $("#jwt").prop("disabled", true).addClass("secret").val(a.token);
-            $("#show-jwt").prop('checked', false);
+            $("#show-jwt").prop("checked", false);
         }
         if (a.darkMode) {
             $("html").addClass("darkMode");
-            $('#darkMode_sub').prop('checked', true);
+            $("#darkMode_sub").prop("checked", true);
+        }
+        if (a.other && a.other.useSR === false) {
+            ipcRenderer.sendToHost("sr:close");
+        } else {
+            $("#use_sr").prop("checked", true);
         }
     }
 })();
+
+// Change mode
+$("#darkMode_sub").on("property change mouseup", function() {
+    setTimeout(() => {
+        var mod = $("#darkMode_sub").is(":checked") ? "dark" : "light";
+        ipcRenderer.sendToHost("reload:" + mod);
+    }, 10);
+});
+
+// Change SR
+$("#use_sr").on("property change mouseup", function() {
+    setTimeout(() => {
+        var mod = $("#use_sr").is(":checked") ? "open" : "close";
+        ipcRenderer.sendToHost("sr:" + mod);
+    }, 10);
+});
 
 // Update settings
 function update_S() {
     var tmp = {
         token: "",
         keys: {},
-        darkMode: $("#darkMode_sub").is(":checked")
+        darkMode: $("#darkMode_sub").is(":checked"),
+        other: {
+            useSR: $("#use_sr").is(":checked")
+        }
     };
     $(".autoC").each(function() {
         tmp.keys[$(this).attr("id")] = $(this).val() || "";

@@ -178,6 +178,8 @@ function createWindow() {
     /* Dark mode */
     if (settings.darkMode) {
         contents.executeJavaScript(`$("html").addClass("darkMode")`);
+    } else {
+        contents.executeJavaScript(`$("html").removeClass("darkMode")`);
     }
 
     // When target="_blank"

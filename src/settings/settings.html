@@ -19,6 +19,9 @@
     </script>
     <link rel="stylesheet" href="settings.css">
     <script src="../js/dep.js"></script>
+    <script>
+        const { ipcRenderer } = require("electron");
+    </script>
 </head>
 <body>
     <div id="main">
@@ -47,6 +50,16 @@
         </div>
         <div class="clear"></div>
         <div id="key-info"><a style="cursor: pointer;">Show info about keybindings</a></div>
+        <h4>Other</h4>
+        <div id="other">
+            <h6>Use Songrequest: </h6>
+            <label class="mdl-switch mdl-js-switch" for="use_sr">
+                <input type="checkbox" id="use_sr" class="mdl-switch__input">
+                <span class="mdl-switch__label"></span>
+            </label>
+        </div>
+        
+        <div class="clear"></div>
         <a id="version"></a>
     </div>
     <script src="settings.js"></script>

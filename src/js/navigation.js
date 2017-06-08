@@ -49,13 +49,21 @@ $(".goBack").on("click", function() {
         }
     }
 });
-$(".goto_sr").on("click", function() {
+function goSr() {
+    $("#nav button").css("display", "none");
     $(".goto_pop").css("display", "inline-block");
     $(".goto_settings").css("display", "inline-block");
     goTo("#frame_sr");
-});
-$(".goto_pop").on("click", function() {
+}
+function goPop() {
+    $("#nav button").css("display", "none");
     $(".goto_sr").css("display", "inline-block");
     $(".goto_settings").css("display", "inline-block");
     goTo("#frame_pop");
+}
+$(".goto_sr").on("click", function() {
+    goSr();
+});
+$(".goto_pop").on("click", function() {
+    goPop();
 });
