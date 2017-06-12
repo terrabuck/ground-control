@@ -37,9 +37,9 @@ if (!isDev) {
         got.get(pack.build.squirrelWindows.remoteReleases + "RELEASES").then(res => {
             if (!upToDate(pack.version, res.body.match(/[0-9]*\.[0-9]*\.[0-9]*/g)[0])) {
                 const autoUpdater = remote.autoUpdater;
+                $("#updater p").html("Updating");
                 autoUpdater.on('update-availabe', () => {
                     console.log('update available');
-                    $("#updater p").html("Updating");
                 });
                 autoUpdater.on('checking-for-update', () => {
                     console.log('checking-for-update');
