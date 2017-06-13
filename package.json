@@ -7,7 +7,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "electron .",
-        "build": "electron-packager . --icon=src/se.* --out dist --version-string.CompanyName=\"StreamElements\" --version-string.ProductName=\"Ground Control\" --version-string.OriginalFilename=\"ground_control.exe\" --version-string.FileDescription=\"Ground Control: Hotkeys for your stream\" --overwrite=true --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json|yarn\\.lock|.*\\.dmg)\"",
+        "build": "electron-packager . --no-prune --icon=src/se.* --out dist --version-string.CompanyName=\"StreamElements\" --version-string.ProductName=\"Ground Control\" --version-string.OriginalFilename=\"ground_control.exe\" --version-string.FileDescription=\"Ground Control: Hotkeys for your stream\" --overwrite=true --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json|yarn\\.lock|.*\\.dmg)\"",
         "win-prep": "mv \"dist\\Ground Control-win32-x64\\Ground Control.exe\" \"dist\\Ground Control-win32-x64\\ground_control.exe\"",
         "win-installer": "electron-installer-windows --src \"dist/Ground Control-win32-x64\" --dest dist/installers --options.icon=\"src/se.ico\" --options.productName=\"Ground Control\" --options.iconUrl=\"https://cdn.streamelements.com/ground-control/updates/se.ico\"",
         "win-all": "yarn build && yarn win-prep && yarn win-installer",
