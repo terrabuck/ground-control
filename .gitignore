@@ -3,6 +3,7 @@ config.json
 dist
 .vscode
 *.dmg
+package-lock.json
 
 # Logs
 logs

@@ -7,10 +7,11 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "electron .",
-        "build": "electron-packager . --no-prune --icon=src/se.* --out dist --version-string.CompanyName=\"StreamElements\" --version-string.ProductName=\"Ground Control\" --version-string.OriginalFilename=\"ground_control.exe\" --version-string.FileDescription=\"Ground Control: Hotkeys for your stream\" --overwrite=true --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json|yarn\\.lock|.*\\.dmg)\"",
+        "build": "electron-packager . --osxSign=true --no-prune --icon=src/se.* --out dist --version-string.CompanyName=\"StreamElements\" --version-string.ProductName=\"Ground Control\" --version-string.OriginalFilename=\"ground_control.exe\" --version-string.FileDescription=\"Ground Control: Hotkeys for your stream\" --overwrite=true --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json|yarn\\.lock|.*\\.dmg)\"",
         "win-prep": "mv \"dist\\Ground Control-win32-x64\\Ground Control.exe\" \"dist\\Ground Control-win32-x64\\ground_control.exe\"",
         "win-installer": "electron-installer-windows --src \"dist/Ground Control-win32-x64\" --dest dist/installers --options.icon=\"src/se.ico\" --options.productName=\"Ground Control\" --options.iconUrl=\"https://cdn.streamelements.com/ground-control/updates/se.ico\"",
         "win-all": "yarn build && yarn win-prep && yarn win-installer",
+        "darwin-updater": "build",
         "darwin-installer": "create-dmg \"dist/Ground Control-darwin-x64/Ground Control.app\"",
         "darwin-all": "yarn build && yarn darwin-installer"
     },
@@ -18,6 +19,7 @@
     "license": "MIT",
     "devDependencies": {
         "electron": "^1.6.10",
+        "electron-builder": "^18.6.2",
         "electron-installer-windows": "^0.2.0",
         "electron-packager": "^8.7.1"
     },
@@ -30,8 +32,13 @@
     },
     "homepage": "https://streamelements.com/",
     "build": {
-        "appId": "com.squirrel.ground_control.Ground_Control",
-        "category": "Multimedia design",
+        "appId": "web.streamelements.groundControl",
+        "compression": "maximum",
+        "mac": {
+            "target": "zip",
+            "category": "public.app-category.utilities",
+            "icon": "src/se.icns"
+        },
         "squirrelWindows": {
             "remoteReleases": "https://cdn.streamelements.com/ground-control/updates/"
         }
