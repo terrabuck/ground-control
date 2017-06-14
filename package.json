@@ -19,14 +19,14 @@
     "devDependencies": {
         "electron": "^1.6.10",
         "electron-installer-windows": "^0.2.0",
-        "electron-packager": "^8.6.0"
+        "electron-packager": "^8.7.1"
     },
     "dependencies": {
-        "chokidar": "^1.6.1",
+        "chokidar": "^1.7.0",
         "electron-squirrel-startup": "^1.0.0",
         "got": "^6.7.1",
         "mdl-selectfield": "^1.0.4",
-        "socket.io-client": "^2.0.1"
+        "socket.io-client": "^2.0.3"
     },
     "homepage": "https://streamelements.com/",
     "build": {
