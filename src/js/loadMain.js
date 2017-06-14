@@ -1,6 +1,6 @@
 /*global got, $, fs, configFile, goTo, currentPage, shell, b4settings*/
 function checkValidToken(token) {
-    return got.get("https://caipirinha.streamelements.com/kappa/v1/users/me", {
+    return got.get("https://api.streamelements.com/kappa/v1/users/me", {
         headers: {
             authorization: "Bearer " + token
         }
@@ -16,11 +16,8 @@ function checkValidToken(token) {
                 username: "#"
             };
         }
-    }).catch(() => {
-        return {
-            valid: false,
-            username: "#"
-        };
+    }).catch((err) => {
+        throw err;
     });
 }
 
@@ -274,6 +271,12 @@ function loadIframe() {
                             $("#main").html(`<p id="error">You entered a invalid <a>JWT Token</a>.</p>`);
                             $("#main").css("display", "block");
                         }
+                    }).catch(err => {
+                        console.warn(err);
+                        $("#main").css("display", "none");
+                        $(".goto_sr").css("display", "none");
+                        $("#main").html(`<p id="error">Something is wrong on our site...</p>`);
+                        $("#main").css("display", "block");
                     });
                 } else {
                     $("#main").css("display", "none");
