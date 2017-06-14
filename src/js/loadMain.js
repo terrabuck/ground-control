@@ -268,7 +268,7 @@ function loadIframe() {
                         } else {
                             $("#main").css("display", "none");
                             $(".goto_sr").css("display", "none");
-                            $("#main").html(`<p id="error">You entered a invalid <a>JWT Token</a>.</p>`);
+                            $("#main").html(`<p id="error">You entered an invalid <a>JWT Token</a>.</p>`);
                             $("#main").css("display", "block");
                         }
                     }).catch(err => {
