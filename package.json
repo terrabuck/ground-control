@@ -6,41 +6,39 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "electron .",
-        "build": "electron-packager . --osxSign=true --no-prune --icon=src/se.* --out dist --version-string.CompanyName=\"StreamElements\" --version-string.ProductName=\"Ground Control\" --version-string.OriginalFilename=\"ground_control.exe\" --version-string.FileDescription=\"Ground Control: Hotkeys for your stream\" --overwrite=true --asar=true --ignore=\"(config\\.json|\\.vscode|\\.git(ignore|modules)|\\.eslintrc\\.json|yarn\\.lock|.*\\.dmg)\"",
-        "win-prep": "mv \"dist\\Ground Control-win32-x64\\Ground Control.exe\" \"dist\\Ground Control-win32-x64\\ground_control.exe\"",
-        "win-installer": "electron-installer-windows --src \"dist/Ground Control-win32-x64\" --dest dist/installers --options.icon=\"src/se.ico\" --options.productName=\"Ground Control\" --options.iconUrl=\"https://cdn.streamelements.com/ground-control/updates/se.ico\"",
-        "win-all": "yarn build && yarn win-prep && yarn win-installer",
-        "darwin-updater": "build",
-        "darwin-installer": "create-dmg \"dist/Ground Control-darwin-x64/Ground Control.app\"",
-        "darwin-all": "yarn build && yarn darwin-installer"
+        "start": "electron ./app \"secret dev\"",
+        "build": "./node_modules/.bin/build"
     },
     "author": "StreamElements",
     "license": "MIT",
     "devDependencies": {
         "electron": "^1.6.10",
         "electron-builder": "^18.6.2",
-        "electron-installer-windows": "^0.2.0",
-        "electron-packager": "^8.7.1"
-    },
-    "dependencies": {
-        "chokidar": "^1.7.0",
-        "electron-squirrel-startup": "^1.0.0",
-        "got": "^6.7.1",
-        "mdl-selectfield": "^1.0.4",
-        "socket.io-client": "^2.0.3"
+        "electron-builder-squirrel-windows": "^19.3.0"
     },
     "homepage": "https://streamelements.com/",
     "build": {
         "appId": "web.streamelements.groundControl",
         "compression": "maximum",
         "mac": {
-            "target": "zip",
             "category": "public.app-category.utilities",
-            "icon": "src/se.icns"
+            "icon": "app/src/se.icns"
+        },
+        "dmg": {
+            "icon": "app/src/se.icns"
+        },
+        "win": {
+            "target": "squirrel",
+            "icon": "app/src/se.ico",
+            "publisherName": "StreamElements"
+        },
+        "nsis": {
+            "installerIcon": "app/src/se.ico",
+            "uninstallerIcon": "app/src/se.ico"
         },
         "squirrelWindows": {
-            "remoteReleases": "https://cdn.streamelements.com/ground-control/updates/"
+            "remoteReleases": "https://cdn.streamelements.com/ground-control/updates/",
+            "iconUrl": "https://cdn.streamelements.com/ground-control/updates/se.ico"
         }
     }
 }

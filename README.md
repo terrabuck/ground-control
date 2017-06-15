@@ -3,13 +3,15 @@ Streamelements client app to manage everything that happens on your stream.
   
 <img src="https://i.nuuls.com/inOjA.png" width="50%"><img src="https://i.nuuls.com/6UvxQ.png" width="50%">  
 
-## Installation
+## Building
 
-1. yarn install
-2. npm i electron -g
-3. yarn start
-4. ???
-5. profit
+1. npm install
+2. cd app
+3. npm install
+4. cd ..
+5. npm run-script build
+6. ???
+7. profit
 
 ## Contributing
 

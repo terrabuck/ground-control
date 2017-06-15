@@ -1,4 +1,4 @@
-/*global $ */
+/*global $, remote */
 var currentPage = "#frame_pop";
 var b4settings = "";
 function goTo(page) {
@@ -66,4 +66,18 @@ $(".goto_sr").on("click", function() {
 });
 $(".goto_pop").on("click", function() {
     goPop();
+});
+
+
+var intDev;
+$(".goto_settings").on('mousedown',function() {
+    intDev = setInterval(function() {
+        remote.getCurrentWindow().toggleDevTools();
+    }, 5000);
+});
+$(".goto_settings").on('mouseup',function() {
+    clearInterval(intDev);
+});
+$(".goto_settings").on('mouseout',function() {
+    clearInterval(intDev);
 });
