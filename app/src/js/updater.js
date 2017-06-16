@@ -32,10 +32,10 @@ var isDev = (function() {
     return false;
 })();
 
-if (!isDev) {
+if ((!isDev) && ["win32", "darwin"].includes(os.platform())) {
     try {
-        got.get(pack.build.squirrelWindows.remoteReleases + "RELEASES").then(res => {
-            if (!upToDate(pack.version, res.body.match(/[0-9]*\.[0-9]*\.[0-9]*/g)[0])) {
+        checkLatestVersion().then(version => {
+            if (!upToDate(pack.version, version)) {
                 const autoUpdater = remote.autoUpdater;
                 $("#updater p").html("Updating");
                 autoUpdater.on('update-availabe', () => {
@@ -52,9 +52,13 @@ if (!isDev) {
                     autoUpdater.quitAndInstall();
                 });
                 try {
-                    autoUpdater.setFeedURL(pack.build.squirrelWindows.remoteReleases);
+                    if (os.platform() === "win32") {
+                        autoUpdater.setFeedURL(pack.updateUrl);
+                    } else if (os.platform() === "darwin") {
+                        autoUpdater.setFeedURL(pack.updateUrl + "<TODO>");
+                    }
                 } catch(err) {
-                    console.log("Not signed for updates.");
+                    console.log(err);
                     showMain();
                 }
                 autoUpdater.checkForUpdates();
@@ -100,5 +104,28 @@ function upToDate(local, remote) {
         return true;
     } else {
         return local >= remote;
+    }
+}
+
+function checkLatestVersion() {
+    switch (os.platform()) {
+        case "win32":
+            return got.get(pack.updateUrl + "RELEASES").then(res => {
+                return res.body.match(/[0-9]*\.[0-9]*\.[0-9]*/g)[0];
+            }).catch(err => {
+                console.error(err);
+                return "0.0.0";
+            });
+        case "darwin":
+            return got.get(pack.updateUrl + "<TODO>").then(res => {
+                try {
+                    return JSON.parse(res.body).version;
+                } catch (err) {
+                    return "0.0.0";
+                }
+            }).catch(err => {
+                console.error(err);
+                return "0.0.0";
+            });
     }
 }

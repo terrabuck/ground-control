@@ -63,7 +63,7 @@ function reg() {
             }
         }
         /* Skip Song */
-        if (settings.keys.skip_song) {
+        if (settings.keys.skip_song && !(settings.other && settings.other.useSR === false)) {
             let key = settings.keys.skip_song;
             try {
                 globalShortcut.register(key, () => {
@@ -92,7 +92,7 @@ function reg() {
         //   }
         // }
         /* Stop/Resume Song */
-        if (settings.keys.SnR_song) {
+        if (settings.keys.SnR_song && !(settings.other && settings.other.useSR === false)) {
             let key = settings.keys.SnR_song;
             try {
                 globalShortcut.register(key, () => {

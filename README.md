@@ -13,6 +13,8 @@ Streamelements client app to manage everything that happens on your stream.
 6. ???
 7. profit
 
+You will also need to `npm i -g electron-builder-squirrel-windows` on windows.
+
 ## Contributing
 
 1. Fork it!

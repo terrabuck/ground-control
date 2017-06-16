@@ -1,7 +1,7 @@
 {
     "name": "ground_control",
     "productName": "Ground Control",
-    "version": "1.2.3",
+    "version": "1.2.4",
     "description": "Ground Control: Hotkeys for your stream",
     "main": "index.js",
     "author": "StreamElements",
@@ -13,5 +13,6 @@
         "mdl-selectfield": "^1.0.4",
         "socket.io-client": "^2.0.3"
     },
-    "homepage": "https://streamelements.com/"
+    "homepage": "https://streamelements.com/",
+    "updateUrl": "https://cdn.streamelements.com/ground-control/updates/"
 }
