@@ -38,7 +38,8 @@
             "uninstallerIcon": "app/src/se.ico"
         },
         "squirrelWindows": {
-            "iconUrl": "https://cdn.streamelements.com/ground-control/updates/se.ico"
+            "iconUrl": "https://cdn.streamelements.com/ground-control/updates/se.ico",
+            "loadingGif": "app/src/install.gif"
         }
     }
 }
