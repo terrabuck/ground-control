@@ -81,3 +81,11 @@ $(".goto_settings").on('mouseup',function() {
 $(".goto_settings").on('mouseout',function() {
     clearInterval(intDev);
 });
+
+var upDev = 0;
+$("#updater").on("click", function() {
+    upDev++;
+    if (upDev >= 10) {
+        remote.getCurrentWindow().toggleDevTools();
+    }
+});
