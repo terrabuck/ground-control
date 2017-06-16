@@ -3,7 +3,7 @@
     "productName": "Ground Control",
     "version": "1.2.4",
     "description": "Ground Control: Hotkeys for your stream",
-    "main": "index.js",
+    "main": "./app/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "electron ./app \"secret dev\"",
@@ -17,6 +17,7 @@
         "electron-builder-squirrel-windows": "^19.3.0"
     },
     "homepage": "https://streamelements.com/",
+    "updateURL": "https://cdn.streamelements.com/ground-control/updates/",
     "build": {
         "appId": "web.streamelements.groundControl",
         "compression": "maximum",
@@ -37,7 +38,6 @@
             "uninstallerIcon": "app/src/se.ico"
         },
         "squirrelWindows": {
-            "remoteReleases": "https://cdn.streamelements.com/ground-control/updates/",
             "iconUrl": "https://cdn.streamelements.com/ground-control/updates/se.ico"
         }
     }
