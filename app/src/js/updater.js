@@ -55,7 +55,7 @@ if ((!isDev) && ["win32", "darwin"].includes(os.platform())) {
                     if (os.platform() === "win32") {
                         autoUpdater.setFeedURL(pack.updateUrl);
                     } else if (os.platform() === "darwin") {
-                        autoUpdater.setFeedURL(pack.updateUrl + "<TODO>");
+                        autoUpdater.setFeedURL(pack.updateUrl + "latest-mac.json");
                     }
                 } catch(err) {
                     console.log(err);
@@ -117,7 +117,7 @@ function checkLatestVersion() {
                 return "0.0.0";
             });
         case "darwin":
-            return got.get(pack.updateUrl + "<TODO>").then(res => {
+            return got.get(pack.updateUrl + "latest-mac.json").then(res => {
                 try {
                     return JSON.parse(res.body).version;
                 } catch (err) {
