@@ -1,6 +1,7 @@
 /*global $, fs, configFile, pack, ipcRenderer*/
 function genKeybinding(title, id) {
     $("#keybindings").append(`<!-- ${title} -->
+        <div id="${id}_top">
             <h6>${title}:</h6>
             <div class="inputF">
                 <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect clearThis">
@@ -11,7 +12,8 @@ function genKeybinding(title, id) {
                     <label class="mdl-textfield__label" for="$${id}">Key...</label>
                 </div>
             </div>
-            <div class="clear"></div>`)
+        </div>
+        <div class="clear"></div>`);
 }
 genKeybinding("Skip alert", "skip_alert");
 genKeybinding("Skip song", "skip_song");
@@ -75,6 +77,9 @@ if ($("#jwt").val()) {
         }
         if (a.other && a.other.useSR === false) {
             ipcRenderer.sendToHost("sr:close");
+            $("div").filter(function() {
+                return this.id.match(/.*_song_top$/);
+            }).css("display", "none");
         } else {
             $("#use_sr").prop("checked", true);
         }
@@ -92,7 +97,18 @@ $("#darkMode_sub").on("property change mouseup", function() {
 // Change SR
 $("#use_sr").on("property change mouseup", function() {
     setTimeout(() => {
-        var mod = $("#use_sr").is(":checked") ? "open" : "close";
+        var mod;
+        if ($("#use_sr").is(":checked")) {
+            $("div").filter(function() {
+                return this.id.match(/.*_song_top$/);
+            }).css("display", "block");
+            mod = "open";
+        } else {
+            $("div").filter(function() {
+                return this.id.match(/.*_song_top$/);
+            }).css("display", "none");
+            mod = "close";
+        }
         ipcRenderer.sendToHost("sr:" + mod);
     }, 10);
 });
