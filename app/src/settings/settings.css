@@ -105,13 +105,25 @@ ul {
 .is-checked .mdl-switch__thumb {
     background: rgb(255,64,129) !important;
 }
+#resetSession {
+    float: right;
+    position: relative;
+    width: 10em;
+    top: -0.5em;
+    margin-right: 1em;
+    background-color: rgb(63,81,181);
+}
+#resetSession a {
+    color: white;
+}
+
+/*Dark Mode*/
 html.darkMode .is-checked .mdl-switch__track {
     background: rgba(62, 224, 156, 0.498039) !important;
 }
 html.darkMode .is-checked .mdl-switch__thumb {
     background: rgb(62, 224, 156) !important;
 }
-
 html.darkMode body {
     color: white;
     background-color: rgb(66, 66, 66);
@@ -142,4 +154,7 @@ html.darkMode label.mdl-textfield__label.is-invalid::after {
 }
 html.darkMode label.mdl-textfield__label::after {
     background-color: orange;
+}
+html.darkMode #resetSession {
+    background-color: #CC5500;
 }

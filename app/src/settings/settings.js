@@ -1,4 +1,4 @@
-/*global $, fs, configFile, pack, ipcRenderer*/
+/*global $, fs, configFile, pack, ipcRenderer, got*/
 function genKeybinding(title, id) {
     $("#keybindings").append(`<!-- ${title} -->
         <div id="${id}_top">
@@ -136,3 +136,24 @@ function update_S() {
 $("input").on("property change keyup", update_S);
 $("select").on("property change keyup", update_S);
 $("darkMode_sub").on("property change mouseup", update_S);
+
+// Reset Session
+$("#resetSession").on("click", function() {
+    got.put("https://api.streamelements.com/kappa/v1/sessions/reset", {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + $("#jwt").val()
+        },
+        body: "{}"
+    }).then(res => {
+        if (res.body !== "Ok") {
+            console.log(res);
+        }
+        $("#resetSession a").html("Done");
+        setTimeout(function() {
+            $("#resetSession a").html("Reset Session");
+        }, 1000);
+    }).catch(err => {
+        console.error(err);
+    });
+});

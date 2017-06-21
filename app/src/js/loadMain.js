@@ -73,10 +73,16 @@ function loadIframe() {
                                     if (currentPage === "#settings") {
                                         goTo("#settings");
                                     }
-                                    pop.insertCSS("a.md-primary.md-button.md-ink-ripple { display: none !important; }");
-                                    pop.insertCSS("md-card._md:nth-of-type(2) { margin-bottom: 0 !important; }");
-                                    pop.insertCSS("img { pointer-events: none !important; }");
-                                    pop.insertCSS(` .mod-approval .md-primary.md-subheader._md .md-subheader-content {
+                                    pop.insertCSS(` a.md-primary.md-button.md-ink-ripple {
+                                                        display: none !important;
+                                                    }
+                                                    md-card._md:nth-of-type(2) {
+                                                        margin-bottom: 0 !important;
+                                                    }
+                                                    img {
+                                                        pointer-events: none !important;
+                                                    }
+                                                    .mod-approval .md-primary.md-subheader._md .md-subheader-content {
                                                         cursor: pointer !important;
                                                     }
                                                     html.darkMode .md-checked .md-thumb-container .md-thumb {
@@ -100,6 +106,9 @@ function loadIframe() {
                                                     .material-icons {
                                                         cursor: pointer;
                                                     }
+                                                    .gc-banner-activity {
+                                                        display: none;
+                                                    }
                                                     `);
                                     pop.addEventListener("new-window", (e) => {
                                         console.log('new window event called');
@@ -108,7 +117,8 @@ function loadIframe() {
                                             shell.openExternal(e.url)
                                         }
                                     });
-                                    pop.executeJavaScript(`function oh_yea() {
+                                    pop.executeJavaScript(`
+                                                        function oh_yea() {
                                                             if($("md-switch[ng-model='vm.adsEnabled']").length) {
                                                                 $("md-switch[ng-model='vm.adsEnabled']").removeClass("flex-60");
                                                                 $("md-switch[ng-model='vm.adsEnabled']").next().css("max-width", "calc(100% - 18.7em)");
@@ -162,16 +172,36 @@ function loadIframe() {
                                         if (currentPage === "#settings") {
                                             goTo("#settings");
                                         }
-                                        srA.insertCSS("md-toolbar { display: none !important; }");
-                                        srA.insertCSS(".container-fluid.wrapper.flex { padding-top: 0em !important; }");
-                                        srA.insertCSS(".flex.notes-div.layout-row.layout-align-start-center { flex: 0 1 auto !important; }");
-                                        srA.insertCSS(".layout-row.layout-align-space-between-start.flex-100 { justify-content: flex-start !important; }");
-                                        srA.insertCSS(".social-media { display: none !important; }");
-                                        srA.insertCSS(".copyright { display: none !important; }");
-                                        srA.insertCSS("md-sidenav { display: none !important; }");
-                                        srA.insertCSS("md-content.flex.layout-fill.layout-row.content-dash-wrapper._md { padding-left: 0 !important; }");
-                                        srA.insertCSS("a.md-primary.md-button.md-ink-ripple { display: none !important; }");
-                                        srA.insertCSS("#livechat-compact-container { display: none !important; }")
+                                        srA.insertCSS(` md-toolbar {
+                                                            display: none !important;
+                                                        }
+                                                        .container-fluid.wrapper.flex {
+                                                            padding-top: 0em !important;
+                                                        }
+                                                        .flex.notes-div.layout-row.layout-align-start-center {
+                                                            flex: 0 1 auto !important;
+                                                        }
+                                                        .layout-row.layout-align-space-between-start.flex-100 {
+                                                            justify-content: flex-start !important;
+                                                        }
+                                                        .social-media {
+                                                            display: none !important;
+                                                        }
+                                                        .copyright {
+                                                            display: none !important;
+                                                        }
+                                                        md-sidenav {
+                                                            display: none !important;
+                                                        }
+                                                        md-content.flex.layout-fill.layout-row.content-dash-wrapper._md {
+                                                            padding-left: 0 !important;
+                                                        }
+                                                        a.md-primary.md-button.md-ink-ripple {
+                                                            display: none !important;
+                                                        }
+                                                        #livechat-compact-container {
+                                                            display: none !important;
+                                                        }`);
                                         /* Start Dark mode */
                                         if ($("html").hasClass("darkMode")) {
                                             srA.executeJavaScript(`$("html").addClass("darkMode");`);

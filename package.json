@@ -1,7 +1,7 @@
 {
     "name": "ground_control",
     "productName": "Ground Control",
-    "version": "1.2.4",
+    "version": "1.2.5",
     "description": "Ground Control: Hotkeys for your stream",
     "main": "./app/index.js",
     "scripts": {
