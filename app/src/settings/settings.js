@@ -8,7 +8,7 @@ function genKeybinding(title, id) {
                     <i class="material-icons">clear</i>
                 </button>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 20em;margin-right: 1em;">
-                    <input class="mdl-textfield__input autoC" type="text" id="${id}">
+                    <input class="mdl-textfield__input autoC" type="text" id="${id}" ondragstart="return false;" ondrop="return false;">
                     <label class="mdl-textfield__label" for="$${id}">Key...</label>
                 </div>
             </div>
@@ -157,3 +157,8 @@ $("#resetSession").on("click", function() {
         console.error(err);
     });
 });
+
+// Prevent Redirection
+window.onbeforeunload = function() {
+    return false;
+}

@@ -42,8 +42,8 @@ function loadIframe() {
                                 if (currentPage !== "#settings") {
                                     $(".goto_sr").css("display", "inline-block");
                                 }
-                                const pop = document.querySelector('#frame_pop');
-                                const sr = document.querySelector('#frame_sr');
+                                const pop = document.querySelector("#frame_pop");
+                                const sr = document.querySelector("#frame_sr");
                                 const settings = document.querySelector("#settings");
                                 settings.addEventListener("ipc-message", (event) => {
                                     if (event.channel.startsWith("reload")) {
@@ -64,7 +64,7 @@ function loadIframe() {
                                                 $("#nav").prepend(`<button onclick="goSr();" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect goto_sr"><i class="material-icons">music_note</i>` + 
                                                 `</button><button onclick="goPop();" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect goto_pop"><i class="material-icons">menu</i></button>`);
                                                 $("#main").append(`<webview id="frame_sr" src="https://streamelements.com/dashboard/songrequest/general" class="frame"></webview>`);
-                                                loadSr(document.querySelector('#frame_sr'));
+                                                loadSr(document.querySelector("#frame_sr"));
                                             }
                                         }
                                     }
@@ -111,13 +111,15 @@ function loadIframe() {
                                                     }
                                                     `);
                                     pop.addEventListener("new-window", (e) => {
-                                        console.log('new window event called');
-                                        const protocol = require('url').parse(e.url).protocol
-                                        if (protocol === 'http:' || protocol === 'https:') {
+                                        const protocol = require("url").parse(e.url).protocol
+                                        if (protocol === "http:" || protocol === "https:") {
                                             shell.openExternal(e.url)
                                         }
                                     });
                                     pop.executeJavaScript(`
+                                                        window.onbeforeunload = function() {
+                                                            return false;
+                                                        }
                                                         function oh_yea() {
                                                             if($("md-switch[ng-model='vm.adsEnabled']").length) {
                                                                 $("md-switch[ng-model='vm.adsEnabled']").removeClass("flex-60");
@@ -172,6 +174,7 @@ function loadIframe() {
                                         if (currentPage === "#settings") {
                                             goTo("#settings");
                                         }
+                                        srA.executeJavaScript(`window.onbeforeunload = function() { return false; }`);
                                         srA.insertCSS(` md-toolbar {
                                                             display: none !important;
                                                         }
@@ -201,6 +204,12 @@ function loadIframe() {
                                                         }
                                                         #livechat-compact-container {
                                                             display: none !important;
+                                                        }
+                                                        .songrequest-current-song {
+                                                            order: 0 !important;
+                                                        }
+                                                        .songrequest-sidebar {
+                                                            max-height: none !important;
                                                         }`);
                                         /* Start Dark mode */
                                         if ($("html").hasClass("darkMode")) {
