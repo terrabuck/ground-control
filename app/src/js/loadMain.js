@@ -210,7 +210,13 @@ function loadIframe() {
                                                         }
                                                         .songrequest-sidebar {
                                                             max-height: none !important;
-                                                        }`);
+                                                        }
+                                                        .md-scroll-mask,
+                                                        .md-dialog-container.ng-scope,
+                                                        md-backdrop {
+                                                            display: none !important;
+                                                        }
+                                                        `);
                                         /* Start Dark mode */
                                         if ($("html").hasClass("darkMode")) {
                                             srA.executeJavaScript(`$("html").addClass("darkMode");`);
