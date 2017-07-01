@@ -61,7 +61,7 @@ function loadIframe() {
                                                 $("#frame_sr").remove();
                                                 b4settings = "#main";
                                             } else if (mod === "open") {
-                                                $("#nav").prepend(`<button onclick="goSr();" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect goto_sr"><i class="material-icons">music_note</i>` + 
+                                                $("#nav").prepend(`<button onclick="goSr();" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect goto_sr"><i class="material-icons">music_note</i>` +
                                                 `</button><button onclick="goPop();" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect goto_pop"><i class="material-icons">menu</i></button>`);
                                                 $("#main").append(`<webview id="frame_sr" src="https://streamelements.com/dashboard/songrequest/general" class="frame"></webview>`);
                                                 loadSr(document.querySelector("#frame_sr"));
@@ -85,21 +85,6 @@ function loadIframe() {
                                                     .mod-approval .md-primary.md-subheader._md .md-subheader-content {
                                                         cursor: pointer !important;
                                                     }
-                                                    html.darkMode .md-checked .md-thumb-container .md-thumb {
-                                                        background-color: rgb(62, 224, 156);
-                                                    }
-                                                    html.darkMode .md-checked .md-container .md-bar {
-                                                        background-color: rgba(62, 224, 156, 0.498039);
-                                                    }
-                                                    html.darkMode .ads-control {
-                                                        color: white !important;
-                                                    }
-                                                    html.darkMode .event-username {
-                                                        color: white !important;
-                                                    }
-                                                    html.darkMode p.event-message a {
-                                                        color: #a4fffc !important;
-                                                    }
                                                     .flex.md-button.md-ink-ripple md-icon {
                                                         cursor: pointer !important;
                                                     }
@@ -109,7 +94,9 @@ function loadIframe() {
                                                     .gc-banner-activity {
                                                         display: none;
                                                     }
-                                                    `);
+                                                    iframe#launcher {
+                                                        display: none !important;
+                                                    }`);
                                     pop.addEventListener("new-window", (e) => {
                                         const protocol = require("url").parse(e.url).protocol
                                         if (protocol === "http:" || protocol === "https:") {
@@ -166,6 +153,21 @@ function loadIframe() {
                                                     }
                                                     html.darkMode .md-checked .md-icon::after {
                                                         border-color: black !important;
+                                                    }
+                                                    html.darkMode .md-checked .md-thumb-container .md-thumb {
+                                                        background-color: rgb(62, 224, 156);
+                                                    }
+                                                    html.darkMode .md-checked .md-container .md-bar {
+                                                        background-color: rgba(62, 224, 156, 0.498039);
+                                                    }
+                                                    html.darkMode .ads-control {
+                                                        color: white !important;
+                                                    }
+                                                    html.darkMode .event-username {
+                                                        color: white !important;
+                                                    }
+                                                    html.darkMode p.event-message a {
+                                                        color: #a4fffc !important;
                                                     }`);
                                     /* End Dark mode */
                                 });
@@ -216,7 +218,9 @@ function loadIframe() {
                                                         md-backdrop {
                                                             display: none !important;
                                                         }
-                                                        `);
+                                                        iframe#launcher {
+                                                            display: none !important;
+                                                        }`);
                                         /* Start Dark mode */
                                         if ($("html").hasClass("darkMode")) {
                                             srA.executeJavaScript(`$("html").addClass("darkMode");`);
@@ -302,6 +306,9 @@ function loadIframe() {
                                                         }
                                                         html.darkMode md-autocomplete * {
                                                             color: white;
+                                                        }
+                                                        html.darkMode .md-focus-ring {
+                                                            background-color: rgba(255,64,129,0.2) !important;
                                                         }`);
                                         /* End Dark mode */
                                     });

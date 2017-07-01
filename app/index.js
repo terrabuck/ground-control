@@ -4,6 +4,7 @@ const url = require('url');
 const fs = require('fs');
 const os = require('os');
 const chokidar = require('chokidar');
+const windowStateKeeper = require('electron-window-state');
 const connectSocket = require('./src/modules/socket');
 
 let configFile = path.normalize(os.homedir() + "/.se-gc/config.json");
@@ -129,14 +130,24 @@ function createWindow() {
         }
     });
 
+    // Remember position and size
+    let mainWindowState = windowStateKeeper({
+        defaultWidth: 650,
+        defaultHeight: 790
+    });
 
     // Create the browser window.
     win = new BrowserWindow({
-        width: 650,
-        height: 790,
+        width: mainWindowState.width,
+        height: mainWindowState.height,
+        x: mainWindowState.x,
+        y: mainWindowState.y,
         resizable: true,
         icon: os.platform() === "win32" ? path.join(__dirname, 'src/se.ico') : path.join(__dirname, 'src/se64.png')
     });
+
+    // Save when closed
+    mainWindowState.manage(win);
 
     // Hide top bar
     win.setMenu(null);
