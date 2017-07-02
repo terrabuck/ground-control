@@ -15,7 +15,7 @@
     "license": "MIT",
     "devDependencies": {
         "electron": "^1.6.11",
-        "electron-builder": "^18.8.1",
+        "electron-builder": "^19.11.1",
         "electron-builder-squirrel-windows": "^19.5.0"
     },
     "homepage": "https://streamelements.com/",
