@@ -6,7 +6,7 @@
     "main": "./app/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "electron ./app \"secret dev\"",
+        "start": "./node_modules/.bin/electron ./app \"secret dev\"",
         "prebuild": "rm -rf ./dist",
         "build": "./node_modules/.bin/build",
         "darwin-sign": "codesign -s \"Developer ID Application: Live Momentum LTD (89UTB3Y8A7)\" ./dist/*.dmg"

@@ -47,6 +47,11 @@ function reg() {
             console.error(err);
         }
     });
+    session.defaultSession.cookies.set({ url: "https://streamelements.com", name: "GC", value: "1" }, (err) => {
+        if (err) {
+            console.error(err);
+        }
+    });
 
     if (settings.keys && settings.token && settings.token !== "") {
         /* Skip Alert */

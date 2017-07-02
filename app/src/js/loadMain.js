@@ -176,7 +176,32 @@ function loadIframe() {
                                         if (currentPage === "#settings") {
                                             goTo("#settings");
                                         }
-                                        srA.executeJavaScript(`window.onbeforeunload = function() { return false; }`);
+                                        srA.executeJavaScript(` window.onbeforeunload = function() {
+                                                                    return false; 
+                                                                };
+                                                                $(document).ready(function() {
+                                                                    var timeIsUp = false;
+                                                                    function closeN() {
+                                                                        setTimeout(function() {
+                                                                            if (timeIsUp) {
+                                                                                // Nothing
+                                                                            } else if ($("body.md-dialog-is-showing").length == true) {
+                                                                                var esc = $.Event("keydown", { keyCode: 27 });
+                                                                                $("body").trigger(esc);
+                                                                                console.log("Closed news");
+                                                                            } else {
+                                                                                closeN();
+                                                                            }
+                                                                        }, 1000);
+                                                                        setTimeout(function() {
+                                                                            timeIsUp = true;
+                                                                        }, 1000 * 60);
+                                                                        $(document).on("click", function() {
+                                                                            timeIsUp = true;
+                                                                        });
+                                                                    }
+                                                                    closeN();
+                                                                });`);
                                         srA.insertCSS(` md-toolbar {
                                                             display: none !important;
                                                         }
@@ -212,11 +237,6 @@ function loadIframe() {
                                                         }
                                                         .songrequest-sidebar {
                                                             max-height: none !important;
-                                                        }
-                                                        .md-scroll-mask,
-                                                        .md-dialog-container.ng-scope,
-                                                        md-backdrop {
-                                                            display: none !important;
                                                         }
                                                         iframe#launcher {
                                                             display: none !important;
