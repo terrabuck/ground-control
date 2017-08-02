@@ -16,6 +16,7 @@ function genKeybinding(title, id) {
         <div class="clear"></div>`);
 }
 genKeybinding("Skip alert", "skip_alert");
+genKeybinding("Stop/Resume alerts", "SnR_alert");
 genKeybinding("Skip song", "skip_song");
 genKeybinding("Stop/Resume song", "SnR_song");
 
