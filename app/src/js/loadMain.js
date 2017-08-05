@@ -328,7 +328,7 @@ function loadIframe() {
                                                             color: white;
                                                         }
                                                         html.darkMode .md-focus-ring {
-                                                            background-color: rgba(255,64,129,0.2) !important;
+                                                            background-color: rgba(64, 255, 123, 0.2) !important;
                                                         }`);
                                         /* End Dark mode */
                                     });
