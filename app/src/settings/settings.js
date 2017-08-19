@@ -1,4 +1,7 @@
-/*global $, fs, configFile, pack, ipcRenderer, got*/
+/*global $, fs, configFile, pack, ipcRenderer, got, api, url, shell*/
+$("#getToken").on("click", function() {
+    shell.openExternal(`https://${url}/dashboard/account/information`);
+});
 function genKeybinding(title, id) {
     $("#keybindings").append(`<!-- ${title} -->
         <div id="${id}_top">
@@ -76,11 +79,20 @@ if ($("#jwt").val()) {
             $("html").addClass("darkMode");
             $("#darkMode_sub").prop("checked", true);
         }
-        if (a.other && a.other.useSR === false) {
-            ipcRenderer.sendToHost("sr:close");
-            $("div").filter(function() {
-                return this.id.match(/.*_song_top$/);
-            }).css("display", "none");
+        if (a.other) {
+            if (a.other.useSR === false) {
+                ipcRenderer.sendToHost("sr:close");
+                $("div").filter(function() {
+                    return this.id.match(/.*_song_top$/);
+                }).css("display", "none");
+            } else {
+                $("#use_sr").prop("checked", true);
+            }
+            if (a.other.useCompact === true) {
+                $("#use_compact").prop("checked", true);
+            } else {
+
+            }
         } else {
             $("#use_sr").prop("checked", true);
         }
@@ -88,11 +100,19 @@ if ($("#jwt").val()) {
 })();
 
 // Change mode
-$("#darkMode_sub").on("property change mouseup", function() {
+function changeMode() {
     setTimeout(() => {
-        var mod = $("#darkMode_sub").is(":checked") ? "dark" : "light";
+        var mod = $("#use_compact").is(":checked") ? "-compact" : "";
+        let dark = $("#darkMode_sub").is(":checked") ? "dark" : "light";
+        mod = dark + mod;
         ipcRenderer.sendToHost("reload:" + mod);
     }, 10);
+}
+$("#use_compact").on("property change mouseup", function() {
+    changeMode();
+});
+$("#darkMode_sub").on("property change mouseup", function() {
+    changeMode();
 });
 
 // Change SR
@@ -121,7 +141,8 @@ function update_S() {
         keys: {},
         darkMode: $("#darkMode_sub").is(":checked"),
         other: {
-            useSR: $("#use_sr").is(":checked")
+            useSR: $("#use_sr").is(":checked"),
+            useCompact: $("#use_compact").is(":checked")
         }
     };
     $(".autoC").each(function() {
@@ -140,7 +161,7 @@ $("darkMode_sub").on("property change mouseup", update_S);
 
 // Reset Session
 $("#resetSession").on("click", function() {
-    got.put("https://api.streamelements.com/kappa/v1/sessions/reset", {
+    got.put(`https://${api}/kappa/v1/sessions/reset`, {
         headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + $("#jwt").val()

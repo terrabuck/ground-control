@@ -1,6 +1,6 @@
-/*global got, $, fs, configFile, goTo, currentPage, shell, b4settings*/
+/*global got, $, fs, configFile, goTo, currentPage, shell, b4settings, api, url*/
 function checkValidToken(token) {
-    return got.get("https://api.streamelements.com/kappa/v1/users/me", {
+    return got.get(`https://${api}/kappa/v1/users/me`, {
         headers: {
             authorization: "Bearer " + token
         }
@@ -34,10 +34,10 @@ function loadIframe() {
                                 if (a.other && a.other.useSR === false) {
                                     $(".goto_sr").remove();
                                     $(".goto_pop").remove();
-                                    $("#main").html(`<webview id="frame_pop" src="https://streamelements.com/dashboard/${res.username || "%20"}/activity/popout" class="frame"></webview>`);
+                                    $("#main").html(`<webview id="frame_pop" src="https://${url}/dashboard/${res.username || "%20"}/activity/popout" class="frame"></webview>`);
                                 } else {
-                                    $("#main").html(`<webview id="frame_pop" src="https://streamelements.com/dashboard/${res.username || "%20"}/activity/popout" class="frame"></webview>` +
-                                        `<webview id="frame_sr" src="https://streamelements.com/dashboard/songrequest/general" class="frame"></webview>`);
+                                    $("#main").html(`<webview id="frame_pop" src="https://${url}/dashboard/${res.username || "%20"}/activity/popout" class="frame"></webview>` +
+                                        `<webview id="frame_sr" src="https://${url}/dashboard/songrequest/general" class="frame"></webview>`);
                                 }
                                 if (currentPage !== "#settings") {
                                     $(".goto_sr").css("display", "inline-block");
@@ -63,7 +63,7 @@ function loadIframe() {
                                             } else if (mod === "open") {
                                                 $("#nav").prepend(`<button onclick="goSr();" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect goto_sr"><i class="material-icons">music_note</i>` +
                                                 `</button><button onclick="goPop();" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect goto_pop"><i class="material-icons">menu</i></button>`);
-                                                $("#main").append(`<webview id="frame_sr" src="https://streamelements.com/dashboard/songrequest/general" class="frame"></webview>`);
+                                                $("#main").append(`<webview id="frame_sr" src="https://${url}/dashboard/songrequest/general" class="frame"></webview>`);
                                                 loadSr(document.querySelector("#frame_sr"));
                                             }
                                         }
@@ -170,6 +170,88 @@ function loadIframe() {
                                                         color: #a4fffc !important;
                                                     }`);
                                     /* End Dark mode */
+                                    /* Start Compact mode */
+                                    if ($("html").hasClass("compact")) {
+                                        pop.executeJavaScript(` $("html").addClass("compact");
+                                                                $("body").bind("DOMSubtreeModified",function(){
+                                                                    $("h4.mb-event-type:not([moved])").each(function() {
+                                                                        $(this).attr("moved", "").css("margin-left", "1em");
+                                                                        $(this).prev().append($(this));
+                                                                    });
+                                                                });
+                                        `);
+                                    }
+                                    pop.insertCSS(` html.compact md-list-item {
+                                                        min-height: 0 !important;
+                                                    }
+                                                    html.compact button.replay-event-button span.ng-scope {
+                                                        display: none;
+                                                    }
+                                                    html.compact md-list-item .md-avatar {
+                                                        height: 2em !important;
+                                                        width: 2em !important;
+                                                    }
+                                                    
+                                                    html.compact button.replay-event-button {
+                                                        min-width: 0;
+                                                        min-height: 0;
+                                                        top: 0em;
+                                                        height: 2.125em;
+                                                        padding: 0;
+                                                        margin: 0 0.75em 0 0;
+                                                    }
+                                                    html.compact button.replay-event-button md-icon {
+                                                        position: relative;
+                                                        top: -0.125;
+                                                    }
+
+                                                    html.compact span.event-time.next-to-replay {
+                                                        padding-top: calc(0.2em + 1px);
+                                                        right: 3.5em;
+                                                    }
+
+                                                    html.compact img.md-avatar {
+                                                        margin-bottom: 0;
+                                                    }
+                                                    html.compact md-list-item.md-2-line img.md-avatar {
+                                                        margin-top: 0.2em;
+                                                    }
+                                                    html.compact md-list-item.md-3-line img.md-avatar {
+                                                        margin-top: 0.5em;
+                                                    }
+
+                                                    html.compact md-list-item:before {
+                                                        min-height: 0;
+                                                    }
+                                                    html.compact div.md-list-item-text.event-section {
+                                                        padding: 0.4em 0.5em 0.5em 0 !important;
+                                                    }
+                                                    html.compact md-list-item.md-3-line div.md-list-item-text.event-section {
+                                                        padding-top: 0.1em !important;
+                                                        padding-bottom: 0 !important;
+                                                    }
+
+                                                    html.compact p.event-message.ng-binding {
+                                                        padding-right: 0.5em;
+                                                    }
+                                                    html.compact a.event-username {
+                                                        font-weight: bold;
+                                                        font-size: 1.1em;
+                                                    }
+
+                                                    html.compact h4[ng-switch="event.type"] span {
+                                                        position: relative;
+                                                        top: -1px;
+                                                    }
+
+                                                    html.compact span[ng-switch-when="subscriber"] span {
+                                                        top: 0;
+                                                    }
+                                                    html.compact span[ng-switch-when="host"] span {
+                                                        top: 0;
+                                                    }
+                                    `);
+                                    /* End Compact mode */
                                 });
                                 function loadSr(srA = sr) {
                                     srA.addEventListener("dom-ready", () => {
@@ -344,10 +426,14 @@ function loadIframe() {
                             $("#main").css("display", "block");
                         }
                     }).catch(err => {
-                        console.warn(err);
+                        if (err.statusCode < 500) {
+                            $("#main").html(`<p id="error">You entered an invalid <a>JWT Token</a>.</p>`);
+                        } else {
+                            console.warn(err);
+                            $("#main").html(`<p id="error">Something is wrong on our site...</p>`);
+                        }
                         $("#main").css("display", "none");
                         $(".goto_sr").css("display", "none");
-                        $("#main").html(`<p id="error">Something is wrong on our site...</p>`);
                         $("#main").css("display", "block");
                     });
                 } else {

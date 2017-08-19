@@ -13,10 +13,23 @@
     <script src="js/jquery-3.2.1.min.js"></script>
     <script>
         if (window.module) module = window.module;
-        if (window.location.hash === "#light"){
-            $("html").removeClass("darkMode");
-        } else if (window.location.hash === "#dark") {
-            $("html").addClass("darkMode");
+        switch (window.location.hash) {
+            case "#light":
+                $("html").removeClass("darkMode"); 
+                $("html").removeClass("compact");           
+                break;
+            case "#dark":
+                $("html").addClass("darkMode");
+                $("html").removeClass("compact");
+                break;
+            case "#light-compact":
+                $("html").removeClass("darkMode");
+                $("html").addClass("compact");
+                break;
+            case "#dark-compact":
+                $("html").addClass("darkMode");
+                $("html").addClass("compact");
+                break;
         }
     </script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">

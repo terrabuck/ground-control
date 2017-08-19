@@ -199,6 +199,12 @@ function createWindow() {
     } else {
         contents.executeJavaScript(`$("html").removeClass("darkMode")`);
     }
+    /* Compact mode */
+    if (settings.other && settings.other.useCompact) {
+        contents.executeJavaScript(`$("html").addClass("compact")`);
+    } else {
+        contents.executeJavaScript(`$("html").removeClass("compact")`);
+    }
 
     // When target="_blank"
     win.webContents.on('new-window', (event, url) => {
