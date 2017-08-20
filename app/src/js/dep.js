@@ -16,3 +16,5 @@ if (fs.existsSync('./package.json')) {
 } else if (fs.existsSync(__filename.replace(/src.*/, "") + "package.json")) {
     pack = JSON.parse(fs.readFileSync(__filename.replace(/src.*/, "") + "package.json", 'utf8'));
 }
+const url = "streamelements.com";
+const api = "api.streamelements.com";

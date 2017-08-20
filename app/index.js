@@ -65,51 +65,53 @@ function reg() {
                     }
                 });
             } catch (error) {
-                console.log(`Keybind for 'Skip Alert' failed, '${key}'`);
-            }
-        }
-        /* Skip Song */
-        if (settings.keys.skip_song && !(settings.other && settings.other.useSR === false)) {
-            let key = settings.keys.skip_song;
-            try {
-                globalShortcut.register(key, () => {
-                    if (contents) {
-                        contents.executeJavaScript(`document.querySelector("#frame_sr").executeJavaScript(\`$("button[ng-click='vm.skipSong($event)']").click()\`);`, true).then(() => {
-                            console.log("Send: 'Skip Song'");
-                        });
-                    }
-                });
-            } catch (error) {
-                console.log(`Keybind for 'Skip Song' failed, '${key}'`);
+                console.error(`Keybind for 'Skip Alert' failed, '${key}'`);
             }
         }
         /* Stop/Resume Alerts */
-        // if (settings.keys.SnR_alert) {
-        //   let key = settings.keys.SnR_alert;
-        //   try {
-        //     globalShortcut.register(key, () => {
-        //       if (socket) {
-        //         console.log("Send: 'Stop/Resume Alerts'");
-        //         socket.emit('overlay:togglequeue');
-        //       }
-        //     });
-        //   } catch (error) {
-        //     console.log(`Keybind for 'Stop/Resume Alerts' failed, '${key}'`);
-        //   }
-        // }
-        /* Stop/Resume Song */
-        if (settings.keys.SnR_song && !(settings.other && settings.other.useSR === false)) {
-            let key = settings.keys.SnR_song;
-            try {
-                globalShortcut.register(key, () => {
-                    if (contents) {
-                        contents.executeJavaScript(`document.querySelector("#frame_sr").executeJavaScript(\`$("button[ng-click='vm.togglePlayer()']").click()\`);`, true).then(() => {
-                            console.log("Send: 'Stop/Resume Song'");
-                        });
-                    }
-                });
-            } catch (error) {
-                console.log(`Keybind for 'Stop/Resume Song' failed, '${key}'`);
+        if (settings.keys.SnR_alert) {
+          let key = settings.keys.SnR_alert;
+          try {
+            globalShortcut.register(key, () => {
+              if (socket) {
+                console.log("Send: 'Stop/Resume Alerts'");
+                socket.emit('overlay:togglequeue');
+              }
+            });
+          } catch (error) {
+            console.error(`Keybind for 'Stop/Resume Alerts' failed, '${key}'`);
+          }
+        }
+        /* Skip Song */
+        if (!(settings.other && settings.other.useSR === false)) {
+            if (settings.keys.skip_song) {
+                let key = settings.keys.skip_song;
+                try {
+                    globalShortcut.register(key, () => {
+                        if (contents) {
+                            contents.executeJavaScript(`document.querySelector("#frame_sr").executeJavaScript(\`$("button[ng-click='vm.skipSong($event)']").click()\`);`, true).then(() => {
+                                console.log("Send: 'Skip Song'");
+                            });
+                        }
+                    });
+                } catch (error) {
+                    console.error(`Keybind for 'Skip Song' failed, '${key}'`);
+                }
+            }
+            /* Stop/Resume Song */
+            if (settings.keys.SnR_song) {
+                let key = settings.keys.SnR_song;
+                try {
+                    globalShortcut.register(key, () => {
+                        if (contents) {
+                            contents.executeJavaScript(`document.querySelector("#frame_sr").executeJavaScript(\`$("button[ng-click='vm.togglePlayer()']").click()\`);`, true).then(() => {
+                                console.log("Send: 'Stop/Resume Song'");
+                            });
+                        }
+                    });
+                } catch (error) {
+                    console.error(`Keybind for 'Stop/Resume Song' failed, '${key}'`);
+                }
             }
         }
     }
@@ -196,6 +198,12 @@ function createWindow() {
         contents.executeJavaScript(`$("html").addClass("darkMode")`);
     } else {
         contents.executeJavaScript(`$("html").removeClass("darkMode")`);
+    }
+    /* Compact mode */
+    if (settings.other && settings.other.useCompact) {
+        contents.executeJavaScript(`$("html").addClass("compact")`);
+    } else {
+        contents.executeJavaScript(`$("html").removeClass("compact")`);
     }
 
     // When target="_blank"

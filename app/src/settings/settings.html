@@ -42,7 +42,7 @@
                 <input type="checkbox" id="show-jwt" class="mdl-icon-toggle__input">
                 <i class="mdl-icon-toggle__label material-icons">visibility</i>
         </label>
-        <p>You can find it under <a onclick="shell.openExternal('https://streamelements.com/dashboard/account/information');" style="cursor: pointer;">My Account</a></p>
+        <p>You can find it under <a id="getToken" style="cursor: pointer;">My Account</a></p>
 
         <h4>Keybindings</h4>
         <div id="keybindings">
@@ -58,6 +58,12 @@
                 <span class="mdl-switch__label"></span>
             </label>
             <button id="resetSession" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"><a>Reset Session</a></button>
+            <br><br>
+            <h6>Use Compact Mode: </h6>
+            <label class="mdl-switch mdl-js-switch" for="use_compact">
+                <input type="checkbox" id="use_compact" class="mdl-switch__input">
+                <span class="mdl-switch__label"></span>
+            </label>
         </div>
         <div class="clear"></div>
         <a id="version"></a>

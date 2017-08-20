@@ -38,7 +38,7 @@ if ((!isDev) && ["win32", "darwin"].includes(os.platform())) {
             if (!upToDate(pack.version, version)) {
                 const autoUpdater = remote.autoUpdater;
                 $("#updater p").html("Updating");
-                autoUpdater.on('update-availabe', () => {
+                autoUpdater.on('update-available', () => {
                     console.log('update available');
                 });
                 autoUpdater.on('checking-for-update', () => {
