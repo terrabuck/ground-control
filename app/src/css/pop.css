@@ -38,7 +38,7 @@ html.darkMode div.md-list-item-text.event-section.layout-column a *,
 html.darkMode div.md-list-item-text.event-section.layout-column h4 *,
 html.darkMode div.md-list-item-text.event-section.layout-column .next-to-replay,
 html.darkMode div.md-list-item-text.event-section.layout-column .event-message {
-    color: rgb(230, 230, 230);
+    color: rgba(255, 255, 255, 0.8);
 }
 html.darkMode a.md-primary *,
 html.darkMode .md-subheader-inner *,
@@ -62,7 +62,7 @@ html.darkMode .ads-control {
     color: white !important;
 }
 html.darkMode .event-username {
-    color: white !important;
+    color: rgba(255, 255, 255, 0.9) !important;
 }
 html.darkMode p.event-message a {
     color: #a4fffc !important;
@@ -108,7 +108,7 @@ html.compact md-list-item:before {
     min-height: 0;
 }
 html.compact div.md-list-item-text.event-section {
-    padding: 0.4em 0.5em 0.5em 0 !important;
+    padding: 0.7em 0.7em 0.7em 0 !important;
 }
 html.compact md-list-item.md-3-line div.md-list-item-text.event-section {
     padding-top: 0.1em !important;
