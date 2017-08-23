@@ -33,7 +33,7 @@ webview {
 html.darkMode #error,
 html.darkMode body,
 html.darkmode webview {
-    background-color: rgb(66, 66, 66);
+    background-color: rgb(33, 33, 33);
     color: white;
 }
 html.darkMode a {

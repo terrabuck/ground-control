@@ -128,19 +128,19 @@ function loadIframe() {
                                     }
                                     pop.insertCSS(` html.darkMode body,
                                                     html.darkMode md-content {
-                                                        background-color: rgb(48, 48, 48);
+                                                        background-color: rgb(33, 33, 33);
                                                     }
                                                     html.darkMode md-card,
                                                     html.darkMode md-list-item,
                                                     html.darkMode div.md-primary.md-subheader._md {
-                                                        background-color: rgb(66,66,66) !important;
+                                                        background-color: rgb(48, 48, 48) !important;
                                                     }
                                                     html.darkMode .filter._md *,
                                                     html.darkMode div.md-list-item-text.event-section.layout-column a *,
                                                     html.darkMode div.md-list-item-text.event-section.layout-column h4 *,
                                                     html.darkMode div.md-list-item-text.event-section.layout-column .next-to-replay,
                                                     html.darkMode div.md-list-item-text.event-section.layout-column .event-message {
-                                                        color: white;
+                                                        color: rgb(230, 230, 230);
                                                     }
                                                     html.darkMode a.md-primary *,
                                                     html.darkMode .md-subheader-inner *,
