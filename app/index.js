@@ -183,29 +183,28 @@ function createWindow() {
         Menu.setApplicationMenu(Menu.buildFromTemplate(template));
     }
 
+    var hash = "";
+    /* Dark mode */
+    if (settings.darkMode) {
+        hash += "#dark";
+    } else {
+        hash += "#light";
+    }
+    /* Compact mode */
+    if (settings.other && settings.other.useCompact) {
+        hash += "-compact";
+    }
+    
     // and load the index.html of the app.
     win.loadURL(url.format({
         pathname: path.join(__dirname, 'src/index.html'),
         protocol: 'file:',
-        slashes: true
+        slashes: true,
+        hash
     }));
 
     // set contents
     contents = win.webContents;
-
-    /* Dark mode */
-    if (settings.darkMode) {
-        contents.executeJavaScript(`$("html").addClass("darkMode")`);
-    } else {
-        contents.executeJavaScript(`$("html").removeClass("darkMode")`);
-    }
-    /* Compact mode */
-    if (settings.other && settings.other.useCompact) {
-        contents.executeJavaScript(`$("html").addClass("compact")`);
-    } else {
-        contents.executeJavaScript(`$("html").removeClass("compact")`);
-    }
-
     // When target="_blank"
     win.webContents.on('new-window', (event, url) => {
         event.preventDefault();
