@@ -125,7 +125,7 @@ html.darkMode .is-checked .mdl-switch__thumb {
 }
 html.darkMode body {
     color: white;
-    background-color: rgb(66, 66, 66);
+    background-color: rgb(48, 48, 48);
 }
 html.darkMode #version {
     color: white;
