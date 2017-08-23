@@ -195,15 +195,15 @@ function createWindow() {
 
     /* Dark mode */
     if (settings.darkMode) {
-        contents.executeJavaScript(`$("html").addClass("darkMode")`);
+        contents.executeJavaScript(`$("html").addClass("darkMode"); location.hash = "#dark";`);
     } else {
-        contents.executeJavaScript(`$("html").removeClass("darkMode")`);
+        contents.executeJavaScript(`$("html").removeClass("darkMode"); location.hash = "#light";`);
     }
     /* Compact mode */
     if (settings.other && settings.other.useCompact) {
-        contents.executeJavaScript(`$("html").addClass("compact")`);
+        contents.executeJavaScript(`$("html").addClass("compact"); location.hash += "-light";`);
     } else {
-        contents.executeJavaScript(`$("html").removeClass("compact")`);
+        contents.executeJavaScript(`$("html").removeClass("compact");`);
     }
 
     // When target="_blank"
