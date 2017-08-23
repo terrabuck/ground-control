@@ -73,30 +73,7 @@ function loadIframe() {
                                     if (currentPage === "#settings") {
                                         goTo("#settings");
                                     }
-                                    pop.insertCSS(` a.md-primary.md-button.md-ink-ripple {
-                                                        display: none !important;
-                                                    }
-                                                    md-card._md:nth-of-type(2) {
-                                                        margin-bottom: 0 !important;
-                                                    }
-                                                    img {
-                                                        pointer-events: none !important;
-                                                    }
-                                                    .mod-approval .md-primary.md-subheader._md .md-subheader-content {
-                                                        cursor: pointer !important;
-                                                    }
-                                                    .flex.md-button.md-ink-ripple md-icon {
-                                                        cursor: pointer !important;
-                                                    }
-                                                    .material-icons {
-                                                        cursor: pointer;
-                                                    }
-                                                    .gc-banner-activity {
-                                                        display: none;
-                                                    }
-                                                    iframe#launcher {
-                                                        display: none !important;
-                                                    }`);
+                                    pop.insertCSS(fs.readFileSync(__dirname + "/../css/pop.css").toString());
                                     pop.addEventListener("new-window", (e) => {
                                         const protocol = require("url").parse(e.url).protocol
                                         if (protocol === "http:" || protocol === "https:") {
@@ -126,49 +103,6 @@ function loadIframe() {
                                     if ($("html").hasClass("darkMode")) {
                                         pop.executeJavaScript(`$("html").addClass("darkMode");`);
                                     }
-                                    pop.insertCSS(` html.darkMode body,
-                                                    html.darkMode md-content {
-                                                        background-color: rgb(33, 33, 33);
-                                                    }
-                                                    html.darkMode md-card,
-                                                    html.darkMode md-list-item,
-                                                    html.darkMode div.md-primary.md-subheader._md {
-                                                        background-color: rgb(48, 48, 48) !important;
-                                                    }
-                                                    html.darkMode .filter._md *,
-                                                    html.darkMode div.md-list-item-text.event-section.layout-column a *,
-                                                    html.darkMode div.md-list-item-text.event-section.layout-column h4 *,
-                                                    html.darkMode div.md-list-item-text.event-section.layout-column .next-to-replay,
-                                                    html.darkMode div.md-list-item-text.event-section.layout-column .event-message {
-                                                        color: rgb(230, 230, 230);
-                                                    }
-                                                    html.darkMode a.md-primary *,
-                                                    html.darkMode .md-subheader-inner *,
-                                                    html.darkMode button.md-primary,
-                                                    html.darkMode button.md-primary * {
-                                                        color: orange !important;
-                                                    }
-                                                    html.darkMode .md-checked .md-icon {
-                                                        background-color: #3EE09C !important;
-                                                    }
-                                                    html.darkMode .md-checked .md-icon::after {
-                                                        border-color: black !important;
-                                                    }
-                                                    html.darkMode .md-checked .md-thumb-container .md-thumb {
-                                                        background-color: rgb(62, 224, 156);
-                                                    }
-                                                    html.darkMode .md-checked .md-container .md-bar {
-                                                        background-color: rgba(62, 224, 156, 0.498039);
-                                                    }
-                                                    html.darkMode .ads-control {
-                                                        color: white !important;
-                                                    }
-                                                    html.darkMode .event-username {
-                                                        color: white !important;
-                                                    }
-                                                    html.darkMode p.event-message a {
-                                                        color: #a4fffc !important;
-                                                    }`);
                                     /* End Dark mode */
                                     /* Start Compact mode */
                                     if ($("html").hasClass("compact")) {
@@ -181,76 +115,6 @@ function loadIframe() {
                                                                 });
                                         `);
                                     }
-                                    pop.insertCSS(` html.compact md-list-item {
-                                                        min-height: 0 !important;
-                                                    }
-                                                    html.compact button.replay-event-button span.ng-scope {
-                                                        display: none;
-                                                    }
-                                                    html.compact md-list-item .md-avatar {
-                                                        height: 2em !important;
-                                                        width: 2em !important;
-                                                    }
-                                                    
-                                                    html.compact button.replay-event-button {
-                                                        min-width: 0;
-                                                        min-height: 0;
-                                                        top: 0em;
-                                                        height: 2.125em;
-                                                        padding: 0;
-                                                        margin: 0 0.75em 0 0;
-                                                    }
-                                                    html.compact button.replay-event-button md-icon {
-                                                        position: relative;
-                                                        top: -0.125;
-                                                    }
-
-                                                    html.compact span.event-time.next-to-replay {
-                                                        padding-top: calc(0.2em + 1px);
-                                                        right: 3.5em;
-                                                    }
-
-                                                    html.compact img.md-avatar {
-                                                        margin-bottom: 0;
-                                                    }
-                                                    html.compact md-list-item.md-2-line img.md-avatar {
-                                                        margin-top: 0.2em;
-                                                    }
-                                                    html.compact md-list-item.md-3-line img.md-avatar {
-                                                        margin-top: 0.5em;
-                                                    }
-
-                                                    html.compact md-list-item:before {
-                                                        min-height: 0;
-                                                    }
-                                                    html.compact div.md-list-item-text.event-section {
-                                                        padding: 0.4em 0.5em 0.5em 0 !important;
-                                                    }
-                                                    html.compact md-list-item.md-3-line div.md-list-item-text.event-section {
-                                                        padding-top: 0.1em !important;
-                                                        padding-bottom: 0 !important;
-                                                    }
-
-                                                    html.compact p.event-message.ng-binding {
-                                                        padding-right: 0.5em;
-                                                    }
-                                                    html.compact a.event-username {
-                                                        font-weight: bold;
-                                                        font-size: 1.1em;
-                                                    }
-
-                                                    html.compact h4[ng-switch="event.type"] span {
-                                                        position: relative;
-                                                        top: -1px;
-                                                    }
-
-                                                    html.compact span[ng-switch-when="subscriber"] span {
-                                                        top: 0;
-                                                    }
-                                                    html.compact span[ng-switch-when="host"] span {
-                                                        top: 0;
-                                                    }
-                                    `);
                                     /* End Compact mode */
                                 });
                                 function loadSr(srA = sr) {
@@ -284,134 +148,11 @@ function loadIframe() {
                                                                     }
                                                                     closeN();
                                                                 });`);
-                                        srA.insertCSS(` md-toolbar {
-                                                            display: none !important;
-                                                        }
-                                                        .container-fluid.wrapper.flex {
-                                                            padding-top: 0em !important;
-                                                        }
-                                                        .flex.notes-div.layout-row.layout-align-start-center {
-                                                            flex: 0 1 auto !important;
-                                                        }
-                                                        .layout-row.layout-align-space-between-start.flex-100 {
-                                                            justify-content: flex-start !important;
-                                                        }
-                                                        .social-media {
-                                                            display: none !important;
-                                                        }
-                                                        .copyright {
-                                                            display: none !important;
-                                                        }
-                                                        md-sidenav {
-                                                            display: none !important;
-                                                        }
-                                                        md-content.flex.layout-fill.layout-row.content-dash-wrapper._md {
-                                                            padding-left: 0 !important;
-                                                        }
-                                                        a.md-primary.md-button.md-ink-ripple {
-                                                            display: none !important;
-                                                        }
-                                                        #livechat-compact-container {
-                                                            display: none !important;
-                                                        }
-                                                        .songrequest-current-song {
-                                                            order: 0 !important;
-                                                        }
-                                                        .songrequest-sidebar {
-                                                            max-height: none !important;
-                                                        }
-                                                        iframe#launcher {
-                                                            display: none !important;
-                                                        }`);
+                                        srA.insertCSS(fs.readFileSync(__dirname + "/../css/sr.css").toString());
                                         /* Start Dark mode */
                                         if ($("html").hasClass("darkMode")) {
                                             srA.executeJavaScript(`$("html").addClass("darkMode");`);
                                         }
-                                        srA.insertCSS(` html.darkMode .layout-fill,
-                                                        html.darkMode .container-fluid,
-                                                        html.darkMode md-dialog .layout-row.layout-align-space-between-center {
-                                                            background-color: rgb(48, 48, 48) !important;
-                                                        }
-                                                        html.darkMode a,
-                                                        html.darkMode a * {
-                                                            color: orange !important;
-                                                        }
-                                                        html.darkMode .md-label {
-                                                            color: white;
-                                                        }
-                                                        html.darkMode .md-checked .md-container .md-bar {
-                                                            background-color: rgba(62, 224,156, 0.5) !important;
-                                                        }
-                                                        html.darkMode .md-checked .md-thumb-container .md-thumb {
-                                                            background-color: rgb(62, 224,156) !important;
-                                                        }
-                                                        html.darkMode .md-subheader-content {
-                                                            color: orange;
-                                                        }
-                                                        html.darkMode md-card .layout-row,
-                                                        html.darkMode md-card .layout-row .md-no-sticky,
-                                                        html.darkMode md-divider,
-                                                        html.darkMode md-list,
-                                                        html.darkMode md-content,
-                                                        html.darkMode .no-songs {
-                                                            background-color: rgb(66,66,66) !important;
-                                                        }
-                                                        html.darkMode md-divider {
-                                                            margin-bottom: 0 !important;
-                                                            padding-bottom: 8px;
-                                                            border-color: #7b7b7b;
-                                                        }
-                                                        html.darkMode .md-button.md-icon-button .material-icons, .md-button.md-icon-button md-icon {
-                                                            color: lightgray !important;
-                                                        }
-                                                        html.darkMode p {
-                                                            color: white;
-                                                        }
-                                                        html.darkMode md-list md-icon {
-                                                            color: lightgray;
-                                                        }
-                                                        html.darkMode md-list .md-list-item-text * {
-                                                            color: #fbfbfb !important
-                                                        }
-                                                        html.darkMode md-content div * {
-                                                            color: white !important;
-                                                        }
-                                                        html.darkMode .md-track-fill,
-                                                        html.darkMode .song-votes span {
-                                                            background-color: rgb(62, 224,156) !important;
-                                                        }
-                                                        html.darkMode .md-thumb::after {
-                                                            border-color: rgb(62, 224,156) !important;
-                                                            background-color: rgb(62, 224,156) !important;
-                                                        }
-                                                        html.darkMode button.md-raised.md-primary.md-button.md-ink-ripple {
-                                                            background-color: orange !important;
-                                                        }
-                                                        html.darkMode button.md-raised.md-primary.md-button.md-ink-ripple span {
-                                                            color: black !important;
-                                                        }
-                                                        html.darkMode md-dialog-actions .md-button.md-primary span {
-                                                            color: white !important;
-                                                        }
-                                                        html.darkMode md-dialog {
-                                                            background-color: rgb(48, 48, 48) !important;
-                                                        }
-                                                        html.darkMode md-dialog h1,
-                                                        html.darkMode md-dialog label {
-                                                            color: white;
-                                                        }
-                                                        html.darkMode md-input-container * {
-                                                            color: white !important;
-                                                        }
-                                                        html.darkMode md-input-container input {
-                                                            border-color: white !important;
-                                                        }
-                                                        html.darkMode md-autocomplete * {
-                                                            color: white;
-                                                        }
-                                                        html.darkMode .md-focus-ring {
-                                                            background-color: rgba(64, 255, 123, 0.2) !important;
-                                                        }`);
                                         /* End Dark mode */
                                     });
                                 }
