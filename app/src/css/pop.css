@@ -131,3 +131,6 @@ html.compact span[ng-switch-when="subscriber"] span {
 html.compact span[ng-switch-when="host"] span {
     top: 0;
 }
+html.compact button.replay-event-button span {
+    display: none !important;
+}
