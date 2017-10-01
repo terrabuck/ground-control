@@ -37,12 +37,9 @@ if ((!isDev) && ["win32", "darwin"].includes(os.platform())) {
         checkLatestVersion().then(version => {
             if (!upToDate(pack.version, version)) {
                 const autoUpdater = remote.autoUpdater;
-                $("#updater p").html("Updating");
-                autoUpdater.on('update-available', () => {
-                    console.log('update available');
-                });
+                $("#updater p").html("&nbsp;&nbsp;Updating");
                 autoUpdater.on('checking-for-update', () => {
-                    console.log('checking-for-update');
+                    loadingBar(version);
                 });
                 autoUpdater.on('update-not-available', () => {
                     console.log('update-not-available');
@@ -128,4 +125,35 @@ function checkLatestVersion() {
                 return "0.0.0";
             });
     }
+}
+
+function getDownloadSpeedInMbs() {
+    var start = new Date();
+    return new Promise((resolve, reject) => {
+        got.get("https://cdn.streamelements.com/static/pagebg.jpg").then(res => {
+            var done = new Date();
+            var data = new Buffer(res.body);
+            resolve((data.byteLength / 1000000) / ((done.getTime() - start.getTime()) / 1000));
+        }).catch(err => {
+            reject(err);
+        });
+    });
+}
+
+function loadingBar(version) {
+    $("#updateProgress").removeClass("hidden");
+    got.head(`https://cdn.streamelements.com/ground-control/updates/ground_control-${version}-full.nupkg`).then(res => {
+        var sizeInMb = res.headers["content-length"] / 1000000;
+        (function moreTime() {
+            var timeWaste = new Date();
+            getDownloadSpeedInMbs().then(speed => {
+                var pSpeed = (sizeInMb/100) * (speed * 2);
+                setTimeout(function() {
+                    var currentP = Number($("#updateProgress .progressbar").attr("style").replace(/[^0-9\.]/g, ""));
+                    $("#updateProgress")[0].MaterialProgress.setProgress(currentP + (pSpeed * ((new Date().getTime() - timeWaste.getTime()) / 1000)));
+                    moreTime();
+                }, 1000 * 5);
+            });
+        })();
+    });
 }
