@@ -14,6 +14,11 @@ webview {
     font-size: 1em;
     height: 100vh;
 }
+#updater {
+    position: absolute;
+    background-color: rgb(33, 33, 33);
+    z-index: 3;
+}
 .center_loader {
     position: relative;
     height: 5em;

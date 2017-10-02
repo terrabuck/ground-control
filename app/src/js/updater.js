@@ -3,7 +3,6 @@
 const { loadIframe } = require("./js/loadMain");
 
 function showMain() {
-    $("#updater").css("display", "none");
     $(".goto_settings").css("display", "inline-block");
     $("#nav").css("display", "block");
     currentPage = "#main";
