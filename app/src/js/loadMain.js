@@ -70,6 +70,7 @@ function loadIframe() {
                                     }
                                 });
                                 pop.addEventListener("dom-ready", () => {
+                                    $("#updater").css("display", "none");
                                     if (currentPage === "#settings") {
                                         goTo("#settings");
                                     }
@@ -161,39 +162,24 @@ function loadIframe() {
                                 }
                             }
                         } else {
-                            $("#main").css("display", "none");
-                            $(".goto_sr").css("display", "none");
-                            $("#main").html(`<p id="error">You entered an invalid <a>JWT Token</a>.</p>`);
-                            $("#main").css("display", "block");
+                            displayError(`You entered an invalid <a>JWT Token</a>.`);
                         }
                     }).catch(err => {
                         if (err.statusCode < 500) {
-                            $("#main").html(`<p id="error">You entered an invalid <a>JWT Token</a>.</p>`);
+                            displayError(`You entered an invalid <a>JWT Token</a>.`);
                         } else {
                             console.warn(err);
-                            $("#main").html(`<p id="error">Something is wrong on our site...</p>`);
+                            displayError(`Something is wrong on our site...`);
                         }
-                        $("#main").css("display", "none");
-                        $(".goto_sr").css("display", "none");
-                        $("#main").css("display", "block");
                     });
                 } else {
-                    $("#main").css("display", "none");
-                    $(".goto_sr").css("display", "none");
-                    $("#main").html(`<p id="error">To use the activity feed, please enter the <a>JWT Token</a> in the settings menu.</p>`);
-                    $("#main").css("display", "block");
+                    displayError(`To use the activity feed, please enter your <a>JWT Token</a> in the settings menu.`);
                 }
             } catch (err) {
-                $("#main").css("display", "none");
-                $(".goto_sr").css("display", "none");
-                $("#main").html(`<p id="error">To use the activity feed, please enter the <a>JWT Token</a> in the settings menu.</p>`);
-                $("#main").css("display", "block");
+                displayError(`To use the activity feed, please enter your <a>JWT Token</a> in the settings menu.`);
             }
         } else {
-            $("#main").css("display", "none");
-            $(".goto_sr").css("display", "none");
-            $("#main").html(`<p id="error">To use the activity feed, please enter the <a>JWT Token</a> in the settings menu.</p>`);
-            $("#main").css("display", "block");
+            displayError(`To use the activity feed, please enter your <a>JWT Token</a> in the settings menu.`);
         }
     }, 10);
 }
@@ -201,3 +187,14 @@ module.exports = {
     checkValidToken,
     loadIframe
 };
+
+/**
+ * @param {string} message
+ */
+function displayError(message) {
+    $("#updater").css("display", "none");
+    $("#main").css("display", "none");
+    $(".goto_sr").css("display", "none");
+    $("#main").html(`<p id="error">${message}</p>`);
+    $("#main").css("display", "block");
+}

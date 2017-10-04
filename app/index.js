@@ -6,6 +6,7 @@ const os = require('os');
 const chokidar = require('chokidar');
 const windowStateKeeper = require('electron-window-state');
 const connectSocket = require('./src/modules/socket');
+const Heap = require("./src/modules/heap");
 
 let configFile = path.normalize(os.homedir() + "/.se-gc/config.json");
 if (!fs.existsSync(path.normalize(os.homedir() + "/.se-gc"))) {
@@ -15,8 +16,10 @@ if (!fs.existsSync(path.normalize(os.homedir() + "/.se-gc"))) {
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
+
 let socket;
 let contents;
+let analytics;
 
 if (require('electron-squirrel-startup')) {
     app.quit();
@@ -41,6 +44,10 @@ function reg() {
     socket = null;
     if (settings.token) {
         socket = connectSocket(settings.token);
+        if (!analytics) {
+            analytics = new Heap(settings.token);
+            analytics.open();
+        }
     }
     session.defaultSession.cookies.set({ url: "https://streamelements.com", name: "token", value: settings.token || "#" }, (err) => {
         if (err) {
@@ -73,10 +80,10 @@ function reg() {
           let key = settings.keys.SnR_alert;
           try {
             globalShortcut.register(key, () => {
-              if (socket) {
-                console.log("Send: 'Stop/Resume Alerts'");
-                socket.emit('overlay:togglequeue');
-              }
+                if (socket) {
+                    console.log("Send: 'Stop/Resume Alerts'");
+                    socket.emit('overlay:togglequeue');
+                }
             });
           } catch (error) {
             console.error(`Keybind for 'Stop/Resume Alerts' failed, '${key}'`);
@@ -244,7 +251,9 @@ app.on('window-all-closed', () => {
     // On macOS it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform !== 'darwin') {
-        app.quit();
+        cleanup().then(function() {
+            app.quit();
+        });
     }
 });
 
@@ -257,6 +266,17 @@ app.on('activate', () => {
 });
 
 app.on('will-quit', () => {
-    // Unregister all shortcuts.
-    globalShortcut.unregisterAll();
+    cleanup();
 });
+
+function cleanup() {
+    // Unregister all shortcuts.
+    return new Promise(resolve => {
+        globalShortcut.unregisterAll();
+        if (analytics) {
+            analytics.close().then(() => {
+                resolve();
+            });
+        }
+    });
+}

@@ -14,6 +14,11 @@ webview {
     font-size: 1em;
     height: 100vh;
 }
+#updater {
+    position: absolute;
+    background-color: rgb(33, 33, 33);
+    z-index: 3;
+}
 .center_loader {
     position: relative;
     height: 5em;
@@ -28,6 +33,21 @@ webview {
 .frame {
     height: 100vh;
     width: 100vw;
+}
+#updateProgress {
+    position: absolute;
+    top: 12%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    max-width: 50vw;
+}
+.hidden {
+    display: none !important;
+}
+.progressbar {
+    max-width: 99%;
 }
 
 html.darkMode #error,
