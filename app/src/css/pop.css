@@ -24,6 +24,9 @@ iframe#launcher {
 }
 
 /* Dark mode */
+html.darkMode p {
+    color: white;
+}
 html.darkMode body,
 html.darkMode md-content {
     background-color: rgb(33, 33, 33);
@@ -66,6 +69,9 @@ html.darkMode .event-username {
 }
 html.darkMode p.event-message a {
     color: #a4fffc !important;
+}
+html.darkMode p.mb-event-type {
+    color: rgba(255, 255, 255, 0.54) !important;
 }
 
 /* Compact Mode */

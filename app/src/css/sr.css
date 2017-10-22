@@ -97,7 +97,7 @@ html.darkMode .md-thumb::after {
   background-color: rgb(62, 224,156) !important;
 }
 html.darkMode button.md-raised.md-primary.md-button.md-ink-ripple {
-  background-color: orange !important;
+  background-color: #CC5500 !important;
 }
 html.darkMode button.md-raised.md-primary.md-button.md-ink-ripple span {
   color: black !important;

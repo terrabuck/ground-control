@@ -9,7 +9,7 @@ class Heap {
 	 * @param {string} jwt 
 	 */
 	constructor(jwt) {
-		const identity = JSON.parse(atob(jwt.split(".")[1]))._id;
+		const identity = JSON.parse(atob(jwt.split(".")[1])).channel;
 		/**
 		 * @param {string} event 
 		 */
@@ -33,9 +33,10 @@ class Heap {
 					// console.log(res.body);
 					resolve();
 				}).catch(err => {
+					// console.error(err);
 					reject(err);
 				});
-			})
+			});
 		}
 		function sendProperties() {
 			var body = JSON.stringify({
@@ -53,7 +54,7 @@ class Heap {
 			}).then(res => {
 				// console.log(res.body);
 			}).catch(err => {
-				console.error(err);
+				// console.error(err);
 			});
 		}
 		this.open = function() {

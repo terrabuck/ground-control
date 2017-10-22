@@ -1,6 +1,6 @@
 /*global got, $, fs, configFile, goTo, currentPage, shell, b4settings, api, url*/
 function checkValidToken(token) {
-    return got.get(`https://${api}/kappa/v1/users/me`, {
+    return got.get(`https://${api}/kappa/v2/channels/me`, {
         headers: {
             authorization: "Bearer " + token
         }
