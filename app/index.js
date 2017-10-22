@@ -49,7 +49,7 @@ function reg() {
             analytics.open();
         }
     }
-    session.defaultSession.cookies.set({ url: "https://streamelements.com", name: "token", value: settings.token || "#" }, (err) => {
+    session.defaultSession.cookies.set({ url: "https://streamelements.com", name: "se-token", value: settings.token || "#" }, (err) => {
         if (err) {
             console.error(err);
         }
@@ -266,7 +266,9 @@ app.on('activate', () => {
 });
 
 app.on('will-quit', () => {
-    cleanup();
+    cleanup().then(function() {
+        app.quit();
+    });
 });
 
 function cleanup() {
@@ -276,7 +278,14 @@ function cleanup() {
         if (analytics) {
             analytics.close().then(() => {
                 resolve();
+            }).catch(err => {
+                resolve(err);
             });
+        } else {
+            resolve();
         }
+        setTimeout(function() {
+            resolve();
+        }, 1000 * 5);
     });
 }

@@ -1,64 +1,64 @@
 md-toolbar {
-    display: none !important;
+  display: none !important;
 }
 .container-fluid.wrapper.flex {
-    padding-top: 0em !important;
+  padding-top: 0em !important;
 }
 .flex.notes-div.layout-row.layout-align-start-center {
-    flex: 0 1 auto !important;
+  flex: 0 1 auto !important;
 }
 .layout-row.layout-align-space-between-start.flex-100 {
-    justify-content: flex-start !important;
+  justify-content: flex-start !important;
 }
 .social-media {
-    display: none !important;
+  display: none !important;
 }
 .copyright {
-    display: none !important;
+  display: none !important;
 }
 md-sidenav {
-    display: none !important;
+  display: none !important;
 }
 md-content.flex.layout-fill.layout-row.content-dash-wrapper._md {
-    padding-left: 0 !important;
+  padding-left: 0 !important;
 }
 a.md-primary.md-button.md-ink-ripple {
-    display: none !important;
+  display: none !important;
 }
 #livechat-compact-container {
-    display: none !important;
+  display: none !important;
 }
 .songrequest-current-song {
-    order: 0 !important;
+  order: 0 !important;
 }
 .songrequest-sidebar {
-    max-height: none !important;
+  max-height: none !important;
 }
 iframe#launcher {
-    display: none !important;
+  display: none !important;
 }
 
 /* Dark mode */
 html.darkMode .layout-fill,
 html.darkMode .container-fluid,
 html.darkMode md-dialog .layout-row.layout-align-space-between-center {
-    background-color: rgb(48, 48, 48) !important;
+  background-color: rgb(48, 48, 48) !important;
 }
 html.darkMode a,
 html.darkMode a * {
-    color: orange !important;
+  color: orange !important;
 }
 html.darkMode .md-label {
-    color: white;
+  color: white;
 }
 html.darkMode .md-checked .md-container .md-bar {
-    background-color: rgba(62, 224,156, 0.5) !important;
+  background-color: rgba(62, 224,156, 0.5) !important;
 }
 html.darkMode .md-checked .md-thumb-container .md-thumb {
-    background-color: rgb(62, 224,156) !important;
+  background-color: rgb(62, 224,156) !important;
 }
 html.darkMode .md-subheader-content {
-    color: orange;
+  color: orange;
 }
 html.darkMode md-card .layout-row,
 html.darkMode md-card .layout-row .md-no-sticky,
@@ -66,61 +66,64 @@ html.darkMode md-divider,
 html.darkMode md-list,
 html.darkMode md-content,
 html.darkMode .no-songs {
-    background-color: rgb(66,66,66) !important;
+  background-color: rgb(66,66,66) !important;
 }
 html.darkMode md-divider {
-    margin-bottom: 0 !important;
-    padding-bottom: 8px;
-    border-color: #7b7b7b;
+  margin-bottom: 0 !important;
+  padding-bottom: 8px;
+  border-color: #7b7b7b;
 }
 html.darkMode .md-button.md-icon-button .material-icons, .md-button.md-icon-button md-icon {
-    color: lightgray !important;
+  color: lightgray !important;
 }
 html.darkMode p {
-    color: white;
+  color: white;
 }
 html.darkMode md-list md-icon {
-    color: lightgray;
+  color: lightgray;
 }
 html.darkMode md-list .md-list-item-text * {
-    color: #fbfbfb !important
+  color: #fbfbfb !important
 }
 html.darkMode md-content div * {
-    color: white !important;
+  color: white !important;
 }
 html.darkMode .md-track-fill,
 html.darkMode .song-votes span {
-    background-color: rgb(62, 224,156) !important;
+  background-color: rgb(62, 224,156) !important;
 }
 html.darkMode .md-thumb::after {
-    border-color: rgb(62, 224,156) !important;
-    background-color: rgb(62, 224,156) !important;
+  border-color: rgb(62, 224,156) !important;
+  background-color: rgb(62, 224,156) !important;
 }
 html.darkMode button.md-raised.md-primary.md-button.md-ink-ripple {
-    background-color: orange !important;
+  background-color: #CC5500 !important;
 }
 html.darkMode button.md-raised.md-primary.md-button.md-ink-ripple span {
-    color: black !important;
+  color: black !important;
 }
 html.darkMode md-dialog-actions .md-button.md-primary span {
-    color: white !important;
+  color: white !important;
 }
 html.darkMode md-dialog {
-    background-color: rgb(48, 48, 48) !important;
+  background-color: rgb(48, 48, 48) !important;
 }
 html.darkMode md-dialog h1,
 html.darkMode md-dialog label {
-    color: white;
+  color: white;
 }
 html.darkMode md-input-container * {
-    color: white !important;
+  color: white !important;
 }
 html.darkMode md-input-container input {
-    border-color: white !important;
+  border-color: white !important;
 }
 html.darkMode md-autocomplete * {
-    color: white;
+  color: white;
 }
 html.darkMode .md-focus-ring {
-    background-color: rgba(64, 255, 123, 0.2) !important;
+  background-color: rgba(64, 255, 123, 0.2) !important;
+}
+html.darkMode md-dialog-content {
+  color: white;
 }

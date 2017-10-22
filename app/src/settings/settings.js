@@ -161,7 +161,13 @@ $("darkMode_sub").on("property change mouseup", update_S);
 
 // Reset Session
 $("#resetSession").on("click", function() {
-    got.put(`https://${api}/kappa/v1/sessions/reset`, {
+    let sessionUrl = '';
+    try {
+        sessionUrl = `https://${api}/kappa/v2/sessions/${JSON.parse(atob($("#jwt").val().split(".")[1])).channel}/reset`;
+    } catch (err) {
+        return;
+    }
+    got.put(sessionUrl, {
         headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + $("#jwt").val()
