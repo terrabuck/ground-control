@@ -45,6 +45,9 @@
         "squirrelWindows": {
             "iconUrl": "https://cdn.streamelements.com/ground-control/updates/se.ico",
             "loadingGif": "app/src/install.gif"
+        },
+        "linux": {
+            "icon": "app/src/se64.png"
         }
     }
 }
