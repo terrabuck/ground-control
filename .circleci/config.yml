@@ -12,16 +12,14 @@ jobs:
           key: v1-dependencies-{{ checksum "app/package.json" }}
 
       - run: yarn install && cd app && yarn install && cd ..
+      
+      # run tests!
+      - run: yarn test
+      - run: yarn build
 
       - save_cache:
           paths:
             - node_modules
             - app/node_modules
+            - ~/.cache
           key: v1-dependencies-{{ checksum "app/package.json" }}
-      
-      # apt-get
-      - run: sudo apt-get update
-      - run: sudo apt-get install icnsutils -y
-      # run tests!
-      - run: yarn test
-      - run: yarn build
