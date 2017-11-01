@@ -47,7 +47,9 @@
             "loadingGif": "app/src/install.gif"
         },
         "linux": {
-            "icon": "app/src/se.icns"
+            "target": "AppImage",
+            "category": "Utility",
+            "icon": "app/src/linux/"
         }
     }
 }
