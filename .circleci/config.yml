@@ -19,8 +19,9 @@ jobs:
             - app/node_modules
           key: v1-dependencies-{{ checksum "app/package.json" }}
       
-      # apt
-      - run: apt install icnsutils -y
+      # apt-get
+      - run: sudo apt-get update
+      - run: sudo apt-get install icnsutils -y
       # run tests!
       - run: yarn test
       - run: yarn build
