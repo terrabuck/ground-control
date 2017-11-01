@@ -47,7 +47,7 @@
             "loadingGif": "app/src/install.gif"
         },
         "linux": {
-            "icon": "app/src/se64.icns"
+            "icon": "app/src/se.icns"
         }
     }
 }
