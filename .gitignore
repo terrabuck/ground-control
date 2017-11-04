@@ -5,6 +5,7 @@ dist
 *.dmg
 package-lock.json
 yarn.lock
+.directory
 
 # Logs
 logs
