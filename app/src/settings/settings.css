@@ -115,6 +115,13 @@ ul {
 #resetSession a {
     color: white;
 }
+#languageSelection {
+    float: right;
+}
+#languageSelection select {
+    font-size: 14px;
+    padding: 5px;
+}
 
 /*Dark Mode*/
 html.darkMode .is-checked .mdl-switch__track {
@@ -156,4 +163,9 @@ html.darkMode label.mdl-textfield__label::after {
 }
 html.darkMode #resetSession {
     background-color: #CC5500;
+}
+html.darkMode #languageSelection select {
+    border: 1px solid #000;
+    color: #fff;
+    background: #444;
 }

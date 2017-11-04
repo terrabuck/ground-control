@@ -2,74 +2,80 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <title>StreamElements - Ground Control</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
-    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-    <script>
-        if (typeof module === 'object') {
-            window.module = module;
-            module = undefined;
-        }
-    </script>
-    <script src="../js/jquery-3.2.1.min.js"></script>
-    <script>
-        if (window.module) module = window.module;
-    </script>
-    <link rel="stylesheet" href="settings.css">
-    <script src="../js/dep.js"></script>
-    <script>
-        const { ipcRenderer } = require("electron");
-    </script>
+  <meta charset="utf-8">
+  <title>StreamElements - Ground Control</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  <script>
+    if (typeof module === 'object') {
+      window.module = module;
+      module = undefined;
+    }
+  </script>
+  <script src="../js/jquery-3.2.1.min.js"></script>
+  <script>
+    if (window.module) module = window.module;
+  </script>
+  <link rel="stylesheet" href="settings.css">
+  <script src="../js/dep.js"></script>
+  <script>
+    const { ipcRenderer } = require("electron");
+  </script>
 </head>
 <body>
-    <div id="main">
-        <div id="darkMode">
-            <label class="mdl-icon-toggle mdl-js-icon-toggle mdl-js-ripple-effect" for="darkMode_sub">
-                <input type="checkbox" id="darkMode_sub" class="mdl-icon-toggle__input">
-                <i class="mdl-icon-toggle__label material-icons">brightness_3</i>
-            </label>
-        </div>
-        <h2>Settings</h2>
-        <h4>Authentication</h4>
-        <!-- JWT -->
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: calc(100vw - 4.3em);">
-            <input class="mdl-textfield__input" type="text" id="jwt" pattern=".{36}\.[^\.]+\.[^\.]+">
-            <label class="mdl-textfield__label" for="jwt">Your JWT Token...</label>
-        </div>
-        <label class="mdl-icon-toggle mdl-js-icon-toggle mdl-js-ripple-effect" for="show-jwt" onclick="if((!$('#jwt').val()) || $('#jwt').val() === '') { return false; }">
-                <input type="checkbox" id="show-jwt" class="mdl-icon-toggle__input">
-                <i class="mdl-icon-toggle__label material-icons">visibility</i>
-        </label>
-        <p>You can find it under <a id="getToken" style="cursor: pointer;">My Account</a></p>
-
-        <h4>Keybindings</h4>
-        <div id="keybindings">
-
-        </div>
-        <div class="clear"></div>
-        <div id="key-info"><a style="cursor: pointer;">Show info about keybindings</a></div>
-        <h4>Other</h4>
-        <div id="other">
-            <h6>Use Songrequest: </h6>
-            <label class="mdl-switch mdl-js-switch" for="use_sr">
-                <input type="checkbox" id="use_sr" class="mdl-switch__input">
-                <span class="mdl-switch__label"></span>
-            </label>
-            <button id="resetSession" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"><a>Reset Session</a></button>
-            <br><br>
-            <h6>Use Compact Mode: </h6>
-            <label class="mdl-switch mdl-js-switch" for="use_compact">
-                <input type="checkbox" id="use_compact" class="mdl-switch__input">
-                <span class="mdl-switch__label"></span>
-            </label>
-        </div>
-        <div class="clear"></div>
-        <a id="version"></a>
+  <div id="main">
+    <div id="darkMode">
+      <label class="mdl-icon-toggle mdl-js-icon-toggle mdl-js-ripple-effect" for="darkMode_sub">
+        <input type="checkbox" id="darkMode_sub" class="mdl-icon-toggle__input">
+        <i class="mdl-icon-toggle__label material-icons">brightness_3</i>
+      </label>
+      <div id="languageSelection">
+        <select>
+          <option value="en" selected>english</option>
+          <option value="ru">русский</option>
+        </select>
+      </div>
     </div>
-    <script src="settings.js"></script>
-    <script src="settings-shortcuts.js"></script>
+    <h2>{{myText["settings"][currentLang]}}</h2>
+    <h4>{{myText["authentication"][currentLang]}}</h4>
+    <!-- JWT -->
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: calc(100vw - 4.3em);">
+      <input class="mdl-textfield__input" type="text" id="jwt" pattern=".{36}\.[^\.]+\.[^\.]+">
+      <label class="mdl-textfield__label" for="jwt">{{myText["jwt"][currentLang]}}</label>
+    </div>
+    <label class="mdl-icon-toggle mdl-js-icon-toggle mdl-js-ripple-effect" for="show-jwt" onclick="if((!$('#jwt').val()) || $('#jwt').val() === '') { return false; }">
+        <input type="checkbox" id="show-jwt" class="mdl-icon-toggle__input">
+        <i class="mdl-icon-toggle__label material-icons">visibility</i>
+    </label>
+    <p>{{myText["jwt:link"][currentLang]}}<a id="getToken" style="cursor: pointer;">{{myText["account"][currentLang]}}</a></p>
+
+    <h4>{{myText["keyboard:bindings"][currentLang]}}</h4>
+    <div id="keybindings">
+
+    </div>
+    <div class="clear"></div>
+    <div id="key-info"><a style="cursor: pointer;">{{myText["keyboard:bindings:info"][currentLang]}}</a></div>
+    <h4>{{myText["other"][currentLang]}}</h4>
+    <div id="other">
+      <h6>{{myText["use:sr"][currentLang]}}</h6>
+      <label class="mdl-switch mdl-js-switch" for="use_sr">
+        <input type="checkbox" id="use_sr" class="mdl-switch__input">
+        <span class="mdl-switch__label"></span>
+      </label>
+      <button id="resetSession" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"><a>{{myText["session:reset"][currentLang]}}</a></button>
+      <br><br>
+      <h6>{{myText["use:compact"][currentLang]}}</h6>
+      <label class="mdl-switch mdl-js-switch" for="use_compact">
+        <input type="checkbox" id="use_compact" class="mdl-switch__input">
+        <span class="mdl-switch__label"></span>
+      </label>
+    </div>
+    <div class="clear"></div>
+    <a id="version"></a>
+  </div>
+  <script src="settings.js"></script>
+  <script src="settings-shortcuts.js"></script>
 </body>
 
 </html>
