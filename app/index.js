@@ -10,6 +10,8 @@ const windowStateKeeper = require('electron-window-state');
 const connectSocket = require('./src/modules/socket');
 const Heap = require('./src/modules/heap');
 
+app.disableHardwareAcceleration();
+
 const configFile = path.normalize(`${os.homedir()}/.se-gc/config.json`);
 if (!fs.existsSync(path.normalize(`${os.homedir()}/.se-gc`))) {
   fs.mkdirSync(path.normalize(`${os.homedir()}/.se-gc`));
