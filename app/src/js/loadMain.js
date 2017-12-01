@@ -1,25 +1,4 @@
-/*global got, $, fs, configFile, goTo, currentPage, shell, b4settings, api, url, myText, currentLang*/
-function checkValidToken(token) {
-  return got.get(`https://${api}/kappa/v2/channels/me`, {
-    headers: {
-      authorization: "Bearer " + token
-    }
-  }).then(res => {
-    try {
-      return {
-        valid: true,
-        username: JSON.parse(res.body).username
-      }
-    } catch (err) {
-      return {
-        valid: true,
-        username: "#"
-      };
-    }
-  }).catch(err => {
-    throw err;
-  });
-}
+/*global got, $, fs, configFile, goTo, currentPage, shell, b4settings, api, url, myText, currentLang, checkValidToken*/
 
 function loadIframe() {
   setTimeout(function () {

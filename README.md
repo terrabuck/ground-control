@@ -14,6 +14,8 @@ Streamelements client app to manage everything that happens on your stream.
 1. ???
 1. profit
 
+You can use [node-prune](https://github.com/tj/node-prune) to reduce the size of node_modules in `app/`.
+
 ## Contributing
 
 1. Fork it!

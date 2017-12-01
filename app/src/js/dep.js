@@ -4,7 +4,8 @@ const got = require("got");
 const path = require("path");
 const os = require("os");
 const chokidar = require("chokidar");
-let configFile = path.normalize(os.homedir() + "/.se-gc/config.json");
+const configLocation = path.normalize(os.homedir() + "/.se-gc/");
+const configFile = path.join(configLocation, "config.json");
 const { shell, remote } = require("electron");
 var pack;
 if (fs.existsSync('./package.json')) {
@@ -18,6 +19,8 @@ if (fs.existsSync('./package.json')) {
 }
 const url = "streamelements.com";
 const api = "api.streamelements.com";
+const cBotApi = "";
+
 let currentLang = "en";
 if (fs.existsSync(configFile)) {
   var a;
@@ -135,4 +138,44 @@ const myText = {
     en: "Done",
     ru: "сделанный"
   }
+}
+
+/**
+ * @param {string} str 
+ */
+function atob(str) {
+  return new Buffer(str, 'base64').toString('binary');
+}
+
+/**
+ * @param {string} token 
+ */
+function checkValidToken(token) {
+  return got.get(`https://${api}/kappa/v2/channels/me`, {
+    headers: {
+      authorization: "Bearer " + token
+    }
+  }).then(res => {
+    try {
+      return {
+        valid: true,
+        username: JSON.parse(res.body).username
+      };
+    } catch (err) {
+      return {
+        valid: true,
+        username: "#"
+      };
+    }
+  }).catch(err => {
+    throw err;
+  });
+}
+
+try {
+  module.exports = {
+    atob, url, api, cBotApi, pack, configLocation, configFile, checkValidToken
+  };
+} catch (err) {
+  // Not loaded with require()
 }
