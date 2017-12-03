@@ -137,6 +137,14 @@ const myText = {
   "done": {
     en: "Done",
     ru: "сделанный"
+  },
+  "customBotName": {
+    en: "Custom bot name",
+    ru: "Кастомное название бота"
+  },
+  "Name": {
+    en: "Name",
+    ru: "Имя"
   }
 }
 
