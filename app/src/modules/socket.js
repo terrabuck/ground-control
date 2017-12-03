@@ -1,6 +1,6 @@
 const io = require('socket.io-client');
 
-function connectSocket(token) {
+function connectSocket(token, debug = false) {
   if (!token) {
     throw new Error("No JWT token specified");
   }
@@ -8,16 +8,16 @@ function connectSocket(token) {
   const socket = io("https://realtime.streamelements.com", { transports: ['websocket'] });
 
   socket.on("connect", () => {
-    console.log('Socket is connected');
     socket.emit('authenticate:jwt', { token });
+    if (debug) console.log('Socket is connected');
   });
 
   socket.on('authenticated', () => {
-    console.log('Socket is authenticated');
+    if (debug) console.log('Socket is authenticated');
   });
 
   socket.on("authentication:error", reason => {
-    console.error('Failed to connect:', reason);
+    if (debug) console.error('Failed to connect:', reason);
   });
 
   return socket;

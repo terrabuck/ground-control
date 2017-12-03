@@ -68,8 +68,23 @@ if ($("#jwt").val()) {
   $("#show-jwt").prop("checked", false);
 }
 
+// Show bot token
+$("#show-bot-pw").prop("checked", true);
+$("#show-bot-pw").on("change", function() {
+  if ($("#show-bot-pw").prop("checked")) {
+    $("#bot-pw").prop("disabled", false).removeClass("secret");
+  } else {
+    $("#bot-pw").prop("disabled", true).addClass("secret");
+  }
+});
+if ($("#bot-pw").val()) {
+  $("#bot-pw").prop("disabled", true).addClass("secret");
+  $("#show-bot-pw").prop("checked", false);
+}
+
 // Load old settings
 (function() {
+  // <TODO> Add the bot
   if (fs.existsSync(configFile)) {
     var a;
     try {
@@ -154,6 +169,7 @@ $("#use_sr").on("property change mouseup", function() {
 
 // Update settings
 function update_S() {
+  // <TODO> Add the bot
   var tmp = {
     token: "",
     keys: {},
@@ -177,7 +193,7 @@ function update_S() {
   }
 }
 
-$("input").on("property change keyup", update_S);
+$("input:not([id^='show'])").on("property change keyup", update_S);
 $("select").on("property change keyup", update_S);
 $("darkMode_sub").on("property change mouseup", update_S);
 

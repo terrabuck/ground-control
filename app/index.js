@@ -9,6 +9,7 @@ const chokidar = require('chokidar');
 const windowStateKeeper = require('electron-window-state');
 const connectSocket = require('./src/modules/socket');
 const Heap = require('./src/modules/heap');
+const customBot = require('./src/modules/customBot');
 
 app.disableHardwareAcceleration();
 
@@ -24,6 +25,7 @@ let win;
 let socket;
 let contents;
 let analytics;
+let bot;
 
 if (require('electron-squirrel-startup')) { // eslint-disable-line
   app.quit();
@@ -46,12 +48,12 @@ function reg() {
 
   /* Socket */
   socket = null;
-  if (settings.token) {
-    socket = connectSocket(settings.token);
-    if (!analytics) {
-      analytics = new Heap(settings.token);
-      analytics.open();
-    }
+  if (!settings.token) return;
+  
+  socket = connectSocket(settings.token);
+  if (!analytics) {
+    analytics = new Heap(settings.token);
+    analytics.open();
   }
   session.defaultSession.cookies.set({ url: 'https://streamelements.com', name: 'se-token', value: settings.token || '#' }, err => {
     if (err) {
@@ -64,7 +66,7 @@ function reg() {
     }
   });
 
-  if (settings.keys && settings.token && settings.token !== '') {
+  if (settings.keys) {
     /* Skip Alert */
     if (settings.keys.skip_alert) {
       const key = settings.keys.skip_alert;
@@ -124,6 +126,19 @@ function reg() {
           console.error(`Keybind for 'Stop/Resume Song' failed, '${key}'`);
         }
       }
+    }
+  }
+  // Custom bot
+  if (bot && bot.kill) {
+    bot.kill();
+  }
+  if (settings.bot && settings.bot.use === true) {
+    if (settings.bot.name && settings.bot.token) {
+      customBot(settings.token, settings.bot.name, settings.bot.token).then(_bot => {
+        bot = _bot;
+      }).catch(err => {
+        // <TODO> Download file && run || deny access
+      });
     }
   }
   return settings;

@@ -1,5 +1,6 @@
 const cp = require('child_process');
 const path = require('path');
+const fs = require('fs');
 
 const { atob, cBotApi, checkValidToken, configLocation } = require('../js/dep');
 
@@ -12,7 +13,15 @@ async function useCustomBot(jwt, botName, oAuth, debug = false) {
   } catch(err) {
     throw new Error("Invalid channel token");
   }
-  const bot = cp.spawn(path.join(configLocation, "bot"), [], {
+  let file = path.join(configLocation, "bot");
+  if (!fs.existsSync(file)) {
+    if (fs.existsSync(file + ".exe")) {
+      file += ".exe";
+    } else {
+      throw new Error("Bot proxy not found");
+    }
+  }
+  const bot = cp.spawn(file, [], {
     env: {
       CHANNEL: username,
       CHANNEL_ID: channelId,
