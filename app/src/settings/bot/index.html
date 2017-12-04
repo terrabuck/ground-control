@@ -1,0 +1,21 @@
+<h4 style="margin-bottom: 0.5em;">{{myText["customBotName"][currentLang]}}</h4>
+<label class="mdl-switch mdl-js-switch" for="use_bot">
+  <input type="checkbox" id="use_bot" class="mdl-switch__input">
+  <span class="mdl-switch__label"></span>
+</label>
+<div class="clear"></div>
+<div id="bot">
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: calc(53.5vw - 4.3em);">
+    <input class="mdl-textfield__input" type="text" id="bot-name" pattern="^[A-Za-z0-9][A-Za-z0-9_]*$">
+    <label class="mdl-textfield__label" for="bot-name">{{myText["Name"][currentLang]}}</label>
+  </div>
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: calc(53.6vw - 4.3em);">
+    <input class="mdl-textfield__input" type="text" id="bot-pw" pattern="^oauth:[A-Za-z0-9]+$">
+    <label class="mdl-textfield__label" for="bot-pw">OAuth Token</label>
+  </div>
+  <label class="mdl-icon-toggle mdl-js-icon-toggle mdl-js-ripple-effect" for="show-bot-pw" onclick="if((!$('#bot-pw').val()) || $('#bot-pw').val() === '') { return false; }">
+      <input type="checkbox" id="show-bot-pw" class="mdl-icon-toggle__input">
+      <i class="mdl-icon-toggle__label material-icons">visibility</i>
+  </label>
+</div>
+<div class="clear"></div>

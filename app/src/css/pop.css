@@ -76,6 +76,9 @@ html.darkMode p.event-message a {
 html.darkMode p.mb-event-type {
   color: rgba(255, 255, 255, 0.54) !important;
 }
+html.darkMode .md-display-1.ng-scope {
+  color: rgba(255, 255, 255, 0.8);
+}
 
 /* Compact Mode */
 html.compact md-list-item {
