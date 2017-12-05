@@ -159,30 +159,52 @@ function atob(str) {
  * @param {string} token 
  */
 function checkValidToken(token) {
-  return got.get(`https://${api}/kappa/v2/channels/me`, {
-    headers: {
-      authorization: "Bearer " + token
-    }
-  }).then(res => {
-    try {
-      return {
-        valid: true,
-        username: JSON.parse(res.body).username
-      };
-    } catch (err) {
-      return {
-        valid: true,
-        username: "#"
-      };
-    }
-  }).catch(err => {
-    throw err;
+  return new Promise((resolve, reject) => {
+    got.get(`https://${api}/kappa/v2/channels/me`, {
+      headers: {
+        authorization: "Bearer " + token
+      }
+    }).then(res => {
+      try {
+        resolve({
+          valid: true,
+          username: JSON.parse(res.body).username
+        });
+      } catch (err) {
+        resolve({
+          valid: true,
+          username: "#"
+        });
+      }
+    }).catch(err => {
+      reject(err);
+    });
   });
+}
+
+/**
+ * @param {() => any} func
+ * @param {number} wait in ms
+ * @param {bool} immediate
+ */
+function debounce(func, wait, immediate) {
+  var timeout;
+  return function() {
+    var context = this, args = arguments;
+    var later = function() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+    var callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
 }
 
 try {
   module.exports = {
-    atob, url, api, cBotApi, pack, configLocation, configFile, checkValidToken
+    atob, url, api, cBotApi, pack, configLocation, configFile, checkValidToken, debounce
   };
 } catch (err) {
   // Not loaded with require()

@@ -1,4 +1,4 @@
-/*global $, fs, configFile, pack, ipcRenderer, got, api, url, cBotApi, shell, myText, currentLang*/
+/*global $, fs, configFile, pack, ipcRenderer, got, api, url, cBotApi, shell, myText, currentLang, debounce*/
 
 /**
  * @param {string} text 
@@ -38,7 +38,44 @@ function loadOtherStuff() {
 
   // Load text
   document.body.innerHTML = mustache(document.body.innerHTML);
+
+  const update_S = window.update_S = debounce(_update_S, 20);
   
+  // Update settings
+  function _update_S() {
+    var tmp = {
+      token: "",
+      keys: {},
+      darkMode: $("#darkMode_sub").is(":checked"),
+      lang: $("#languageSelection select").val(),
+      other: {
+        useSR: $("#use_sr").is(":checked"),
+        useCompact: $("#use_compact").is(":checked")
+      },
+      bot: {
+        use: $("#use_bot").is(":checked") || false,
+        name: $("#bot-name").val() || "",
+        token: $("#bot-pw").val() || ""
+      }
+    };
+    $(".autoC").each(function() {
+      tmp.keys[$(this).attr("id")] = $(this).val() || "";
+    });
+    // Token
+    if(!$("#jwt").parent().hasClass("is-invalid")) {
+      tmp.token = $("#jwt").val();
+    }
+    fs.writeFile(configFile, JSON.stringify(tmp), (err => {
+      if (err) {
+        console.error(err);
+      } else {
+        if (currentLang !== tmp.lang) {
+          changeMode();
+        }
+      }
+    }));
+  }
+
   $("#getToken").on("click", function() {
     shell.openExternal(`https://${url}/dashboard/account/information`);
   });
@@ -183,7 +220,7 @@ function loadOtherStuff() {
       let lang = $("#languageSelection select").val();
       mod = dark + mod + ":" + lang;
       ipcRenderer.sendToHost("reload:" + mod);
-    }, 10);
+    }, 50);
   }
   $("#use_compact").on("property change mouseup", function() {
     changeMode();
@@ -210,36 +247,6 @@ function loadOtherStuff() {
       ipcRenderer.sendToHost("sr:" + mod);
     }, 10);
   });
-  
-  // Update settings
-  function update_S() {
-    var tmp = {
-      token: "",
-      keys: {},
-      darkMode: $("#darkMode_sub").is(":checked"),
-      lang: $("#languageSelection select").val(),
-      other: {
-        useSR: $("#use_sr").is(":checked"),
-        useCompact: $("#use_compact").is(":checked")
-      },
-      bot: {
-        use: $("#use_bot").is(":checked") || false,
-        name: $("#bot-name").val() || "",
-        token: $("#bot-pw").val() || ""
-      }
-    };
-    $(".autoC").each(function() {
-      tmp.keys[$(this).attr("id")] = $(this).val() || "";
-    });
-    // Token
-    if(!$("#jwt").parent().hasClass("is-invalid")) {
-      tmp.token = $("#jwt").val();
-    }
-    fs.writeFileSync(configFile, JSON.stringify(tmp));
-    if (currentLang !== tmp.lang) {
-      changeMode();
-    }
-  }
   
   $("input:not([id^='show'])").on("property change keyup", update_S);
   $("select").on("property change keyup", update_S);
@@ -274,7 +281,7 @@ function loadOtherStuff() {
 
   // Disable the bot if no longer allowed
   if (!$("#bot").length) {
-    update_S();
+    _update_S();
   }
 }
 
