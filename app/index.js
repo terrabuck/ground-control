@@ -211,13 +211,13 @@ function createWindow() {
 
   let hash = '';
   /* Dark mode */
-  if (settings.darkMode) {
+  if (settings && settings.darkMode) {
     hash += '#dark';
   } else {
     hash += '#light';
   }
   /* Compact mode */
-  if (settings.other && settings.other.useCompact) {
+  if (settings && settings.other && settings.other.useCompact) {
     hash += '-compact';
   }
 
