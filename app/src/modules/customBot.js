@@ -46,7 +46,9 @@ async function useCustomBot(jwt, botName, oAuth, debug = false) {
       encoding: null
     });
 
-    fs.writeFileSync(file, download.body);
+    fs.writeFileSync(file, download.body, {
+      mode: 0o755
+    });
     firstRunToday = false;
   }
   if (!allowed) return null;
