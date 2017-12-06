@@ -1,8 +1,13 @@
 const cp = require('child_process');
+const os = require('os');
 const path = require('path');
 const fs = require('fs');
 
-const { atob, cBotApi, checkValidToken, configLocation } = require('../js/dep');
+let firstRunToday = true;
+
+const got = require('got');
+
+const { atob, cBotApi, checkValidToken, api, configLocation, canUseBot } = require('../js/dep');
 
 async function useCustomBot(jwt, botName, oAuth, debug = false) {
   const channelId = JSON.parse(atob(jwt.split(".")[1])).channel;
@@ -14,13 +19,37 @@ async function useCustomBot(jwt, botName, oAuth, debug = false) {
     throw new Error("Invalid channel token");
   }
   let file = path.join(configLocation, "bot");
-  if (!fs.existsSync(file)) {
-    if (fs.existsSync(file + ".exe")) {
-      file += ".exe";
-    } else {
-      throw new Error("Bot proxy not found");
-    }
+  if (os.platform() === "win32") {
+    file += ".exe";
   }
+  const allowed = await canUseBot(jwt);
+  if (firstRunToday) {
+    if (fs.existsSync(file)) {
+      fs.unlinkSync(file);
+    }
+    if (!allowed) return null;
+    let downloadUrl = "https://cdn.streamelements.com/ground-control/tether/tether";
+    switch(os.platform()) {
+      case "win32":
+        downloadUrl += ".exe";
+        break;
+      case "linux":
+        downloadUrl += "_linux";
+        break;
+      case "darwin":
+        downloadUrl += "_darwin";
+        break;
+      default:
+        throw new Error("Platform not supported");
+    }
+    const download = await got.get(downloadUrl, {
+      encoding: null
+    });
+
+    fs.writeFileSync(file, download.body);
+    firstRunToday = false;
+  }
+  if (!allowed) return null;
   const bot = cp.spawn(file, [], {
     env: {
       CHANNEL: username,
@@ -42,4 +71,4 @@ async function useCustomBot(jwt, botName, oAuth, debug = false) {
 
   return bot;
 }
-module.exports = useCustomBot;
+module.exports = { useCustomBot };

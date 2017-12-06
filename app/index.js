@@ -9,7 +9,7 @@ const chokidar = require('chokidar');
 const windowStateKeeper = require('electron-window-state');
 const connectSocket = require('./src/modules/socket');
 const Heap = require('./src/modules/heap');
-const customBot = require('./src/modules/customBot');
+const { useCustomBot: customBot } = require('./src/modules/customBot');
 
 app.disableHardwareAcceleration();
 
@@ -137,7 +137,7 @@ function reg() {
       customBot(settings.token, settings.bot.name, settings.bot.token).then(_bot => {
         bot = _bot;
       }).catch(err => {
-        // <TODO> Download file && run || deny access
+        throw err;
       });
     }
   }

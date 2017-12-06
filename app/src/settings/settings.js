@@ -1,4 +1,4 @@
-/*global $, fs, configFile, pack, ipcRenderer, got, api, url, cBotApi, shell, myText, currentLang, debounce*/
+/*global $, fs, configFile, pack, ipcRenderer, got, api, url, canUseBot, shell, myText, currentLang, debounce*/
 
 /**
  * @param {string} text 
@@ -17,22 +17,10 @@ function mustache(text) {
   });
 }
 
-async function checkIfBot() { // <TODO> add check
-  if (cBotApi) {
-    return true;
-  }
-  return false;
-}
+const botStuff = fs.readFileSync(__dirname + '/bot/index.html').toString();
+$('#loadBot').html(botStuff);
 
-checkIfBot().then(useBot => {
-  if (useBot) {
-    const botStuff = fs.readFileSync(__dirname + '/bot/index.html').toString();
-    $('#loadBot').html(botStuff);
-  }
-  loadOtherStuff();
-}).catch(err => {
-  loadOtherStuff();
-});
+loadOtherStuff();
 
 function loadOtherStuff() {
 
@@ -78,6 +66,9 @@ function loadOtherStuff() {
 
   $("#getToken").on("click", function() {
     shell.openExternal(`https://${url}/dashboard/account/information`);
+  });
+  $("#getBotOAuth").on("click", function() {
+    shell.openExternal(`https://twitchapps.com/tmi/`);
   });
   function genKeybinding(title, id) {
     $("#keybindings").append(`<!-- ${title} -->
@@ -132,19 +123,17 @@ function loadOtherStuff() {
   }
 
   // Show bot token
-  if ($("#bot").length) {
-    $("#show-bot-pw").prop("checked", true);
-    $("#show-bot-pw").on("change", function() {
-      if ($("#show-bot-pw").prop("checked")) {
-        $("#bot-pw").prop("disabled", false).removeClass("secret");
-      } else {
-        $("#bot-pw").prop("disabled", true).addClass("secret");
-      }
-    });
-    if ($("#bot-pw").val()) {
+  $("#show-bot-pw").prop("checked", true);
+  $("#show-bot-pw").on("change", function() {
+    if ($("#show-bot-pw").prop("checked")) {
+      $("#bot-pw").prop("disabled", false).removeClass("secret");
+    } else {
       $("#bot-pw").prop("disabled", true).addClass("secret");
-      $("#show-bot-pw").prop("checked", false);
     }
+  });
+  if ($("#bot-pw").val()) {
+    $("#bot-pw").prop("disabled", true).addClass("secret");
+    $("#show-bot-pw").prop("checked", false);
   }
   
   // Load old settings
@@ -162,11 +151,31 @@ function loadOtherStuff() {
         }
       }
       if (a.token && a.token !== "") {
+        const channelId = JSON.parse(atob(a.token.split(".")[1])).channel;
         setInterval(function() {
           $("#jwt").parent().removeClass("is-disabled");
         }, 10);
         $("#jwt").prop("disabled", true).addClass("secret").val(a.token);
         $("#show-jwt").prop("checked", false);
+        canUseBot(a.token).then(res => {
+          if (res) {
+            $("#loadBot").css("display", "inline");
+          }
+        });
+        // Test Bot
+        $("#testBot").on("click", function() {
+          $(this).attr("disabled", true);
+          got.post(`https://${api}/kappa/v2/bot/${channelId}/say`, {
+            body: {
+              message: "Hello, is this thing on? 4Head"
+            },
+            headers: {
+              authorization: "Bearer " + a.token
+            }
+          }).then(() => {
+            $(this).attr("disabled", false);
+          });
+        });
       }
       if (a.darkMode) {
         $("html").addClass("darkMode");
@@ -192,7 +201,7 @@ function loadOtherStuff() {
       if (a.lang) {
         $("#languageSelection select").val(a.lang);
       }
-      if (a.bot && $("#bot").length) {
+      if (a.bot) {
         if (a.bot.use) {
           $("#use_bot").prop("checked", true);
         }
@@ -278,11 +287,6 @@ function loadOtherStuff() {
       console.error(err);
     });
   });
-
-  // Disable the bot if no longer allowed
-  if (!$("#bot").length) {
-    _update_S();
-  }
 }
 
 

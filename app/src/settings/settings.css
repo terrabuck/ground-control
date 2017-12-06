@@ -139,6 +139,20 @@ ul {
 #key-info ul {
     margin-bottom: 0;
 }
+#loadBot {
+    display: none;
+}
+#testBot {
+    float: right;
+    background-color: rgb(63,81,181);
+}
+#testBot a {
+    color: white;
+}
+#testBot:disabled {
+    background-color: gray !important;
+}
+
 
 /*Dark Mode*/
 html.darkMode .is-checked .mdl-switch__track {
@@ -185,4 +199,7 @@ html.darkMode #languageSelection select {
     border: 1px solid #000;
     color: #fff;
     background: #444;
+}
+html.darkMode #testBot {
+    background-color: #CC5500;
 }

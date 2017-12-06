@@ -145,6 +145,18 @@ const myText = {
   "Name": {
     en: "Name",
     ru: "Имя"
+  },
+  "bot:test": {
+    en: "Test Bot",
+    ru: "<TODO>"
+  },
+  "bot:generate": {
+    en: "You can generate your OAuth Token ",
+    ru: "<TODO>"
+  },
+  "here": {
+    en: "here",
+    ru: "<TODO>"
   }
 }
 
@@ -183,6 +195,35 @@ function checkValidToken(token) {
 }
 
 /**
+ * @param {string} jwt
+ */
+function canUseBot(jwt) {
+  const channelId = JSON.parse(atob(jwt.split(".")[1])).channel;
+  return new Promise(resolve => {
+    got.get(`https://${api}/kappa/v2/bot/${channelId}`, {
+      json: true,
+      headers: {
+        authorization: "Bearer " + jwt
+      }
+    }).then(res => {
+      try {
+        if (res.body.bot.allowCustomName) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      } catch(err) {
+        resolve(false);
+      }
+    }).catch(err => {
+      console.error(err);
+      resolve(false);
+    });
+  });
+}
+
+
+/**
  * @param {() => any} func
  * @param {number} wait in ms
  * @param {bool} immediate
@@ -204,7 +245,7 @@ function debounce(func, wait, immediate) {
 
 try {
   module.exports = {
-    atob, url, api, cBotApi, pack, configLocation, configFile, checkValidToken, debounce
+    atob, url, api, cBotApi, pack, configLocation, configFile, checkValidToken, debounce, canUseBot
   };
 } catch (err) {
   // Not loaded with require()

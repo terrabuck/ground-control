@@ -3,19 +3,24 @@
   <input type="checkbox" id="use_bot" class="mdl-switch__input">
   <span class="mdl-switch__label"></span>
 </label>
+<button id="testBot" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+  <a>{{myText["bot:test"][currentLang]}}</a>
+</button>
 <div class="clear"></div>
 <div id="bot">
-  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: calc(53.5vw - 4.3em);">
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: calc(50vw - 2.2em);">
     <input class="mdl-textfield__input" type="text" id="bot-name" pattern="^[A-Za-z0-9][A-Za-z0-9_]*$">
     <label class="mdl-textfield__label" for="bot-name">{{myText["Name"][currentLang]}}</label>
   </div>
-  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: calc(53.6vw - 4.3em);">
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: calc(50vw - 2.2em);">
     <input class="mdl-textfield__input" type="text" id="bot-pw" pattern="^oauth:[A-Za-z0-9]+$">
     <label class="mdl-textfield__label" for="bot-pw">OAuth Token</label>
   </div>
   <label class="mdl-icon-toggle mdl-js-icon-toggle mdl-js-ripple-effect" for="show-bot-pw" onclick="if((!$('#bot-pw').val()) || $('#bot-pw').val() === '') { return false; }">
-      <input type="checkbox" id="show-bot-pw" class="mdl-icon-toggle__input">
-      <i class="mdl-icon-toggle__label material-icons">visibility</i>
+    <input type="checkbox" id="show-bot-pw" class="mdl-icon-toggle__input">
+    <i class="mdl-icon-toggle__label material-icons">visibility</i>
   </label>
+  <div class="clear"></div>
+  <span>{{myText["bot:generate"][currentLang]}}<a id="getBotOAuth" style="cursor: pointer;">{{myText["here"][currentLang]}}</a></span>
 </div>
 <div class="clear"></div>
