@@ -148,15 +148,15 @@ const myText = {
   },
   "bot:test": {
     en: "Test Bot",
-    ru: "<TODO>"
+    ru: "Тест бот"
   },
   "bot:generate": {
     en: "You can generate your OAuth Token ",
-    ru: "<TODO>"
+    ru: "Вы можете создать токен авторизации "
   },
   "here": {
     en: "here",
-    ru: "<TODO>"
+    ru: "тут"
   }
 }
 
