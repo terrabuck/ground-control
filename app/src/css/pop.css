@@ -94,7 +94,7 @@ html.compact md-list-item .md-avatar {
 html.compact button.replay-event-button {
   min-width: 0;
   min-height: 0;
-  top: 0em;
+  top: 1.3em;
   height: 2.125em;
   padding: 0;
   margin: 0 0.75em 0 0;
@@ -106,6 +106,7 @@ html.compact button.replay-event-button md-icon {
 html.compact span.event-time.next-to-replay {
   padding-top: calc(0.2em + 1px);
   right: 3.5em;
+  top: 1em;
 }
 html.compact img.md-avatar {
   margin-bottom: 0;

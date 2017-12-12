@@ -16,7 +16,8 @@ async function useCustomBot(jwt, botName, oAuth, debug = false) {
     const tmp = await checkValidToken(jwt);
     username = tmp.username;
   } catch(err) {
-    throw new Error("Invalid channel token");
+    // throw new Error("Invalid channel token");
+    return null;
   }
   let file = path.join(configLocation, "bot");
   if (os.platform() === "win32") {

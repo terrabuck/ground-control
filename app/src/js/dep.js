@@ -19,7 +19,7 @@ if (fs.existsSync('./package.json')) {
 }
 const url = "streamelements.com";
 const api = "api.streamelements.com";
-const cBotApi = "";
+const cBotApi = "wss://omegalul.streamelements.com";
 
 let currentLang = "en";
 if (fs.existsSync(configFile)) {

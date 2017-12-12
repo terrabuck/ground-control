@@ -276,8 +276,8 @@ function loadOtherStuff() {
       },
       body: "{}"
     }).then(res => {
-      if (res.body !== "Ok") {
-        console.log(res);
+      if (res.body.toLocaleLowerCase() !== "ok") {
+        console.error(res);
       }
       $("#resetSession a").html(myText["done"][currentLang]);
       setTimeout(function() {
