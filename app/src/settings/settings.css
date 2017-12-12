@@ -115,6 +115,44 @@ ul {
 #resetSession a {
     color: white;
 }
+#languageSelection {
+    float: right;
+}
+#languageSelection select {
+    font-size: 14px;
+    padding: 5px;
+}
+#loadBot h4 {
+    margin-bottom: 0.5em;
+    float: left;
+    margin-top: 0;
+    margin-right: 1em;
+}
+#loadBot *[for='use_bot'] {
+    width: auto !important;
+    float: left;
+    margin-top: 0.3em;
+}
+#key-info {
+    margin-bottom: 1em;
+}
+#key-info ul {
+    margin-bottom: 0;
+}
+#loadBot {
+    display: none;
+}
+#testBot {
+    float: right;
+    background-color: rgb(63,81,181);
+}
+#testBot a {
+    color: white;
+}
+#testBot:disabled {
+    background-color: gray !important;
+}
+
 
 /*Dark Mode*/
 html.darkMode .is-checked .mdl-switch__track {
@@ -155,5 +193,13 @@ html.darkMode label.mdl-textfield__label::after {
     background-color: orange;
 }
 html.darkMode #resetSession {
+    background-color: #CC5500;
+}
+html.darkMode #languageSelection select {
+    border: 1px solid #000;
+    color: #fff;
+    background: #444;
+}
+html.darkMode #testBot {
     background-color: #CC5500;
 }

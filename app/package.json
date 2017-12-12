@@ -1,7 +1,7 @@
 {
     "name": "ground_control",
     "productName": "Ground Control",
-    "version": "1.3.3",
+    "version": "1.3.5",
     "description": "Ground Control: Hotkeys for your stream",
     "main": "index.js",
     "author": "StreamElements",

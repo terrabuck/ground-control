@@ -65,7 +65,8 @@ html.darkMode md-card .layout-row .md-no-sticky,
 html.darkMode md-divider,
 html.darkMode md-list,
 html.darkMode md-content,
-html.darkMode .no-songs {
+html.darkMode .no-songs,
+html.darkMode span.text-uppercase.font-size-12px {
   background-color: rgb(66,66,66) !important;
 }
 html.darkMode md-divider {
