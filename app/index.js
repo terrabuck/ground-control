@@ -48,6 +48,7 @@ function reg() {
 
   /* Socket */
   socket = null;
+  killBot();
   if (!settings.token) return;
   
   socket = connectSocket(settings.token);
@@ -129,14 +130,19 @@ function reg() {
     }
   }
   // Custom bot
-  if (bot && bot.kill) {
-    bot.kill();
+  function killBot() {
+    if (bot && bot.kill) {
+      bot.kill();
+      bot = null;
+    }
   }
   if (settings.bot && settings.bot.use === true) {
     if (settings.bot.name && settings.bot.token) {
       customBot(settings.token, settings.bot.name, settings.bot.token).then(_bot => {
+        killBot();
         bot = _bot;
       }).catch(err => {
+        killBot();
         throw err;
       });
     }
