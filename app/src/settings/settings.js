@@ -53,6 +53,19 @@ function loadOtherStuff() {
     if(!$("#jwt").parent().hasClass("is-invalid")) {
       tmp.token = $("#jwt").val();
     }
+    // Bot
+    if (tmp.token) {
+      canUseBot(tmp.token).then(res => {
+        if (res) {
+          $("#loadBot").css("display", "inline");
+        } else {
+          $("#loadBot").css("display", "none");
+        }
+      });
+    } else {
+      $("#loadBot").css("display", "none");
+    }
+    // Write to file
     fs.writeFile(configFile, JSON.stringify(tmp), (err => {
       if (err) {
         console.error(err);

@@ -47,15 +47,15 @@ function reg() {
   }
 
   /* Socket */
-  socket = null;
-  killBot();
-  if (!settings.token) return;
-  
-  socket = connectSocket(settings.token);
-  if (!analytics) {
-    analytics = new Heap(settings.token);
-    analytics.open();
+  if (socket) {
+    if (socket.close) {
+      socket.close();
+    }
+    socket = null;
   }
+  killBot();
+
+  /* Cookies */
   session.defaultSession.cookies.set({ url: 'https://streamelements.com', name: 'se-token', value: settings.token || '#' }, err => {
     if (err) {
       console.error(err);
@@ -66,6 +66,14 @@ function reg() {
       console.error(err);
     }
   });
+
+  if (!settings.token) return settings;
+  
+  socket = connectSocket(settings.token);
+  if (!analytics) {
+    analytics = new Heap(settings.token);
+    analytics.open();
+  }
 
   if (settings.keys) {
     /* Skip Alert */
