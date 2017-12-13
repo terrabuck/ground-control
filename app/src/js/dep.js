@@ -36,127 +36,158 @@ if (fs.existsSync(configFile)) {
 const myText = {
   "alert:skip": {
     en: "Skip alert",
-    ru: "Пропустить оповещение"
+    ru: "Пропустить оповещение",
+    fr: "Passer l'alerte"
   },
   "alert:stop": {
     en: "Stop/Resume alerts",
-    ru: "Остановить/Продолжить оповещения"
+    ru: "Остановить/Продолжить оповещения",
+    fr: "Arrêter/Reprendre alertes"
   },
   "song:skip": {
     en: "Skip song",
-    ru: "Пропустить песню"
+    ru: "Пропустить песню",
+    fr: "Passer la chanson"
   },
   "song:stop": {
     en: "Stop/Resume song",
-    ru: "Остановить/Продолжить песню"
+    ru: "Остановить/Продолжить песню",
+    fr: "Arrêter reprendre la chanson"
   },
   "keyboard:warning": {
     en: "DEPENDING ON YOUR KEYBOARD-LAYOUT SOME COMBINATIONS MAY NOT WORK!",
-    ru: "В зависимости от вашей раскладки на клавиатуре некоторые комбинации могут не работать!"
+    ru: "В зависимости от вашей раскладки на клавиатуре некоторые комбинации могут не работать!",
+    fr: "CERTAINES COMBINAISONS PEUVENT NE PAS FONCTIONNER EN FONCTION DE VOTRE CLAVIER !"
   },
   "keyboard:available": {
     en: "Available keys:",
-    ru: "Доступные клавиши:"
+    ru: "Доступные клавиши:",
+    fr: "Touches disponibles"
   },
   "keyboard:punctuations": {
     en: "Punctuations",
-    ru: "Punctuations"
+    ru: "Punctuations",
+    fr: "Ponctuations"
   },
   "keyboard:alias:enter": {
     en: "or Enter as alias",
-    ru: "or Enter as alias"
+    ru: "or Enter as alias",
+    fr: "ou Entrée"
   },
   "keyboard:alias:esc": {
     en: "or Esc for short",
-    ru: "or Esc for short"
+    ru: "or Esc for short",
+    fr: "ou Esc"
   },
   "settings": {
     en: "Settings",
-    ru: "Настройки"
+    ru: "Настройки",
+    fr: "Réglages"
   },
   "authentication": {
     en: "Authentication",
-    ru: "Авторизация"
+    ru: "Авторизация",
+    fr: "Connexion"
   },
   "jwt": {
     en: "Your JWT Token...",
-    ru: "Ваш JWT Token..."
+    ru: "Ваш JWT Token...",
+    fr: "Votre Token JWT..."
   },
   "jwt:link": {
     en: "You can find it under ",
-    ru: "Вы можете это найти там "
+    ru: "Вы можете это найти там ",
+    fr: "Disponible dans "
   },
   "account": {
     en: "My Account",
-    ru: "Ваш аккаунт"
+    ru: "Ваш аккаунт",
+    fr: "Mon Compte"
   },
   "keyboard:bindings": {
     en: "Keybindings",
-    ru: "Сочетания клавиш"
+    ru: "Сочетания клавиш",
+    fr: "Raccourcis clavier"
   },
   "keyboard:bindings:info": {
     en: "Show info about keybindings",
-    ru: "Показать информацию о сочетаниях клавиш"
+    ru: "Показать информацию о сочетаниях клавиш",
+    fr: "Plus d'infos sur les raccourcis clavier"
   },
   "other": {
     en: "Other",
-    ru: "Другие"
+    ru: "Другие",
+    fr: "Divers"
   },
   "use:sr": {
     en: "Use Songrequest: ",
-    ru: "Использовать Songrequest: "
+    ru: "Использовать Songrequest: ",
+    fr: "Activer le songrequest : "
   },
   "use:compact": {
     en: "Use Compact Mode: ",
-    ru: "Использовать компактный режим: "
+    ru: "Использовать компактный режим: ",
+    fr: "Activer le mode réduit : "
   },
   "session:reset": {
     en: "Reset Session",
-    ru: "Сбросить сессию"
+    ru: "Сбросить сессию",
+    fr: "Réinitialiser la session"
   },
   "updating": {
     en: "&nbsp;&nbsp;Updating",
-    ru: "&nbsp;Обновляем"
+    ru: "&nbsp;Обновляем",
+    fr: "&nbsp;Chargement"
   },
   "jwt:invalid": {
     en: "You entered an invalid <a>JWT Token</a>.",
-    ru: "Вы ввели неправильный <a>JWT Token</a>."
+    ru: "Вы ввели неправильный <a>JWT Token</a>.",
+    fr: "Votre <a>Token JWT</a> est invalide."
   },
   "jwt:500": {
     en: "Something is wrong on our site...",
-    ru: "Что-то не так на нашем сервисе..."
+    ru: "Что-то не так на нашем сервисе...",
+    fr: "Oops! Notre site est inaccessible..."
   },
   "jwt:missing": {
     en: "To use the activity feed, please enter your <a>JWT Token</a> in the settings menu.",
-    ru: "Для получения оповещений, пожалуйста введите ваш <a>JWT Token</a> в меню настроек."
+    ru: "Для получения оповещений, пожалуйста введите ваш <a>JWT Token</a> в меню настроек.",
+    fr: "Pour utiliser le fil d'actualité, veuillez saisir votre <a>Token JWT</a> dans les réglages."
   },
   "loading": {
     en: "&nbsp;&nbsp;&nbsp;Loading",
-    ru: "Загружаемся"
+    ru: "Загружаемся",
+    fr: "&nbsp;&nbsp;Chargement"
   },
   "done": {
     en: "Done",
-    ru: "сделанный"
+    ru: "сделанный",
+    fr: "Terminé"
   },
   "customBotName": {
     en: "Custom bot name",
-    ru: "Кастомное название бота"
+    ru: "Кастомное название бота",
+    fr: "Nom du bot personnalisé"
   },
   "Name": {
     en: "Name",
-    ru: "Имя"
+    ru: "Имя",
+    fr: "Nom"
   },
   "bot:test": {
     en: "Test Bot",
-    ru: "Тест бот"
+    ru: "Тест бот",
+    fr: "Bot de test"
   },
   "bot:generate": {
     en: "You can generate your OAuth Token ",
-    ru: "Вы можете создать токен авторизации "
+    ru: "Вы можете создать токен авторизации ",
+    fr: "Vous pouvez générer votre Token OAuth "
   },
   "here": {
     en: "here",
-    ru: "тут"
+    ru: "тут",
+    fr: "ici"
   }
 }
 
