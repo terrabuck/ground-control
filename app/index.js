@@ -47,14 +47,15 @@ function reg() {
   }
 
   /* Socket */
-  socket = null;
-  if (!settings.token) return;
-  
-  socket = connectSocket(settings.token);
-  if (!analytics) {
-    analytics = new Heap(settings.token);
-    analytics.open();
+  if (socket) {
+    if (socket.close) {
+      socket.close();
+    }
+    socket = null;
   }
+  killBot();
+
+  /* Cookies */
   session.defaultSession.cookies.set({ url: 'https://streamelements.com', name: 'se-token', value: settings.token || '#' }, err => {
     if (err) {
       console.error(err);
@@ -65,6 +66,14 @@ function reg() {
       console.error(err);
     }
   });
+
+  if (!settings.token) return settings;
+  
+  socket = connectSocket(settings.token);
+  if (!analytics) {
+    analytics = new Heap(settings.token);
+    analytics.open();
+  }
 
   if (settings.keys) {
     /* Skip Alert */
@@ -126,17 +135,37 @@ function reg() {
           console.error(`Keybind for 'Stop/Resume Song' failed, '${key}'`);
         }
       }
+      /* Show/Hide video */
+      if (settings.keys.x_show_song) {
+        const key = settings.keys.x_show_song;
+        try {
+          globalShortcut.register(key, () => {
+            if (contents) {
+              contents.executeJavaScript('document.querySelector("#frame_sr").executeJavaScript(`$(\'[ng-model="vm.stats.mediaShare"]\').click()`);', true).then(() => {
+                console.log("Send: 'Show/Hide video'");
+              });
+            }
+          });
+        } catch (error) {
+          console.error(`Keybind for 'Show/Hide video' failed, '${key}'`);
+        }
+      }
     }
   }
   // Custom bot
-  if (bot && bot.kill) {
-    bot.kill();
+  function killBot() {
+    if (bot && bot.kill) {
+      bot.kill();
+      bot = null;
+    }
   }
   if (settings.bot && settings.bot.use === true) {
     if (settings.bot.name && settings.bot.token) {
       customBot(settings.token, settings.bot.name, settings.bot.token).then(_bot => {
+        killBot();
         bot = _bot;
       }).catch(err => {
+        killBot();
         throw err;
       });
     }

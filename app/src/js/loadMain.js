@@ -1,5 +1,20 @@
 /*global got, $, fs, configFile, goTo, currentPage, shell, b4settings, api, url, myText, currentLang, checkValidToken*/
 
+function changeModeNoToken() {
+  const settings = document.querySelector("#settings");
+  settings.addEventListener("ipc-message", event => {
+    if (event.channel.startsWith("reload")) {
+      var mod = event.channel.split(":")[1] || false;
+      if (mod) {
+        location.hash = mod;
+      }
+      setTimeout(function() {
+        location.reload();
+      }, 10);
+    }
+  });
+}
+
 function loadIframe() {
   setTimeout(function () {
     if (fs.existsSync(configFile)) {
@@ -108,7 +123,7 @@ function loadIframe() {
                     }
                     srA.executeJavaScript(`
                       window.onbeforeunload = function() {
-                          return false; 
+                        return false;
                       };
                       $(document).ready(function() {
                           var timeIsUp = false;
@@ -176,6 +191,7 @@ module.exports = {
  * @param {string} message
  */
 function displayError(message) {
+  changeModeNoToken();
   $("#updater").css("display", "none");
   $("#main").css("display", "none");
   $(".goto_sr").css("display", "none");

@@ -7,9 +7,6 @@ md-toolbar {
 .flex.notes-div.layout-row.layout-align-start-center {
   flex: 0 1 auto !important;
 }
-.layout-row.layout-align-space-between-start.flex-100 {
-  justify-content: flex-start !important;
-}
 .social-media {
   display: none !important;
 }
