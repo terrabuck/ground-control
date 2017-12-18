@@ -135,6 +135,21 @@ function reg() {
           console.error(`Keybind for 'Stop/Resume Song' failed, '${key}'`);
         }
       }
+      /* Show/Hide video */
+      if (settings.keys.x_show_song) {
+        const key = settings.keys.x_show_song;
+        try {
+          globalShortcut.register(key, () => {
+            if (contents) {
+              contents.executeJavaScript('document.querySelector("#frame_sr").executeJavaScript(`$(\'[ng-model="vm.stats.mediaShare"]\').click()`);', true).then(() => {
+                console.log("Send: 'Show/Hide video'");
+              });
+            }
+          });
+        } catch (error) {
+          console.error(`Keybind for 'Show/Hide video' failed, '${key}'`);
+        }
+      }
     }
   }
   // Custom bot

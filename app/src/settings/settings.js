@@ -103,6 +103,7 @@ function loadOtherStuff() {
   genKeybinding(myText["alert:stop"][currentLang], "SnR_alert");
   genKeybinding(myText["song:skip"][currentLang], "skip_song");
   genKeybinding(myText["song:stop"][currentLang], "SnR_song");
+  genKeybinding(myText["song:show"][currentLang], "x_show_song");
   
   // Show keybindings
   function keyInfo() {

@@ -50,6 +50,10 @@ const myText = {
     en: "Stop/Resume song",
     ru: "Остановить/Продолжить песню"
   },
+  "song:show": {
+    en: "Show/Hide video",
+    ru: "Показать/Скрыть видео"
+  },
   "keyboard:warning": {
     en: "DEPENDING ON YOUR KEYBOARD-LAYOUT SOME COMBINATIONS MAY NOT WORK!",
     ru: "В зависимости от вашей раскладки на клавиатуре некоторые комбинации могут не работать!"
