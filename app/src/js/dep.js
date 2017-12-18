@@ -56,7 +56,8 @@ const myText = {
   },
   "song:show": {
     en: "Show/Hide video",
-    ru: "Показать/Скрыть видео"
+    ru: "Показать/Скрыть видео",
+    fr: "Masquer/afficher la vidéo"
   },
   "keyboard:warning": {
     en: "DEPENDING ON YOUR KEYBOARD-LAYOUT SOME COMBINATIONS MAY NOT WORK!",
