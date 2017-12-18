@@ -9,7 +9,7 @@ const got = require('got');
 
 const { atob, cBotApi, checkValidToken, api, configLocation, canUseBot } = require('../js/dep');
 
-async function useCustomBot(jwt, botName, oAuth, debug = false) {
+async function useCustomBot(jwt, botName, oAuth) {
   const channelId = JSON.parse(atob(jwt.split(".")[1])).channel;
   let username;
   try {
@@ -63,14 +63,11 @@ async function useCustomBot(jwt, botName, oAuth, debug = false) {
       SOCKET_SERVER: cBotApi
     }
   });
-  if (debug) {
-    bot.on("message", message => {
-      console.log(message);
-    });
-    bot.on("error", err => {
+  bot.stdout.on('data', data => {
+    fs.appendFile(path.join(configLocation, "bot.log"), data.toString(), err => {
       console.error(err);
     });
-  }
+  });
 
   return bot;
 }
