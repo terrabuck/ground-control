@@ -65,7 +65,13 @@ async function useCustomBot(jwt, botName, oAuth) {
   });
   bot.stdout.on('data', data => {
     fs.appendFile(path.join(configLocation, "bot.log"), data.toString(), err => {
-      console.error(err);
+      if (err) console.log(err);
+    });
+  });
+  bot.stderr.on('data', data => {
+    if (!data) return;
+    fs.appendFile(path.join(configLocation, "bot.log"), data.toString(), err => {
+      if (err) console.error(err);
     });
   });
 
