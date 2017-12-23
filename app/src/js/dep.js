@@ -233,29 +233,40 @@ function checkValidToken(token) {
 /**
  * @param {string} jwt
  */
-function canUseBot(jwt) {
-  const channelId = JSON.parse(atob(jwt.split(".")[1])).channel;
-  return new Promise(resolve => {
-    got.get(`https://${api}/kappa/v2/bot/${channelId}`, {
+async function canUseBot(jwt) {
+  try {
+    const channelId = JSON.parse(atob(jwt.split(".")[1])).channel;
+    const req0 = await got.get(`https://${api}/kappa/v2/bot/${channelId}`, {
       json: true,
       headers: {
         authorization: "Bearer " + jwt
       }
-    }).then(res => {
-      try {
-        if (res.body.bot.allowCustomName) {
-          resolve(true);
-        } else {
-          resolve(false);
-        }
-      } catch(err) {
-        resolve(false);
-      }
-    }).catch(err => {
-      console.error(err);
-      resolve(false);
     });
-  });
+    if (req0.body.bot.allowCustomName) {
+      return true;
+    }
+    // const req1 = await got.get(`https://${api}/kappa/v2/channels/me`, {
+    //   json: true,
+    //   headers: {
+    //     authentication: "Bearer " + jwt
+    //   }
+    // });
+    // const req2 = await got.get(`https://api.twitch.tv/api/channels/${req1.body.username}/panels`, {
+    //   json: true,
+    //   headers: {
+    //     'client-id': 'sv6t1c3j2s5uuz3elxftm7s1bx54b31'
+    //   }
+    // });
+    // const panels = req2.body;
+    // for (let i = 0; i < panels.length; i++) {
+    //   if (/^https:\/\/streamelements\.com\/tip\/.+$/.test(panels[i].data.link)) {
+    //     return true;
+    //   }
+    // }
+  } catch (err) {
+
+  }
+  return false;
 }
 
 
