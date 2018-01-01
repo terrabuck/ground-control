@@ -68,7 +68,7 @@ function reg() {
   });
 
   if (!settings.token) return settings;
-  
+
   socket = connectSocket(settings.token);
   if (!analytics) {
     analytics = new Heap(settings.token);
@@ -141,7 +141,7 @@ function reg() {
         try {
           globalShortcut.register(key, () => {
             if (contents) {
-              contents.executeJavaScript('document.querySelector("#frame_sr").executeJavaScript(`$(\'[ng-model="vm.stats.mediaShare"]\').click()`);', true).then(() => {
+              contents.executeJavaScript('document.querySelector("#frame_sr").executeJavaScript(`$(\'[ng-click="vm.shareMedia($event)"]\').click()`);', true).then(() => {
                 console.log("Send: 'Show/Hide video'");
               });
             }
