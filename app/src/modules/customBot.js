@@ -7,21 +7,23 @@ let firstRunToday = true;
 
 const got = require('got');
 
-const { atob, cBotApi, checkValidToken, api, configLocation, canUseBot } = require('../js/dep');
+const {
+  atob, cBotApi, checkValidToken, configLocation, canUseBot
+} = require('../js/dep');
 
 async function useCustomBot(jwt, botName, oAuth) {
-  const channelId = JSON.parse(atob(jwt.split(".")[1])).channel;
+  const channelId = JSON.parse(atob(jwt.split('.')[1])).channel;
   let username;
   try {
     const tmp = await checkValidToken(jwt);
-    username = tmp.username;
-  } catch(err) {
+    username = tmp.username; // eslint-disable-line prefer-destructuring
+  } catch (err) {
     // throw new Error("Invalid channel token");
     return null;
   }
-  let file = path.join(configLocation, "bot");
-  if (os.platform() === "win32") {
-    file += ".exe";
+  let file = path.join(configLocation, 'bot');
+  if (os.platform() === 'win32') {
+    file += '.exe';
   }
   const allowed = await canUseBot(jwt);
   if (firstRunToday) {
@@ -29,19 +31,19 @@ async function useCustomBot(jwt, botName, oAuth) {
       fs.unlinkSync(file);
     }
     if (!allowed) return null;
-    let downloadUrl = "https://cdn.streamelements.com/ground-control/tether/tether";
-    switch(os.platform()) {
-      case "win32":
-        downloadUrl += ".exe";
+    let downloadUrl = 'https://cdn.streamelements.com/ground-control/tether/tether';
+    switch (os.platform()) {
+      case 'win32':
+        downloadUrl += '.exe';
         break;
-      case "linux":
-        downloadUrl += "_linux";
+      case 'linux':
+        downloadUrl += '_linux';
         break;
-      case "darwin":
-        downloadUrl += "_darwin";
+      case 'darwin':
+        downloadUrl += '_darwin';
         break;
       default:
-        throw new Error("Platform not supported");
+        throw new Error('Platform not supported');
     }
     const download = await got.get(downloadUrl, {
       encoding: null
@@ -64,13 +66,13 @@ async function useCustomBot(jwt, botName, oAuth) {
     }
   });
   bot.stdout.on('data', data => {
-    fs.appendFile(path.join(configLocation, "bot.log"), data.toString(), err => {
+    fs.appendFile(path.join(configLocation, 'bot.log'), data.toString(), err => {
       if (err) console.log(err);
     });
   });
   bot.stderr.on('data', data => {
     if (!data) return;
-    fs.appendFile(path.join(configLocation, "bot.log"), data.toString(), err => {
+    fs.appendFile(path.join(configLocation, 'bot.log'), data.toString(), err => {
       if (err) console.error(err);
     });
   });

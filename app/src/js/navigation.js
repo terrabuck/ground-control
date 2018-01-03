@@ -1,89 +1,87 @@
-/*global $, remote */
-var currentPage = "#frame_pop";
-var b4settings = "";
+/* global $, remote */
+let currentPage = '#frame_pop';
+let b4settings = '';
 function goTo(page) {
-  if (page !== "#settings") {
-    var settings = document.querySelector("#settings");
+  if (page !== '#settings') {
+    const settings = document.querySelector('#settings');
     settings.executeJavaScript(`if ($("#jwt").val()) {
                     $("#jwt").prop("disabled", true).addClass("secret");
                     $("#show-jwt").prop('checked', false);
                   }`);
+  } else if (currentPage !== '#settings') {
+    b4settings = currentPage;
   } else {
-    if (currentPage !== "#settings") {
-      b4settings = currentPage;
-    } else {
-      b4settings = "";
-    }
+    b4settings = '';
   }
   currentPage = page;
   window.location = page;
 }
-$(window).on('resize', function() {
+$(window).on('resize', () => {
   window.location = currentPage;
 });
 
-$("#nav button").on("click", function() {
-  $("#nav button").css("display", "none");
+$('#nav button').on('click', () => {
+  $('#nav button').css('display', 'none');
 });
-$(".goto_settings").on("click", function() {
-  $(".goBack").css("display", "inline-block");
-  goTo("#settings");
+$('.goto_settings').on('click', () => {
+  $('.goBack').css('display', 'inline-block');
+  goTo('#settings');
 });
-$(".goBack").on("click", function() {
-  if (b4settings && b4settings !== "#main" && !$("#error").length) {
-    if (b4settings === "#frame_sr") {
-      $(".goto_pop").css("display", "inline-block");
-      $(".goto_settings").css("display", "inline-block");
+$('.goBack').on('click', () => {
+  if (b4settings && b4settings !== '#main' && !$('#error').length) {
+    if (b4settings === '#frame_sr') {
+      $('.goto_pop').css('display', 'inline-block');
+      $('.goto_settings').css('display', 'inline-block');
     } else {
-      $(".goto_sr").css("display", "inline-block");
-      $(".goto_settings").css("display", "inline-block");
+      $('.goto_sr').css('display', 'inline-block');
+      $('.goto_settings').css('display', 'inline-block');
     }
     goTo(b4settings);
   } else {
-    $(".goto_settings").css("display", "inline-block");
-    if ($("#frame_pop").length) {
-      $(".goto_sr").css("display", "inline-block");
-      goTo("#frame_pop");
+    $('.goto_settings').css('display', 'inline-block');
+    if ($('#frame_pop').length) {
+      $('.goto_sr').css('display', 'inline-block');
+      goTo('#frame_pop');
     } else {
-      goTo("#main");
+      goTo('#main');
     }
   }
 });
 function goSr() {
-  $("#nav button").css("display", "none");
-  $(".goto_pop").css("display", "inline-block");
-  $(".goto_settings").css("display", "inline-block");
-  goTo("#frame_sr");
+  $('#nav button').css('display', 'none');
+  $('.goto_pop').css('display', 'inline-block');
+  $('.goto_settings').css('display', 'inline-block');
+  goTo('#frame_sr');
 }
 function goPop() {
-  $("#nav button").css("display", "none");
-  $(".goto_sr").css("display", "inline-block");
-  $(".goto_settings").css("display", "inline-block");
-  goTo("#frame_pop");
+  $('#nav button').css('display', 'none');
+  $('.goto_sr').css('display', 'inline-block');
+  $('.goto_settings').css('display', 'inline-block');
+  goTo('#frame_pop');
 }
-$(".goto_sr").on("click", function() {
+$('.goto_sr').on('click', () => {
   goSr();
 });
-$(".goto_pop").on("click", function() {
+$('.goto_pop').on('click', () => {
   goPop();
 });
 
 
-var intDev;
-$(".goto_settings").on('mousedown',function() {
-  intDev = setInterval(function() {
+let intDev;
+$('.goto_settings').on('mousedown', () => {
+  intDev = setInterval(() => {
     remote.getCurrentWindow().toggleDevTools();
   }, 5000);
 });
-$(".goto_settings").on('mouseup',function() {
+$('.goto_settings').on('mouseup', () => {
   clearInterval(intDev);
 });
-$(".goto_settings").on('mouseout',function() {
+$('.goto_settings').on('mouseout', () => {
   clearInterval(intDev);
 });
 
-var upDev = 0;
-$("#updater").on("click", function() {
+let upDev = 0;
+$('#updater').on('click', () => {
   upDev++;
   if (upDev >= 10) {
     remote.getCurrentWindow().toggleDevTools();

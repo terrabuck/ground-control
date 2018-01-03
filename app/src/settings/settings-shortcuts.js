@@ -1,77 +1,78 @@
-/*globals $, update_S */
-$(".autoC").each(function() {
+/* globals $, updateS */
+$('.autoC').each(function () {
   registerShortcutInput($(this));
 });
 
-$(".clearThis").each(function() {
-  $(this).on("click", function() {
-    update_S();
-    $(this).next().find("input").val("").trigger("change");
-    $(this).next().removeClass("is-dirty");
+$('.clearThis').each(function () {
+  $(this).on('click', function () {
+    updateS();
+    $(this).next().find('input').val('')
+    .trigger('change');
+    $(this).next().removeClass('is-dirty');
   });
 });
 
-var keyReplacements = {
-  "+": "Plus",
-  " ": "Space",
-  "MediaTrackPrevious": "MediaPreviousTrack",
-  "MediaTrackNext": "MediaNextTrack",
-  "ArrowLeft": "Left",
-  "ArrowDown": "Down",
-  "ArrowRight": "Right",
-  "ArrowUp": "Up"
+const keyReplacements = {
+  '+': 'Plus',
+  ' ': 'Space',
+  MediaTrackPrevious: 'MediaPreviousTrack',
+  MediaTrackNext: 'MediaNextTrack',
+  ArrowLeft: 'Left',
+  ArrowDown: 'Down',
+  ArrowRight: 'Right',
+  ArrowUp: 'Up'
 };
 
-// binds the keydown event of the jqueryNode to updateing it's value with the shortcut
+// binds the keydown event of the jqueryNode to update its value with the shortcut
 function registerShortcutInput(jqueryNode) {
-  jqueryNode.keydown(function(event) {
+  jqueryNode.keydown(event => {
     // console.log(event.key);
 
     // prevent normal typing
     event.preventDefault();
 
     // return if a the key is a modifier
-    if (event.key === "Control" || event.key === "Alt" || event.key === "Shift" || event.key === "Meta" ) {
+    if (event.key === 'Control' || event.key === 'Alt' || event.key === 'Shift' || event.key === 'Meta') {
       return;
     }
 
     // return if key contains DEAD
-    if (event.key.toUpperCase().includes("DEAD")) {
+    if (event.key.toUpperCase().includes('DEAD')) {
       return;
     }
 
-    var keyCode = "";
+    let keyCode = '';
 
     // add the modifier keys
     if (event.ctrlKey) {
-      keyCode += process.platform == 'darwin' ? "Cmd+" : "Ctrl+";
+      keyCode += process.platform === 'darwin' ? 'Cmd+' : 'Ctrl+';
     }
 
     if (event.altKey) {
-      keyCode += "Alt+";
+      keyCode += 'Alt+';
     }
 
     if (event.shiftKey) {
-      keyCode += "Shift+";
+      keyCode += 'Shift+';
     }
-    
+
     if (event.metaKey) {
-      keyCode += "Super+";
+      keyCode += 'Super+';
     }
 
     // add the key
     if (keyReplacements[event.key]) {
       keyCode += keyReplacements[event.key];
-    } else if (event.key.length == 1) {
+    } else if (event.key.length === 1) {
       keyCode += event.key.toUpperCase();
     } else {
       keyCode += event.key;
     }
 
     // update value
-    jqueryNode.prop("value", keyCode);
-    if (jqueryNode.val() && jqueryNode.val() !== "") {
-      jqueryNode.parent().addClass("is-dirty");
+    jqueryNode.prop('value', keyCode);
+    if (jqueryNode.val() && jqueryNode.val() !== '') {
+      jqueryNode.parent().addClass('is-dirty');
     }
   });
 }
