@@ -40,10 +40,10 @@ function reg() {
   try {
     settings = JSON.parse(fs.readFileSync(configFile).toString());
   } catch (error) {
-    setTimeout(function() {
+    setTimeout(() => {
       reg();
     }, 100);
-    return;
+    return null;
   }
 
   /* Socket */
@@ -68,7 +68,7 @@ function reg() {
   });
 
   if (!settings.token) return settings;
-  
+
   socket = connectSocket(settings.token);
   if (!analytics) {
     analytics = new Heap(settings.token);
@@ -111,7 +111,10 @@ function reg() {
         try {
           globalShortcut.register(key, () => {
             if (contents) {
-              contents.executeJavaScript('document.querySelector("#frame_sr").executeJavaScript(`$("button[ng-click=\'vm.skipSong($event)\']").click()`);', true).then(() => {
+              contents.executeJavaScript(
+                'document.querySelector("#frame_sr").executeJavaScript(`$("button[ng-click=\'vm.skipSong($event)\']").click()`);',
+                true
+              ).then(() => {
                 console.log("Send: 'Skip Song'");
               });
             }
@@ -126,7 +129,10 @@ function reg() {
         try {
           globalShortcut.register(key, () => {
             if (contents) {
-              contents.executeJavaScript('document.querySelector("#frame_sr").executeJavaScript(`$("button[ng-click=\'vm.togglePlayer()\']").click()`);', true).then(() => {
+              contents.executeJavaScript(
+                'document.querySelector("#frame_sr").executeJavaScript(`$("button[ng-click=\'vm.togglePlayer()\']").click()`);',
+                true
+              ).then(() => {
                 console.log("Send: 'Stop/Resume Song'");
               });
             }
@@ -141,7 +147,10 @@ function reg() {
         try {
           globalShortcut.register(key, () => {
             if (contents) {
-              contents.executeJavaScript('document.querySelector("#frame_sr").executeJavaScript(`$(\'[ng-model="vm.stats.mediaShare"]\').click()`);', true).then(() => {
+              contents.executeJavaScript(
+                'document.querySelector("#frame_sr").executeJavaScript(`$(\'[ng-click="vm.shareMedia($event)"]\').click()`);',
+                true
+              ).then(() => {
                 console.log("Send: 'Show/Hide video'");
               });
             }
@@ -261,22 +270,12 @@ function createWindow() {
   // set contents
   contents = win.webContents;
   // When target="_blank"
-  win.webContents.on('new-window', (event, url) => {
+  win.webContents.on('new-window', event => {
     event.preventDefault();
-    if (url) {
-      // const winNew = new BrowserWindow({
-      //   webPreferences: {
-      //   nodeIntegration: false
-      //   },
-      //   parent: win
-      // });
-      // winNew.setMenu(null);
-      // winNew.loadURL(url);
-    }
   });
 
   // Open the DevTools.
-  if ((fs.existsSync('./package.json') && /.*[\\/]npm[\\/]node_modules[\\/]electron[\\/]dist[\\/]electron[\.a-z]*/i.test(path.normalize(process.argv[0]))) || (process.argv[2] && process.argv[2] === 'secret dev')) {
+  if ((fs.existsSync('./package.json') && /.*[\\/]npm[\\/]node_modules[\\/]electron[\\/]dist[\\/]electron[.a-z]*/i.test(path.normalize(process.argv[0]))) || (process.argv[2] && process.argv[2] === 'secret dev')) { // eslint-disable-line
     win.webContents.openDevTools();
   }
 
@@ -338,9 +337,9 @@ function cleanup() {
   });
 }
 
-process.on('uncaughtException', function (err) {
+process.on('uncaughtException', err => {
   console.error(err);
 });
-process.on('unhandledRejection', function (err) {
+process.on('unhandledRejection', err => {
   console.error(err);
 });

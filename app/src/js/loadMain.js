@@ -1,82 +1,84 @@
-/*global got, $, fs, configFile, goTo, currentPage, shell, b4settings, api, url, myText, currentLang, checkValidToken*/
+/* global $, fs, configFile, goTo, currentPage, shell, url, myText, currentLang, checkValidToken */
 
 function changeModeNoToken() {
-  const settings = document.querySelector("#settings");
-  settings.addEventListener("ipc-message", event => {
-    if (event.channel.startsWith("reload")) {
-      var mod = event.channel.split(":")[1] || false;
+  const settings = document.querySelector('#settings');
+  settings.addEventListener('ipc-message', event => {
+    if (event.channel.startsWith('reload')) {
+      const mod = event.channel.split(':')[1] || false;
       if (mod) {
-        location.hash = mod;
+        window.location.hash = mod;
       }
-      setTimeout(function() {
-        location.reload();
+      setTimeout(() => {
+        window.location.reload();
       }, 10);
     }
   });
 }
 
 function loadIframe() {
-  setTimeout(function () {
+  setTimeout(() => {
     if (fs.existsSync(configFile)) {
-      var a;
+      let a;
       try {
         a = JSON.parse(fs.readFileSync(configFile));
-        if (a.token && a.token !== "") {
+        if (a.token && a.token !== '') {
           checkValidToken(a.token).then(res => {
             if (res.valid) {
-              if ($("#error").length) {
+              if ($('#error').length) {
                 if (a.other && a.other.useSR === false) {
-                  $(".goto_sr").remove();
-                  $(".goto_pop").remove();
-                  $("#main").html(`<webview id="frame_pop" src="https://${url}/dashboard/${res.username || "%20"}/activity/popout" class="frame"></webview>`);
+                  $('.goto_sr').remove();
+                  $('.goto_pop').remove();
+                  $('#main').html(`<webview id="frame_pop" src="https://${url}/dashboard/${res.username || '%20'}/activity/popout" class="frame"></webview>`);
                 } else {
-                  $("#main").html(`<webview id="frame_pop" src="https://${url}/dashboard/${res.username || "%20"}/activity/popout" class="frame"></webview>` +
+                  $('#main').html(`<webview id="frame_pop" src="https://${url}/dashboard/${res.username || '%20'}/activity/popout" class="frame"></webview>` +
                                         `<webview id="frame_sr" src="https://${url}/dashboard/songrequest/general" class="frame"></webview>`);
                 }
-                if (currentPage !== "#settings") {
-                  $(".goto_sr").css("display", "inline-block");
+                if (currentPage !== '#settings') {
+                  $('.goto_sr').css('display', 'inline-block');
                 }
-                const pop = document.querySelector("#frame_pop");
-                const sr = document.querySelector("#frame_sr");
-                const settings = document.querySelector("#settings");
-                settings.addEventListener("ipc-message", event => {
-                  if (event.channel.startsWith("reload")) {
-                    var mod = event.channel.split(":")[1] || false;
-                    var lang = event.channel.split(":")[2] || "en";
+                const pop = document.querySelector('#frame_pop');
+                const sr = document.querySelector('#frame_sr');
+                const settings = document.querySelector('#settings');
+                settings.addEventListener('ipc-message', event => {
+                  if (event.channel.startsWith('reload')) {
+                    const mod = event.channel.split(':')[1] || false;
+                    const lang = event.channel.split(':')[2] || 'en';
                     if (mod) {
-                      location.hash = mod;
+                      window.location.hash = mod;
                     }
                     pop.executeJavaScript(`localStorage["StreamElements.lang"] = '"${lang}"';`);
-                    setTimeout(function() {
-                      location.reload();
+                    setTimeout(() => {
+                      window.location.reload();
                     }, 10);
-                  } else if (event.channel.startsWith("sr")) {
-                    var mod = event.channel.split(":")[1] || false;
+                  } else if (event.channel.startsWith('sr')) {
+                    const mod = event.channel.split(':')[1] || false;
                     if (mod) {
-                      if (mod === "close") {
-                        $(".goto_sr").remove();
-                        $(".goto_pop").remove();
-                        $("#frame_sr").remove();
-                        b4settings = "#main";
-                      } else if (mod === "open") {
-                        $("#nav").prepend(`<button onclick="goSr();" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect goto_sr"><i class="material-icons">music_note</i>` +
-                                                `</button><button onclick="goPop();" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect goto_pop"><i class="material-icons">menu</i></button>`);
-                        $("#main").append(`<webview id="frame_sr" src="https://${url}/dashboard/songrequest/general" class="frame"></webview>`);
-                        loadSr(document.querySelector("#frame_sr"));
+                      if (mod === 'close') {
+                        $('.goto_sr').remove();
+                        $('.goto_pop').remove();
+                        $('#frame_sr').remove();
+                        b4settings = '#main'; // eslint-disable-line no-undef
+                      } else if (mod === 'open') {
+                        $('#nav').prepend('<button onclick="goSr();" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect goto_sr">' +
+                          '<i class="material-icons">music_note</i></button>' +
+                          '<button onclick="goPop();" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect goto_pop">' +
+                          '<i class="material-icons">menu</i></button>');
+                        $('#main').append(`<webview id="frame_sr" src="https://${url}/dashboard/songrequest/general" class="frame"></webview>`);
+                        loadSr(document.querySelector('#frame_sr'));
                       }
                     }
                   }
                 });
-                pop.addEventListener("dom-ready", () => {
-                  $("#updater").css("display", "none");
-                  if (currentPage === "#settings") {
-                    goTo("#settings");
+                pop.addEventListener('dom-ready', () => {
+                  $('#updater').css('display', 'none');
+                  if (currentPage === '#settings') {
+                    goTo('#settings');
                   }
-                  pop.insertCSS(fs.readFileSync(__dirname + "/../css/pop.css").toString());
-                  pop.addEventListener("new-window", e => {
-                    const protocol = require("url").parse(e.url).protocol
-                    if (protocol === "http:" || protocol === "https:") {
-                      shell.openExternal(e.url)
+                  pop.insertCSS(fs.readFileSync(`${__dirname}/../css/pop.css`).toString());
+                  pop.addEventListener('new-window', e => {
+                    const { protocol } = require('url').parse(e.url); // eslint-disable-line global-require
+                    if (protocol === 'http:' || protocol === 'https:') {
+                      shell.openExternal(e.url);
                     }
                   });
                   pop.executeJavaScript(`
@@ -99,12 +101,12 @@ function loadIframe() {
                         oh_yea();
                     }, 1000 * 2);`);
                   /* Start Dark mode */
-                  if ($("html").hasClass("darkMode")) {
-                    pop.executeJavaScript(`$("html").addClass("darkMode");`);
+                  if ($('html').hasClass('darkMode')) {
+                    pop.executeJavaScript('$("html").addClass("darkMode");');
                   }
                   /* End Dark mode */
                   /* Start Compact mode */
-                  if ($("html").hasClass("compact")) {
+                  if ($('html').hasClass('compact')) {
                     pop.executeJavaScript(` $("html").addClass("compact");
                                             $("body").bind("DOMSubtreeModified",function(){
                                                 $("h4.mb-event-type:not([moved])").each(function() {
@@ -116,10 +118,10 @@ function loadIframe() {
                   }
                   /* End Compact mode */
                 });
-                function loadSr(srA = sr) {
-                  srA.addEventListener("dom-ready", () => {
-                    if (currentPage === "#settings") {
-                      goTo("#settings");
+                function loadSr(srA = sr) { // eslint-disable-line no-inner-declarations
+                  srA.addEventListener('dom-ready', () => {
+                    if (currentPage === '#settings') {
+                      goTo('#settings');
                     }
                     srA.executeJavaScript(`
                       window.onbeforeunload = function() {
@@ -148,10 +150,10 @@ function loadIframe() {
                           }
                           closeN();
                       });`);
-                    srA.insertCSS(fs.readFileSync(__dirname + "/../css/sr.css").toString());
+                    srA.insertCSS(fs.readFileSync(`${__dirname}/../css/sr.css`).toString());
                     /* Start Dark mode */
-                    if ($("html").hasClass("darkMode")) {
-                      srA.executeJavaScript(`$("html").addClass("darkMode");`);
+                    if ($('html').hasClass('darkMode')) {
+                      srA.executeJavaScript('$("html").addClass("darkMode");');
                     }
                     /* End Dark mode */
                   });
@@ -161,24 +163,24 @@ function loadIframe() {
                 }
               }
             } else {
-              displayError(myText["jwt:invalid"][currentLang]);
+              displayError(myText['jwt:invalid'][currentLang]);
             }
           }).catch(err => {
             if (err.statusCode < 500) {
-              displayError(myText["jwt:invalid"][currentLang]);
+              displayError(myText['jwt:invalid'][currentLang]);
             } else {
               console.warn(err);
-              displayError(myText["jwt:500"][currentLang]);
+              displayError(myText['jwt:500'][currentLang]);
             }
           });
         } else {
-          displayError(myText["jwt:missing"][currentLang]);
+          displayError(myText['jwt:missing'][currentLang]);
         }
       } catch (err) {
-        displayError(myText["jwt:missing"][currentLang]);
+        displayError(myText['jwt:missing'][currentLang]);
       }
     } else {
-      displayError(myText["jwt:missing"][currentLang]);
+      displayError(myText['jwt:missing'][currentLang]);
     }
   }, 10);
 }
@@ -192,9 +194,9 @@ module.exports = {
  */
 function displayError(message) {
   changeModeNoToken();
-  $("#updater").css("display", "none");
-  $("#main").css("display", "none");
-  $(".goto_sr").css("display", "none");
-  $("#main").html(`<p id="error">${message}</p>`);
-  $("#main").css("display", "block");
+  $('#updater').css('display', 'none');
+  $('#main').css('display', 'none');
+  $('.goto_sr').css('display', 'none');
+  $('#main').html(`<p id="error">${message}</p>`);
+  $('#main').css('display', 'block');
 }
