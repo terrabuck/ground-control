@@ -247,24 +247,24 @@ async function canUseBot(jwt) {
     if (req0.body.bot.allowCustomName) {
       return true;
     }
-    // const req1 = await got.get(`https://${api}/kappa/v2/channels/me`, {
-    //   json: true,
-    //   headers: {
-    //     authentication: "Bearer " + jwt
-    //   }
-    // });
-    // const req2 = await got.get(`https://api.twitch.tv/api/channels/${req1.body.username}/panels`, {
-    //   json: true,
-    //   headers: {
-    //     'client-id': 'sv6t1c3j2s5uuz3elxftm7s1bx54b31'
-    //   }
-    // });
-    // const panels = req2.body;
-    // for (let i = 0; i < panels.length; i++) {
-    //   if (/^https:\/\/streamelements\.com\/tip\/.+$/.test(panels[i].data.link)) {
-    //     return true;
-    //   }
-    // }
+    const req1 = await got.get(`https://${api}/kappa/v2/channels/me`, {
+      json: true,
+      headers: {
+        authorization: `Bearer ${jwt}`
+      }
+    });
+    const req2 = await got.get(`https://api.twitch.tv/api/channels/${req1.body.username}/panels`, {
+      json: true,
+      headers: {
+        'client-id': 'sv6t1c3j2s5uuz3elxftm7s1bx54b31'
+      }
+    });
+    const panels = req2.body;
+    for (let i = 0; i < panels.length; i++) {
+      if (/^https:\/\/streamelements\.com\/tip\/.+$/.test(panels[i].data.link)) {
+        return true;
+      }
+    }
   } catch (err) {
     // It will return false
   }
