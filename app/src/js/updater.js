@@ -33,7 +33,7 @@ const isDev = (function () {
   return false;
 }());
 
-if ((!isDev) && ['win32', 'darwin'].includes(os.platform())) {
+if (!isDev) {
   try {
     checkLatestVersion().then(version => {
       if (!upToDate(pack.version, version)) {
