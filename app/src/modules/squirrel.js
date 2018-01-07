@@ -14,8 +14,12 @@ const check = function () {
     const cmd = process.argv[1];
     const target = path.basename(process.execPath);
 
-    if (cmd === '--squirrel-install' || cmd === '--squirrel-updated') {
+    if (cmd === '--squirrel-install') {
       run([`--createShortcut=${target}`], app.quit);
+      return true;
+    }
+    if (cmd === '--squirrel-updated') {
+      app.quit();
       return true;
     }
     if (cmd === '--squirrel-uninstall') {
