@@ -27,7 +27,7 @@ let contents;
 let analytics;
 let bot;
 
-if (require('electron-squirrel-startup')) { // eslint-disable-line
+if (require('./src/modules/squirrel')) { // eslint-disable-line
   app.quit();
 }
 
@@ -56,12 +56,13 @@ function reg() {
   killBot();
 
   /* Cookies */
-  session.defaultSession.cookies.set({ url: 'https://streamelements.com', name: 'se-token', value: settings.token || '#' }, err => {
+  const cUrl = process.argv[2] ? `https://${process.argv[2]}` : 'https://streamelements.com';
+  session.defaultSession.cookies.set({ url: cUrl, name: 'se-token', value: settings.token || '#' }, err => {
     if (err) {
       console.error(err);
     }
   });
-  session.defaultSession.cookies.set({ url: 'https://streamelements.com', name: 'GC', value: '1' }, err => {
+  session.defaultSession.cookies.set({ url: cUrl, name: 'GC', value: '1' }, err => {
     if (err) {
       console.error(err);
     }
@@ -264,7 +265,12 @@ function createWindow() {
     pathname: path.join(__dirname, 'src/index.html'),
     protocol: 'file:',
     slashes: true,
-    hash
+    hash,
+    query: {
+      url: process.argv[2],
+      api: process.argv[3],
+      cBotApi: process.argv[4]
+    }
   }));
 
   // set contents
@@ -275,7 +281,7 @@ function createWindow() {
   });
 
   // Open the DevTools.
-  if ((fs.existsSync('./package.json') && /.*[\\/]npm[\\/]node_modules[\\/]electron[\\/]dist[\\/]electron[.a-z]*/i.test(path.normalize(process.argv[0]))) || (process.argv[2] && process.argv[2] === 'secret dev')) { // eslint-disable-line
+  if (fs.existsSync('./package.json') && /.*[\\/]npm[\\/]node_modules[\\/]electron[\\/]dist[\\/]electron[.a-z]*/i.test(path.normalize(process.argv[0]))) {
     win.webContents.openDevTools();
   }
 

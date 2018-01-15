@@ -19,9 +19,24 @@ if (fs.existsSync('./package.json')) {
 } else if (fs.existsSync(`${__filename.replace(/src.*/, '')}package.json`)) {
   pack = JSON.parse(fs.readFileSync(`${__filename.replace(/src.*/, '')}package.json`, 'utf8'));
 }
-const url = 'streamelements.com';
-const api = 'api.streamelements.com';
-const cBotApi = 'wss://omegalul.streamelements.com';
+
+function getUrlParams() {
+  const queryDict = {};
+  try {
+    window.location.search.substr(1).split('&').forEach(item => {
+      queryDict[item.split('=')[0]] = item.split('=')[1]; // eslint-disable-line prefer-destructuring
+    });
+  } catch (err) {
+    // window is not defined
+  }
+  return queryDict;
+}
+
+const custom = getUrlParams();
+
+const url = custom.url || 'streamelements.com';
+const api = custom.api || 'api.streamelements.com';
+const cBotApi = custom.cBotApi || 'wss://omegalul.streamelements.com';
 
 let currentLang = 'en';
 if (fs.existsSync(configFile)) {
@@ -64,7 +79,7 @@ const myText = {
   'keyboard:warning': {
     en: 'DEPENDING ON YOUR KEYBOARD-LAYOUT SOME COMBINATIONS MAY NOT WORK!',
     ru: 'В зависимости от вашей раскладки на клавиатуре некоторые комбинации могут не работать!',
-    fr: 'CERTAINES COMBINAISONS PEUVENT NE PAS FONCTIONNER EN FONCTION DE VOTRE CLAVIER !'
+    fr: 'CERTAINES COMBINAISONS PEUVENT NE PAS FONCTIONNER EN FONCTION DE VOTRE CLAVIER!'
   },
   'keyboard:available': {
     en: 'Available keys:',
@@ -129,12 +144,12 @@ const myText = {
   'use:sr': {
     en: 'Use Songrequest: ',
     ru: 'Использовать Songrequest: ',
-    fr: 'Activer le songrequest : '
+    fr: 'Activer le songrequest: '
   },
   'use:compact': {
     en: 'Use Compact Mode: ',
     ru: 'Использовать компактный режим: ',
-    fr: 'Activer le mode réduit : '
+    fr: 'Activer le mode réduit: '
   },
   'session:reset': {
     en: 'Reset Session',
@@ -164,7 +179,7 @@ const myText = {
   loading: {
     en: '&nbsp;&nbsp;&nbsp;Loading',
     ru: 'Загружаемся',
-    fr: '&nbsp;&nbsp;Chargement'
+    fr: 'Chargement'
   },
   done: {
     en: 'Done',
