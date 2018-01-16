@@ -79,6 +79,16 @@ html.darkMode p.mb-event-type {
 html.darkMode .md-display-1.ng-scope {
   color: rgba(255, 255, 255, 0.8);
 }
+html.darkMode #app > div {
+  background-color: rgb(33, 33, 33);
+}
+html.darkMode md-list.pending-list p,
+html.darkMode md-list.pending-list a h3 {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+html.darkMode md-list.pending-list span {
+  color: rgba(255, 255, 255, 0.54);
+}
 
 /* Compact Mode */
 html.compact md-list-item {

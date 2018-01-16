@@ -19,9 +19,24 @@ if (fs.existsSync('./package.json')) {
 } else if (fs.existsSync(`${__filename.replace(/src.*/, '')}package.json`)) {
   pack = JSON.parse(fs.readFileSync(`${__filename.replace(/src.*/, '')}package.json`, 'utf8'));
 }
-const url = 'streamelements.com';
-const api = 'api.streamelements.com';
-const cBotApi = 'wss://omegalul.streamelements.com';
+
+function getUrlParams() {
+  const queryDict = {};
+  try {
+    window.location.search.substr(1).split('&').forEach(item => {
+      queryDict[item.split('=')[0]] = item.split('=')[1]; // eslint-disable-line prefer-destructuring
+    });
+  } catch (err) {
+    // window is not defined
+  }
+  return queryDict;
+}
+
+const custom = getUrlParams();
+
+const url = custom.url || 'streamelements.com';
+const api = custom.api || 'api.streamelements.com';
+const cBotApi = custom.cBotApi || 'wss://omegalul.streamelements.com';
 
 let currentLang = 'en';
 if (fs.existsSync(configFile)) {
@@ -40,13 +55,13 @@ const myText = {
     en: 'Skip alert',
     ru: 'Пропустить оповещение',
     fr: "Passer l'alerte",
-    es: "Saltar alerta"
+    es: 'Saltar alerta'
   },
   'alert:stop': {
     en: 'Stop/Resume alerts',
     ru: 'Остановить/Продолжить оповещения',
     fr: 'Arrêter/Reprendre alertes',
-    es: "Parar/pausar las alertas"
+    es: 'Parar/pausar las alertas'
   },
   'song:skip': {
     en: 'Skip song',
@@ -69,8 +84,8 @@ const myText = {
   'keyboard:warning': {
     en: 'DEPENDING ON YOUR KEYBOARD-LAYOUT SOME COMBINATIONS MAY NOT WORK!',
     ru: 'В зависимости от вашей раскладки на клавиатуре некоторые комбинации могут не работать!',
-    fr: 'CERTAINES COMBINAISONS PEUVENT NE PAS FONCTIONNER EN FONCTION DE VOTRE CLAVIER !',
-    es: 'DEPENDE DEL DISEÑO DE TU TECLADO, PUEDE QUE ALGUNAS COMBINACIONES NO FUNCIONEN'
+    fr: 'CERTAINES COMBINAISONS PEUVENT NE PAS FONCTIONNER EN FONCTION DE VOTRE CLAVIER!',
+    es: 'DEPENDE DEL DISEÑO DE TU TECLADO, PUEDE QUE ALGUNAS COMBINACIONES NO FUNCIONEN!'
   },
   'keyboard:available': {
     en: 'Available keys:',
@@ -82,7 +97,7 @@ const myText = {
     en: 'Punctuations',
     ru: 'Punctuations',
     fr: 'Ponctuations',
-    es: 'Sigos de puntuación',
+    es: 'Sigos de puntuación'
   },
   'keyboard:alias:enter': {
     en: 'or Enter as alias',
@@ -114,17 +129,11 @@ const myText = {
     fr: 'Votre Token JWT...',
     es: 'Tu token JWT...'
   },
-  oauth: {
-    en: 'Your Oauth Token... (for chat display)',
-    ru: 'Ваш Oauth Token...(чат-дисплей)',
-    fr: 'Votre Oauth JWT...(affichage de chat)',
-    es: 'Tu token Oauth... (para mostrar el chat)'
-  },
   'jwt:link': {
     en: 'You can find it under ',
     ru: 'Вы можете это найти там ',
     fr: 'Disponible dans ',
-    es: 'Puedes encontrarlo debajo'
+    es: 'Puedes encontrarlo debajo '
   },
   account: {
     en: 'My Account',
@@ -153,20 +162,20 @@ const myText = {
   'use:sr': {
     en: 'Use Songrequest: ',
     ru: 'Использовать Songrequest: ',
-    fr: 'Activer le songrequest : ',
+    fr: 'Activer le songrequest: ',
     es: 'Usar Songrequest'
   },
   'use:compact': {
     en: 'Use Compact Mode: ',
     ru: 'Использовать компактный режим: ',
-    fr: 'Activer le mode réduit : ',
+    fr: 'Activer le mode réduit: ',
     es: 'Usar modo compacto'
   },
   'session:reset': {
     en: 'Reset Session',
     ru: 'Сбросить сессию',
     fr: 'Réinitialiser la session',
-    es: 'Reiniciar la sesión',
+    es: 'Reiniciar la sesión'
   },
   updating: {
     en: '&nbsp;&nbsp;Updating',
@@ -175,28 +184,28 @@ const myText = {
     es: '&nbsp;&nbsp;Actualizando'
   },
   'jwt:invalid': {
-    en: 'You entered an invalid <a>JWT Token</a>.',
-    ru: 'Вы ввели неправильный <a>JWT Token</a>.',
-    fr: 'Votre <a>Token JWT</a> est invalide.',
-    es: 'Has introducido un <a>Token JWT</a> inválido'
+    en: 'You entered an invalid JWT Token.',
+    ru: 'Вы ввели неправильный JWT Token.',
+    fr: 'Votre Token JWT est invalide.',
+    es: 'Has introducido un Token JWT inválido.'
   },
   'jwt:500': {
     en: 'Something is wrong on our site...',
     ru: 'Что-то не так на нашем сервисе...',
     fr: 'Oops! Notre site est inaccessible...',
-    fr: 'Algo ha fallado al conectar a nuestro sitio'
+    es: 'Algo ha fallado al conectar a nuestro sitio'
   },
   'jwt:missing': {
-    en: 'To use the activity feed, please enter your <a>JWT Token</a> in the settings menu.',
-    ru: 'Для получения оповещений, пожалуйста введите ваш <a>JWT Token</a> в меню настроек.',
-    fr: "Pour utiliser le fil d'actualité, veuillez saisir votre <a>Token JWT</a> dans les réglages.",
-    es: 'Para usar la feed, por favor introduce tu <a>JWT Token</a> en los ajustes '
+    en: 'To use the activity feed, please enter your JWT Token in the settings menu.',
+    ru: 'Для получения оповещений, пожалуйста введите ваш JWT Token в меню настроек.',
+    fr: "Pour utiliser le fil d'actualité, veuillez saisir votre Token JWT dans les réglages.",
+    es: 'Para usar la feed, por favor introduce tu JWT Token en los ajustes '
   },
   loading: {
     en: '&nbsp;&nbsp;&nbsp;Loading',
     ru: 'Загружаемся',
     fr: '&nbsp;&nbsp;Chargement',
-    es: '&nbsp;&nbsp;&nbsp;Cargando'
+    es: '&nbsp;&nbsp;Cargando'
   },
   done: {
     en: 'Done',
@@ -223,9 +232,9 @@ const myText = {
     es: 'Bot de prueba'
   },
   'bot:generate': {
-    en: 'You can generate your OAuth Token ',
-    ru: 'Вы можете создать токен авторизации ',
-    fr: 'Vous pouvez générer votre Token OAuth ',
+    en: 'You can generate your OAuth Token',
+    ru: 'Вы можете создать токен авторизации',
+    fr: 'Vous pouvez générer votre Token OAuth',
     es: 'Puedes generar tu Token Oauth'
   },
   here: {
