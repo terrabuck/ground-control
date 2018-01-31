@@ -169,11 +169,13 @@ function reg() {
       bot = null;
     }
   }
+  analytics.bot(false);
   if (settings.bot && settings.bot.use === true) {
     if (settings.bot.name && settings.bot.token) {
       customBot(settings.token, settings.bot.name, settings.bot.token).then(_bot => {
         killBot();
         bot = _bot;
+        analytics.bot(true);
       }).catch(err => {
         killBot();
         throw err;

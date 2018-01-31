@@ -36,13 +36,14 @@ class Heap {
         });
       });
     }
-    function sendProperties() {
+    /**
+     * @param {{[x: string]: boolean}} properties
+     */
+    function sendProperties(properties) {
       const body = JSON.stringify({
         app_id: 413792583,
         identity,
-        properties: {
-          UsingGC: true
-        }
+        properties
       });
       got.post('https://heapanalytics.com/api/add_user_properties', {
         headers: {
@@ -56,7 +57,14 @@ class Heap {
     }
     this.open = function () {
       sendEvent('Opened GC');
-      sendProperties();
+      sendProperties({
+        UsingGC: true
+      });
+    };
+    this.bot = function (active) {
+      sendProperties({
+        isUsingCustomBotName: active
+      });
     };
     this.close = function () {
       return new Promise(resolve => {
