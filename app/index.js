@@ -102,20 +102,20 @@ function reg() {
         console.error(`Keybind for 'Skip Alert' failed, '${key}'`);
       }
     }
-    /* Stop/Resume Alerts */
-    if (settings.keys.SnR_alert) {
-      const key = settings.keys.SnR_alert;
-      try {
-        globalShortcut.register(key, () => {
-          if (socket) {
-            console.log("Send: 'Stop/Resume Alerts'");
-            socket.emit('overlay:togglequeue');
-          }
-        });
-      } catch (error) {
-        console.error(`Keybind for 'Stop/Resume Alerts' failed, '${key}'`);
-      }
-    }
+    /* Stop/Resume Alerts <TODO: Missing api endpoint> */
+    // if (settings.keys.SnR_alert) {
+    //   const key = settings.keys.SnR_alert;
+    //   try {
+    //     globalShortcut.register(key, () => {
+    //       if (socket) {
+    //         console.log("Send: 'Stop/Resume Alerts'");
+    //         socket.emit('overlay:togglequeue');
+    //       }
+    //     });
+    //   } catch (error) {
+    //     console.error(`Keybind for 'Stop/Resume Alerts' failed, '${key}'`);
+    //   }
+    // }
     /* Skip Song */
     if (!(settings.other && settings.other.useSR === false)) {
       if (settings.keys.skip_song) {

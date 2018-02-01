@@ -121,7 +121,7 @@ function loadOtherStuff() {
       <div class="clear"></div>`);
   }
   genKeybinding(myText['alert:skip'][currentLang], 'skip_alert');
-  genKeybinding(myText['alert:stop'][currentLang], 'SnR_alert');
+  // genKeybinding(myText['alert:stop'][currentLang], 'SnR_alert'); <TODO: Missing api endpoint>
   genKeybinding(myText['song:skip'][currentLang], 'skip_song');
   genKeybinding(myText['song:stop'][currentLang], 'SnR_song');
   genKeybinding(myText['song:show'][currentLang], 'x_show_song');
