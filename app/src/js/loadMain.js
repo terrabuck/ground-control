@@ -1,4 +1,4 @@
-/* global $, fs, configFile, goTo, currentPage, shell, url, myText, currentLang, checkValidToken */
+/* global $, fs, configFile, goTo, currentPage, shell, url, myText, currentLang, checkValidToken, googleFonts */
 
 function changeModeNoToken() {
   const settings = document.querySelector('#settings');
@@ -117,6 +117,15 @@ function loadIframe() {
                    `);
                   }
                   /* End Compact mode */
+                  if (a.font) {
+                    pop.executeJavaScript(` font = document.createElement('style');
+                                            font.innerHTML = "h1, h2, h3, h4, h5, h6, p, a, select, label, li, span, button, div.md-label { font-family: ${a.font} !important; }";
+                                            fonts = document.createElement('link');
+                                            fonts.rel = 'stylesheet';
+                                            fonts.href = '${googleFonts}';
+                                            document.head.appendChild(font);
+                                            document.head.appendChild(fonts);`);
+                  }
                 });
                 function loadSr(srA = sr) { // eslint-disable-line no-inner-declarations
                   srA.addEventListener('dom-ready', () => {
@@ -156,6 +165,15 @@ function loadIframe() {
                       srA.executeJavaScript('$("html").addClass("darkMode");');
                     }
                     /* End Dark mode */
+                    if (a.font) {
+                      srA.executeJavaScript(` font = document.createElement('style');
+                                              font.innerHTML = "h1, h2, h3, h4, h5, h6, p, a, select, label, li, span, button, div.md-label { font-family: ${a.font} !important; }";
+                                              fonts = document.createElement('link');
+                                              fonts.rel = 'stylesheet';
+                                              fonts.href = '${googleFonts}';
+                                              document.head.appendChild(font);
+                                              document.head.appendChild(fonts);`);
+                    }
                   });
                 }
                 if (!(a.other && a.other.useSR === false)) {

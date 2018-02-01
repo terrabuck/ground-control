@@ -8,7 +8,7 @@ function connectSocket(token, debug = false) {
   const socket = io('https://realtime.streamelements.com', { transports: ['websocket'] });
 
   socket.on('connect', () => {
-    socket.emit('authenticate:jwt', { token });
+    socket.emit('authenticate', { method: 'jwt', token });
     if (debug) console.log('Socket is connected');
   });
 

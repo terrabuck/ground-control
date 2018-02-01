@@ -31,6 +31,17 @@ if (require('./src/modules/squirrel')) { // eslint-disable-line
   app.quit();
 }
 
+// So that one can use the vs-code debugger
+if (process.argv[1] && process.argv[1].startsWith('--inspect')) {
+  delete process.argv[1];
+}
+if (process.argv[2] && process.argv[2].startsWith('--debug')) {
+  delete process.argv[2];
+}
+if (process.argv[3] && process.argv[3] === '.') {
+  delete process.argv[3];
+}
+
 if (!fs.existsSync(configFile)) {
   fs.writeFileSync(configFile, '{"token":""}');
 }

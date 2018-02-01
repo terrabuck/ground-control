@@ -118,7 +118,8 @@ ul {
 #languageSelection {
     float: right;
 }
-#languageSelection select {
+#languageSelection select,
+#fontSelection select {
     font-size: 14px;
     padding: 5px;
 }
@@ -195,7 +196,8 @@ html.darkMode label.mdl-textfield__label::after {
 html.darkMode #resetSession {
     background-color: #CC5500;
 }
-html.darkMode #languageSelection select {
+html.darkMode #languageSelection select,
+html.darkMode #fontSelection select {
     border: 1px solid #000;
     color: #fff;
     background: #444;

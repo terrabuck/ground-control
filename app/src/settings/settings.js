@@ -1,4 +1,4 @@
-/* global $, fs, configFile, pack, ipcRenderer, got, api, url, canUseBot, shell, myText, currentLang, debounce */
+/* global $, fs, configFile, pack, ipcRenderer, got, api, url, canUseBot, shell, myText, currentLang, currentFont, googleFonts, debounce */
 
 /**
  * @param {string} text
@@ -16,6 +16,25 @@ function mustache(text) {
     return x;
   });
 }
+
+$('head').append(`<link rel="stylesheet" href="${googleFonts}">`);
+
+/**
+ * @param {string} font
+ * @example "'Dancing Script', cursive"
+ */
+function generateFont(font) {
+  $('#fontSelection select').append(`<option value="${font}" style="font-family:${font}">${font.match(/^'(.*)'/i)[1]}</option>`);
+}
+generateFont("'Open Sans', sans-serif");
+generateFont("'Lato', sans-serif");
+generateFont("'Alegreya', serif");
+generateFont("'Montserrat', sans-serif");
+generateFont("'Raleway', sans-serif");
+generateFont("'Dancing Script', cursive");
+generateFont("'Calligraffitti', cursive");
+generateFont("'Righteous', cursive");
+generateFont("'Anonymous Pro', monospace");
 
 const botStuff = fs.readFileSync(`${__dirname}/bot/index.html`).toString();
 $('#loadBot').html(botStuff);
@@ -36,6 +55,7 @@ function loadOtherStuff() {
       keys: {},
       darkMode: $('#darkMode_sub').is(':checked'),
       lang: $('#languageSelection select').val(),
+      font: $('#fontSelection select').val(),
       other: {
         useSR: $('#use_sr').is(':checked'),
         useCompact: $('#use_compact').is(':checked')
@@ -65,11 +85,14 @@ function loadOtherStuff() {
     } else {
       $('#loadBot').css('display', 'none');
     }
+    // Font
+    $('head').append(`<style id="niceCustomFont">h1, h2, h3, h4, h5, h6, p, a, select, label, li, span, button, div.md-label { font-family: ${$('#fontSelection select').val()} !important; }</style>`);
+
     // Write to file
     fs.writeFile(configFile, JSON.stringify(tmp), (err => {
       if (err) {
         console.error(err);
-      } else if (currentLang !== tmp.lang) {
+      } else if (currentLang !== tmp.lang || currentFont !== tmp.font) {
         changeMode();
       }
     }));
@@ -215,6 +238,10 @@ function loadOtherStuff() {
       if (a.lang) {
         $('#languageSelection select').val(a.lang);
       }
+      if (a.font) {
+        $('#fontSelection select').val(a.font);
+        $('head').append(`<style id="niceCustomFont">h1, h2, h3, h4, h5, h6, p, a, select, label, li, span, button, div.md-label { font-family: ${$('#fontSelection select').val()} !important; }</style>`);
+      }
       if (a.bot) {
         if (a.bot.use) {
           $('#use_bot').prop('checked', true);
@@ -241,7 +268,8 @@ function loadOtherStuff() {
       const dark = $('#darkMode_sub').is(':checked') ? 'dark' : 'light';
       let mod = $('#use_compact').is(':checked') ? '-compact' : '';
       const lang = $('#languageSelection select').val();
-      mod = `${dark + mod}:${lang}`;
+      const font = $('#fontSelection select').val();
+      mod = `${dark + mod}:${lang}:${font}`;
       ipcRenderer.sendToHost(`reload:${mod}`);
     }, 50);
   }

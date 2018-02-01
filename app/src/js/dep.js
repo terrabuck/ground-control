@@ -38,7 +38,10 @@ const url = custom.url || 'streamelements.com';
 const api = custom.api || 'api.streamelements.com';
 const cBotApi = custom.cBotApi || 'wss://omegalul.streamelements.com';
 
+const googleFonts = 'https://fonts.googleapis.com/css?family=Alegreya|Anonymous+Pro|Calligraffitti|Dancing+Script|Lato|Montserrat|Open+Sans|Raleway|Righteous|Roboto';
+
 let currentLang = 'en';
+let currentFont = "'Roboto', sans-serif";
 if (fs.existsSync(configFile)) {
   let a;
   try {
@@ -46,10 +49,14 @@ if (fs.existsSync(configFile)) {
     if (a.lang) {
       currentLang = a.lang;
     }
+    if (a.font) {
+      currentFont = a.font;
+    }
   } catch (err) {
     console.error('Could not parse JSON');
   }
 }
+
 const myText = {
   'alert:skip': {
     en: 'Skip alert',
@@ -309,6 +316,15 @@ async function canUseBot(jwt) {
     const panels = req2.body;
     for (let i = 0; i < panels.length; i++) {
       if (/^https:\/\/streamelements\.com\/tip\/.+$/.test(panels[i].data.link)) {
+        return true;
+      }
+      if (/^https:\/\/streamelements\.com\/.+\/tip$/.test(panels[i].data.link)) {
+        return true;
+      }
+      if (/<a href="https:\/\/streamelements\.com\/tip\/.+">/.test(panels[i].html_description)) {
+        return true;
+      }
+      if (/<a href="https:\/\/streamelements\.com\/.+\/tip">/.test(panels[i].html_description)) {
         return true;
       }
     }
